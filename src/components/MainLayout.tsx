@@ -23,10 +23,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
   const [showScreensaver, setShowScreensaver] = useState(false);
   const [isShelfOpen, setIsShelfOpen] = useState(true);
   const [isRightCollapsed, setIsRightCollapsed] = useState(false);
-  const [layoutMode, setLayoutMode] = useState<LayoutMode>('split');
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>('canvas-dominant');
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileInspectorOpen, setIsMobileInspectorOpen] = useState(false);
+  const shelfHeight = isMobile ? 180 : 220;
+  const shelfPeek = 32;
+  const shelfOffset = shelfHeight - shelfPeek;
 
   const healthScore = project ? calculateHealthScore(project).score : 100;
   const [focusWindow, stageCanvas] = useMemo(() => {
@@ -44,7 +47,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
   }, []);
   
   return (
-    <div className="flex flex-col md:flex-row h-screen w-screen bg-[#121212] text-[#E0E0E0] overflow-hidden">
+    <div className="relative flex flex-col md:flex-row h-screen w-screen bg-[#121212] text-[#E0E0E0] overflow-hidden">
       {/* Left Mode Selector */}
       {left && (
         <aside className="w-full md:w-16 bg-[#1E1E1E] border-b md:border-b-0 md:border-r border-[#333333] flex flex-row md:flex-col items-center md:items-stretch px-2 md:px-0 py-2 md:py-4">
@@ -84,7 +87,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
             </button>
           </div>
           <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 text-xs text-[#888888]">
+            <div className="flex items-center gap-2 text-xs text-[#888888]">
               <span className="hidden md:inline">Layout</span>
               <select
                 value={layoutMode}
@@ -92,8 +95,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
                 className="px-2 py-1 text-xs bg-[#121212] border border-[#333333] rounded text-[#E0E0E0]"
                 title="Layout Mode"
               >
+                <option value="canvas-dominant">Canvas 75/25</option>
                 <option value="split">Split 50/50</option>
-                <option value="canvas-dominant">Canvas 70/30</option>
                 <option value="canvas-only">Canvas Only</option>
                 <option value="editor-only">Editor Only</option>
                 <option value="drawer">Editor Drawer</option>
@@ -185,10 +188,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
               )}
               {layoutMode !== 'canvas-only' && layoutMode !== 'editor-only' && layoutMode !== 'drawer' && (
                 <>
-                  <div className={`min-w-0 flex-none ${layoutMode === 'canvas-dominant' ? 'w-[30%]' : 'w-1/2'}`}>
+                  <div className={`min-w-0 flex-none ${layoutMode === 'canvas-dominant' ? 'w-[25%]' : 'w-1/2'}`}>
                     {focusWindow}
                   </div>
-                  <div className={`min-w-0 flex-none ${layoutMode === 'canvas-dominant' ? 'w-[70%]' : 'w-1/2'}`}>
+                  <div className={`min-w-0 flex-none ${layoutMode === 'canvas-dominant' ? 'w-[75%]' : 'w-1/2'}`}>
                     {stageCanvas}
                   </div>
                 </>
@@ -200,9 +203,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
           {bottom && (
             <motion.div
               initial={false}
-              animate={{ y: isShelfOpen ? 0 : 188 }}
+              animate={{ y: isShelfOpen ? 0 : shelfOffset }}
               transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-              className="absolute left-0 right-0 bottom-0 h-[180px] md:h-[220px] bg-[#1E1E1E] border-t border-[#333333] shadow-[0_-8px_20px_rgba(0,0,0,0.35)]"
+              className="absolute left-0 right-0 bottom-0 z-20 bg-[#1E1E1E] border-t border-[#333333] shadow-[0_-8px_20px_rgba(0,0,0,0.35)]"
+              style={{ height: shelfHeight }}
             >
               <div className="h-8 flex items-center justify-between px-4 border-b border-[#2A2A2A]">
                 <span className="text-xs text-[#888888]">Asset Shelf</span>
@@ -225,10 +229,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
       {/* Right Inspector Panel */}
       {right && (
         <>
-          <aside
-            className={`hidden md:block bg-[#1E1E1E] border-l border-[#333333] overflow-hidden transition-all duration-200 ${
-              isRightCollapsed ? 'w-8' : 'w-[320px]'
-            }`}
+          <div
+            className={`hidden md:block fixed top-12 bottom-0 right-0 z-30 bg-[#1E1E1E] border-l border-[#333333] shadow-[-12px_0_24px_rgba(0,0,0,0.35)] transition-transform duration-200 ${
+              isRightCollapsed ? 'translate-x-[calc(100%-18px)]' : 'translate-x-0'
+            } w-[320px]`}
           >
             <div className="h-full flex flex-col">
               <div className="h-8 flex items-center justify-between px-2 border-b border-[#2A2A2A]">
@@ -247,7 +251,14 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
                 {right}
               </div>
             </div>
-          </aside>
+            <button
+              onClick={() => setIsRightCollapsed((prev) => !prev)}
+              className="absolute top-24 -left-4 w-4 h-20 bg-[#1E1E1E] border border-[#333333] rounded-l text-[#888888] hover:text-[#E0E0E0]"
+              title={isRightCollapsed ? 'Open Inspector' : 'Close Inspector'}
+            >
+              {isRightCollapsed ? <ChevronLeft size={12} /> : <ChevronRight size={12} />}
+            </button>
+          </div>
           {isMobile && (
             <div className={`md:hidden fixed inset-0 z-40 ${isMobileInspectorOpen ? '' : 'pointer-events-none'}`}>
               <div

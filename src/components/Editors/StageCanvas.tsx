@@ -428,23 +428,20 @@ export const StageCanvas: React.FC = () => {
     setSelection({ sceneObjectId: newObject.id, assetId });
   }, [project, addSceneObject, setSelection, gridSettings, getStagePoint]);
 
-  const aspectRatio = 16 / 9;
+  const aspectRatio = 1;
 
   useLayoutEffect(() => {
     const host = canvasHostRef.current;
     if (!host) return;
-    const padding = 32;
+    const padding = 24;
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (!entry) return;
       const availableWidth = Math.max(0, entry.contentRect.width - padding);
       const availableHeight = Math.max(0, entry.contentRect.height - padding);
       if (availableWidth === 0 || availableHeight === 0) return;
-      const widthByHeight = availableHeight * aspectRatio;
-      const heightByWidth = availableWidth / aspectRatio;
-      const nextWidth = widthByHeight <= availableWidth ? widthByHeight : availableWidth;
-      const nextHeight = widthByHeight <= availableWidth ? availableHeight : heightByWidth;
-      setAutoViewportSize({ width: Math.floor(nextWidth), height: Math.floor(nextHeight) });
+      const nextSize = Math.floor(Math.min(availableWidth, availableHeight));
+      setAutoViewportSize({ width: nextSize, height: nextSize });
     });
     observer.observe(host);
     return () => observer.disconnect();
@@ -559,10 +556,10 @@ export const StageCanvas: React.FC = () => {
           <span className="text-xs text-[#888888]">Viewport:</span>
           <input
             type="number"
-            value={viewportSize?.width || containerWidth}
+            value={viewportSize?.width || viewportWidth}
             onChange={(e) => setViewportSize({
-              width: parseInt(e.target.value) || containerWidth,
-              height: viewportSize?.height || containerHeight,
+              width: parseInt(e.target.value) || viewportWidth,
+              height: viewportSize?.height || viewportHeight,
             })}
             className="w-20 px-2 py-1 text-xs bg-[#121212] border border-[#333333] rounded text-[#E0E0E0]"
             placeholder="Width"
@@ -570,10 +567,10 @@ export const StageCanvas: React.FC = () => {
           <span className="text-xs text-[#888888]">×</span>
           <input
             type="number"
-            value={viewportSize?.height || containerHeight}
+            value={viewportSize?.height || viewportHeight}
             onChange={(e) => setViewportSize({
-              width: viewportSize?.width || containerWidth,
-              height: parseInt(e.target.value) || containerHeight,
+              width: viewportSize?.width || viewportWidth,
+              height: parseInt(e.target.value) || viewportHeight,
             })}
             className="w-20 px-2 py-1 text-xs bg-[#121212] border border-[#333333] rounded text-[#E0E0E0]"
             placeholder="Height"
