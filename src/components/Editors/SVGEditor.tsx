@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react'
 import { Grid, ZoomIn, ZoomOut, Play, Pause, Eye, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../../state/useStore';
-import { shallow } from 'zustand/shallow';
+import { useShallow } from 'zustand/react/shallow';
 import { getVibeEffect } from '../../engine/vibeLogic';
 import { SyncIndicator } from '../Shared/SyncIndicator';
 import { SVGToolbar } from '../Toolbars/SVGToolbar';
@@ -13,15 +13,14 @@ import { convertTextToPathsInSvg } from '../../utils/textToPath';
 
 export const SVGEditor: React.FC = () => {
   const { selection, project, updateAssetData, mode, activeTool, gridSettings } = useStore(
-    (state) => ({
+    useShallow((state) => ({
       selection: state.selection,
       project: state.project,
       updateAssetData: state.updateAssetData,
       mode: state.mode,
       activeTool: state.activeTool,
       gridSettings: state.gridSettings,
-    }),
-    shallow
+    }))
   );
   const vibePreviewEnabled = useStore((state) => state.vibePreviewEnabled);
   const toggleVibePreview = useStore((state) => state.toggleVibePreview);

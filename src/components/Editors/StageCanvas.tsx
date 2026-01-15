@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { Grid, Grid3x3, Maximize2 } from 'lucide-react';
 import { useStore } from '../../state/useStore';
-import { shallow } from 'zustand/shallow';
+import { useShallow } from 'zustand/react/shallow';
 import { SceneRenderer } from './SceneRenderer';
 import { AlignmentGuides } from './AlignmentGuides';
 import { TransformOverlay } from './TransformOverlay';
@@ -38,7 +38,7 @@ export const StageCanvas: React.FC = () => {
     gridSettings,
     setGridSettings,
   } = useStore(
-    (state) => ({
+    useShallow((state) => ({
       project: state.project,
       selection: state.selection,
       setSelection: state.setSelection,
@@ -46,8 +46,7 @@ export const StageCanvas: React.FC = () => {
       addSceneObject: state.addSceneObject,
       gridSettings: state.gridSettings,
       setGridSettings: state.setGridSettings,
-    }),
-    shallow
+    }))
   );
   const vibePreviewEnabled = useStore((state) => state.vibePreviewEnabled);
   const toggleVibePreview = useStore((state) => state.toggleVibePreview);
