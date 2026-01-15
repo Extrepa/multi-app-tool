@@ -473,7 +473,7 @@ export const StageCanvas: React.FC = () => {
 
   return (
     <div 
-      className="flex-1 min-w-0 bg-[#121212] border-l border-[#7000FF] flex flex-col overflow-hidden"
+      className="flex-1 min-w-0 h-full bg-[#121212] border-l border-[#7000FF] flex flex-col overflow-hidden"
       style={{
         borderLeft: '1px solid #7000FF',
         boxShadow: '0 0 1px #7000FF',

@@ -4,7 +4,11 @@ import { useStore } from '../../state/useStore';
 import { findSimilarAssets, findAssetUsage, analyzeAsset } from '../../utils/assetIntelligence';
 import type { Asset } from '../../state/types';
 
-export const AssetSearch: React.FC = () => {
+interface AssetSearchProps {
+  compact?: boolean;
+}
+
+export const AssetSearch: React.FC<AssetSearchProps> = ({ compact = false }) => {
   const { project, setSelection } = useStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [similarToAsset, setSimilarToAsset] = useState<string | null>(null);
@@ -27,27 +31,29 @@ export const AssetSearch: React.FC = () => {
     );
   });
 
-  const similarAssets = similarToAsset
-    ? findSimilarAssets(
-        project.library.assets.find((a) => a.id === similarToAsset) || project.library.assets[0],
-        project
-      )
-    : [];
+  const similarAssets = compact
+    ? []
+    : similarToAsset
+      ? findSimilarAssets(
+          project.library.assets.find((a) => a.id === similarToAsset) || project.library.assets[0],
+          project
+        )
+      : [];
 
   return (
-    <div className="p-4 border-b border-[#333333]">
-      <div className="flex items-center gap-2 mb-3">
+    <div className={compact ? '' : 'p-4 border-b border-[#333333]'}>
+      <div className={`flex items-center gap-2 ${compact ? '' : 'mb-3'}`}>
         <Search size={14} className="text-[#888888]" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search assets by name or tag..."
+          placeholder={compact ? 'Search assets...' : 'Search assets by name or tag...'}
           className="flex-1 px-2 py-1 text-xs bg-[#121212] border border-[#333333] rounded text-[#E0E0E0]"
         />
       </div>
 
-      {similarToAsset && (
+      {!compact && similarToAsset && (
         <div className="mb-3">
           <button
             onClick={() => setSimilarToAsset(null)}
@@ -69,10 +75,11 @@ export const AssetSearch: React.FC = () => {
         </div>
       )}
 
-      <div className="text-xs text-[#888888] mb-2">
+      {!compact && (
+        <div className="text-xs text-[#888888] mb-2">
         {filteredAssets.length} asset{filteredAssets.length !== 1 ? 's' : ''} found
-      </div>
+        </div>
+      )}
     </div>
   );
 };
-

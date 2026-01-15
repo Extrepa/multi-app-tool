@@ -2,12 +2,9 @@ import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../state/useStore';
 import { HistoryControls } from './Shared/HistoryControls';
-import { ProjectHealthModal } from './Diagnostics/ProjectHealthModal';
 import { ModelSelector } from './Shared/ModelSelector';
 import { ScreensaverMode } from './Presentation/ScreensaverMode';
-import { Activity, Maximize2, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
-import { calculateHealthScore } from '../utils/optimizationUtils';
-import { ThemeControls } from '@errl-design-system';
+import { Maximize2, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface MainLayoutProps extends PropsWithChildren {
   left?: React.ReactNode;
@@ -19,7 +16,6 @@ type LayoutMode = 'split' | 'canvas-dominant' | 'canvas-only' | 'editor-only' | 
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, children }) => {
   const { mode, project } = useStore();
-  const [showHealthModal, setShowHealthModal] = useState(false);
   const [showScreensaver, setShowScreensaver] = useState(false);
   const [isShelfOpen, setIsShelfOpen] = useState(true);
   const [isRightCollapsed, setIsRightCollapsed] = useState(false);
@@ -29,9 +25,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
   const [isMobileInspectorOpen, setIsMobileInspectorOpen] = useState(false);
   const shelfHeight = isMobile ? 180 : 220;
   const shelfPeek = 32;
-  const shelfOffset = shelfHeight - shelfPeek;
 
-  const healthScore = project ? calculateHealthScore(project).score : 100;
+  const appName = 'Errl Multi-Tool Design Suite';
   const [focusWindow, stageCanvas] = useMemo(() => {
     const nodes = React.Children.toArray(children);
     return [nodes[0] ?? null, nodes[1] ?? null];
@@ -50,7 +45,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
     <div className="relative flex flex-col md:flex-row h-screen w-screen bg-[#121212] text-[#E0E0E0] overflow-hidden">
       {/* Left Mode Selector */}
       {left && (
-        <aside className="w-full md:w-16 bg-[#1E1E1E] border-b md:border-b-0 md:border-r border-[#333333] flex flex-row md:flex-col items-center md:items-stretch px-2 md:px-0 py-2 md:py-4">
+        <aside className="w-full md:w-16 bg-[#1E1E1E] border-b md:border-b-0 md:border-r border-[#333333] flex flex-row md:flex-col items-center md:items-stretch px-1 md:px-0 py-1 md:py-2">
           {left}
         </aside>
       )}
@@ -59,25 +54,15 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
       <main className="flex-1 flex flex-col min-w-0">
         {/* Toolbar */}
         <div className="h-12 bg-[#1E1E1E] border-b border-[#333333] flex items-center justify-between px-4">
-          <div className="flex items-center gap-4">
-            <div className="text-sm font-medium text-[#E0E0E0]">
-              {project?.meta.name || 'Untitled'}
+          <div className="flex items-center gap-3">
+            <div className="text-sm font-semibold text-[#E0E0E0]">
+              {appName}
             </div>
-            <button
-              onClick={() => setShowHealthModal(true)}
-              className={`flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors ${
-                healthScore >= 80
-                  ? 'bg-[#00FF9D]/20 text-[#00FF9D]'
-                  : healthScore >= 60
-                  ? 'bg-yellow-400/20 text-yellow-400'
-                  : 'bg-red-400/20 text-red-400'
-              } hover:opacity-80`}
-              title="Project Health (overall consistency and optimization score)"
-            >
-              <Activity size={12} />
-              <span className="hidden sm:inline">Health</span>
-              {healthScore}
-            </button>
+            {project?.meta.name && project.meta.name !== appName && (
+              <div className="text-xs text-[#888888]">
+                {project.meta.name}
+              </div>
+            )}
             <button
               onClick={() => setShowScreensaver(true)}
               className="flex items-center gap-1 px-2 py-1 rounded text-xs bg-[#1A1A1A] border border-[#333333] text-[#888888] hover:text-[#E0E0E0] hover:border-[#555555]"
@@ -91,7 +76,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
               <span className="hidden md:inline">Layout</span>
               <select
                 value={layoutMode}
-                onChange={(e) => setLayoutMode(e.target.value as LayoutMode)}
+                onChange={(e) => {
+                  const nextMode = e.target.value as LayoutMode;
+                  setLayoutMode(nextMode);
+                  if (nextMode === 'drawer') {
+                    setIsDrawerOpen(true);
+                  }
+                }}
                 className="px-2 py-1 text-xs bg-[#121212] border border-[#333333] rounded text-[#E0E0E0]"
                 title="Layout Mode"
               >
@@ -149,7 +140,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
                 )}
               </div>
             )}
-            <ThemeControls compact={true} />
             <ModelSelector />
             <HistoryControls />
           </div>
@@ -180,18 +170,31 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
                 <div className="relative flex-1 min-w-0">
                   {stageCanvas}
                   {isDrawerOpen && (
-                    <div className="absolute left-4 top-4 bottom-4 w-[360px] max-w-[60%] bg-[#1B1B1B] border border-[#333333] rounded-lg shadow-[0_12px_30px_rgba(0,0,0,0.45)] overflow-hidden">
-                      {focusWindow}
+                  <div className="absolute left-0 top-0 bottom-0 w-[360px] max-w-[70%] bg-[#1B1B1B] border-r border-[#333333] shadow-[8px_0_20px_rgba(0,0,0,0.35)] overflow-hidden">
+                    <div className="h-8 flex items-center justify-between px-3 border-b border-[#2A2A2A]">
+                      <div className="absolute left-1/2 top-1.5 h-1 w-10 -translate-x-1/2 rounded-full bg-[#3A3A3A]" />
+                      <span className="text-[11px] text-[#888888]">Editor Drawer</span>
+                      <button
+                        onClick={() => setIsDrawerOpen(false)}
+                        className="text-[#888888] hover:text-[#E0E0E0]"
+                          title="Close Editor Drawer"
+                        >
+                          Hide
+                        </button>
+                      </div>
+                      <div className="h-[calc(100%-32px)] overflow-auto">
+                        {focusWindow}
+                      </div>
                     </div>
                   )}
                 </div>
               )}
               {layoutMode !== 'canvas-only' && layoutMode !== 'editor-only' && layoutMode !== 'drawer' && (
                 <>
-                  <div className={`min-w-0 flex-none ${layoutMode === 'canvas-dominant' ? 'w-[25%]' : 'w-1/2'}`}>
+                  <div className={`min-w-0 h-full flex-none ${layoutMode === 'canvas-dominant' ? 'w-[25%]' : 'w-1/2'}`}>
                     {focusWindow}
                   </div>
-                  <div className={`min-w-0 flex-none ${layoutMode === 'canvas-dominant' ? 'w-[75%]' : 'w-1/2'}`}>
+                  <div className={`min-w-0 h-full flex-none ${layoutMode === 'canvas-dominant' ? 'w-[75%]' : 'w-1/2'}`}>
                     {stageCanvas}
                   </div>
                 </>
@@ -203,12 +206,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
           {bottom && (
             <motion.div
               initial={false}
-              animate={{ y: isShelfOpen ? 0 : shelfOffset }}
+              animate={{ height: isShelfOpen ? shelfHeight : shelfPeek }}
               transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-              className="absolute left-0 right-0 bottom-0 z-20 bg-[#1E1E1E] border-t border-[#333333] shadow-[0_-8px_20px_rgba(0,0,0,0.35)]"
-              style={{ height: shelfHeight }}
+              className="absolute left-0 right-0 bottom-0 z-20 bg-[#1E1E1E] border-t border-[#333333] shadow-[0_-8px_20px_rgba(0,0,0,0.35)] overflow-hidden"
             >
-              <div className="h-8 flex items-center justify-between px-4 border-b border-[#2A2A2A]">
+              <div className="relative h-8 flex items-center justify-between px-4 border-b border-[#2A2A2A]">
+                <div className="absolute left-1/2 top-1.5 h-1 w-10 -translate-x-1/2 rounded-full bg-[#3A3A3A]" />
                 <span className="text-xs text-[#888888]">Asset Shelf</span>
                 <button
                   onClick={() => setIsShelfOpen((prev) => !prev)}
@@ -287,9 +290,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
           )}
         </>
       )}
-
-      {/* Health Modal */}
-      <ProjectHealthModal isOpen={showHealthModal} onClose={() => setShowHealthModal(false)} />
 
       {/* Screensaver Mode */}
       <ScreensaverMode isOpen={showScreensaver} onClose={() => setShowScreensaver(false)} />
