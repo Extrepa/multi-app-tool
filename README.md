@@ -64,6 +64,7 @@ Key pages:
 - `docs/architecture.md` - tech stack and system layout
 - `docs/project-structure.md` - where things live
 - `docs/deployment.md` - Cloudflare Pages setup
+- `docs/updates/2026-01-15.md` - detailed update log
 - `docs/archive/` - legacy notes and drafts
 
 ## AI Features

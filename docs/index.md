@@ -8,6 +8,7 @@ This is the concise documentation set for the project. Older and working notes a
 - `architecture.md` - system layout and dependencies
 - `project-structure.md` - repository map
 - `deployment.md` - Cloudflare Pages setup
+- `updates/2026-01-15.md` - latest work log and decisions
 
 ## Reference
 
