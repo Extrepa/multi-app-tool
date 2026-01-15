@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../state/useStore';
 import { HistoryControls } from './Shared/HistoryControls';
@@ -15,14 +15,22 @@ interface MainLayoutProps extends PropsWithChildren {
   bottom?: React.ReactNode;
 }
 
+type LayoutMode = 'split' | 'canvas-dominant' | 'canvas-only' | 'editor-only' | 'drawer';
+
 export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, children }) => {
   const { mode, project } = useStore();
   const [showHealthModal, setShowHealthModal] = useState(false);
   const [showScreensaver, setShowScreensaver] = useState(false);
   const [isShelfOpen, setIsShelfOpen] = useState(true);
   const [isRightCollapsed, setIsRightCollapsed] = useState(false);
-  
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>('split');
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+
   const healthScore = project ? calculateHealthScore(project).score : 100;
+  const [focusWindow, stageCanvas] = useMemo(() => {
+    const nodes = React.Children.toArray(children);
+    return [nodes[0] ?? null, nodes[1] ?? null];
+  }, [children]);
   
   return (
     <div className="flex h-screen w-screen bg-[#121212] text-[#E0E0E0] overflow-hidden">
@@ -64,6 +72,30 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
             </button>
           </div>
           <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 text-xs text-[#888888]">
+              <span className="hidden md:inline">Layout</span>
+              <select
+                value={layoutMode}
+                onChange={(e) => setLayoutMode(e.target.value as LayoutMode)}
+                className="px-2 py-1 text-xs bg-[#121212] border border-[#333333] rounded text-[#E0E0E0]"
+                title="Layout Mode"
+              >
+                <option value="split">Split 50/50</option>
+                <option value="canvas-dominant">Canvas 70/30</option>
+                <option value="canvas-only">Canvas Only</option>
+                <option value="editor-only">Editor Only</option>
+                <option value="drawer">Editor Drawer</option>
+              </select>
+              {layoutMode === 'drawer' && (
+                <button
+                  onClick={() => setIsDrawerOpen((prev) => !prev)}
+                  className="px-2 py-1 text-xs bg-[#1A1A1A] border border-[#333333] rounded text-[#888888] hover:text-[#E0E0E0]"
+                  title={isDrawerOpen ? 'Hide Editor Drawer' : 'Show Editor Drawer'}
+                >
+                  {isDrawerOpen ? 'Hide' : 'Show'}
+                </button>
+              )}
+            </div>
             <ThemeControls compact={true} />
             <ModelSelector />
             <HistoryControls />
@@ -89,7 +121,28 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
                           mode.type === 'scene-maker' ? '0 0 1px #7000FF' : 'none',
               }}
             >
-              {children}
+              {layoutMode === 'canvas-only' && stageCanvas}
+              {layoutMode === 'editor-only' && focusWindow}
+              {layoutMode === 'drawer' && (
+                <div className="relative flex-1 min-w-0">
+                  {stageCanvas}
+                  {isDrawerOpen && (
+                    <div className="absolute left-4 top-4 bottom-4 w-[360px] max-w-[60%] bg-[#1B1B1B] border border-[#333333] rounded-lg shadow-[0_12px_30px_rgba(0,0,0,0.45)] overflow-hidden">
+                      {focusWindow}
+                    </div>
+                  )}
+                </div>
+              )}
+              {layoutMode !== 'canvas-only' && layoutMode !== 'editor-only' && layoutMode !== 'drawer' && (
+                <>
+                  <div className={`min-w-0 flex-none ${layoutMode === 'canvas-dominant' ? 'w-[30%]' : 'w-1/2'}`}>
+                    {focusWindow}
+                  </div>
+                  <div className={`min-w-0 flex-none ${layoutMode === 'canvas-dominant' ? 'w-[70%]' : 'w-1/2'}`}>
+                    {stageCanvas}
+                  </div>
+                </>
+              )}
             </motion.div>
           </AnimatePresence>
 
