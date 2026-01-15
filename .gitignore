@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .npm-cache
+.npm-logs
 
 # Editor directories and files
 .vscode/*
