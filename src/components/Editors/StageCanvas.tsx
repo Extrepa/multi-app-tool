@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { Grid, Grid3x3, Maximize2 } from 'lucide-react';
 import { useStore } from '../../state/useStore';
+import { shallow } from 'zustand/shallow';
 import { SceneRenderer } from './SceneRenderer';
 import { AlignmentGuides } from './AlignmentGuides';
 import { TransformOverlay } from './TransformOverlay';
@@ -28,11 +29,28 @@ interface TransformState {
 }
 
 export const StageCanvas: React.FC = () => {
-  const { project, selection, setSelection, updateSceneObject, addSceneObject, gridSettings, setGridSettings } = useStore();
-  const { vibePreviewEnabled, toggleVibePreview } = useStore((state) => ({
-    vibePreviewEnabled: state.vibePreviewEnabled,
-    toggleVibePreview: state.toggleVibePreview,
-  }));
+  const {
+    project,
+    selection,
+    setSelection,
+    updateSceneObject,
+    addSceneObject,
+    gridSettings,
+    setGridSettings,
+  } = useStore(
+    (state) => ({
+      project: state.project,
+      selection: state.selection,
+      setSelection: state.setSelection,
+      updateSceneObject: state.updateSceneObject,
+      addSceneObject: state.addSceneObject,
+      gridSettings: state.gridSettings,
+      setGridSettings: state.setGridSettings,
+    }),
+    shallow
+  );
+  const vibePreviewEnabled = useStore((state) => state.vibePreviewEnabled);
+  const toggleVibePreview = useStore((state) => state.toggleVibePreview);
   const stageRef = useRef<HTMLDivElement>(null);
   const [draggedObject, setDraggedObject] = useState<string | null>(null);
   const [dragStart, setDragStart] = useState<{ x: number; y: number; objX: number; objY: number } | null>(null);
