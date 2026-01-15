@@ -36,6 +36,14 @@ Multi-Tool Design Suite is a dual-viewport creative workspace for building visua
 - AI model selector
 - Undo/Redo history controls
 
+## Mobile Layout (Concept)
+
+- Stage Canvas is the default full-screen view.
+- Focus Window appears as a slide-in drawer.
+- Inspector opens as a right-side panel.
+- Asset Shelf is a bottom sheet with snap positions.
+- Mode Selector becomes a top row of icons.
+
 ## AI Features
 
 AI tools are optional. When enabled, they use the model selected in the top bar.

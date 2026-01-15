@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useMemo, useState } from 'react';
+import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../state/useStore';
 import { HistoryControls } from './Shared/HistoryControls';
@@ -25,18 +25,29 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
   const [isRightCollapsed, setIsRightCollapsed] = useState(false);
   const [layoutMode, setLayoutMode] = useState<LayoutMode>('split');
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMobileInspectorOpen, setIsMobileInspectorOpen] = useState(false);
 
   const healthScore = project ? calculateHealthScore(project).score : 100;
   const [focusWindow, stageCanvas] = useMemo(() => {
     const nodes = React.Children.toArray(children);
     return [nodes[0] ?? null, nodes[1] ?? null];
   }, [children]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const media = window.matchMedia('(max-width: 1024px)');
+    const handleChange = () => setIsMobile(media.matches);
+    handleChange();
+    media.addEventListener('change', handleChange);
+    return () => media.removeEventListener('change', handleChange);
+  }, []);
   
   return (
-    <div className="flex h-screen w-screen bg-[#121212] text-[#E0E0E0] overflow-hidden">
+    <div className="flex flex-col md:flex-row h-screen w-screen bg-[#121212] text-[#E0E0E0] overflow-hidden">
       {/* Left Mode Selector */}
       {left && (
-        <aside className="w-16 bg-[#1E1E1E] border-r border-[#333333] flex flex-col items-center py-4">
+        <aside className="w-full md:w-16 bg-[#1E1E1E] border-b md:border-b-0 md:border-r border-[#333333] flex flex-row md:flex-col items-center md:items-stretch px-2 md:px-0 py-2 md:py-4">
           {left}
         </aside>
       )}
@@ -73,7 +84,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
             </button>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-xs text-[#888888]">
+            <div className="hidden md:flex items-center gap-2 text-xs text-[#888888]">
               <span className="hidden md:inline">Layout</span>
               <select
                 value={layoutMode}
@@ -97,6 +108,44 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
                 </button>
               )}
             </div>
+            {isMobile && (
+              <div className="flex items-center gap-2 text-xs text-[#888888]">
+                <button
+                  onClick={() => setLayoutMode('canvas-only')}
+                  className={`px-2 py-1 rounded border ${
+                    layoutMode === 'canvas-only'
+                      ? 'bg-[#00FF9D]/20 text-[#00FF9D] border-[#00FF9D]/40'
+                      : 'bg-[#1A1A1A] text-[#888888] border-[#333333]'
+                  }`}
+                  title="Stage Canvas"
+                >
+                  Stage
+                </button>
+                <button
+                  onClick={() => {
+                    setLayoutMode('drawer');
+                    setIsDrawerOpen(true);
+                  }}
+                  className={`px-2 py-1 rounded border ${
+                    layoutMode === 'drawer'
+                      ? 'bg-[#00FF9D]/20 text-[#00FF9D] border-[#00FF9D]/40'
+                      : 'bg-[#1A1A1A] text-[#888888] border-[#333333]'
+                  }`}
+                  title="Focus Window"
+                >
+                  Focus
+                </button>
+                {right && (
+                  <button
+                    onClick={() => setIsMobileInspectorOpen(true)}
+                    className="px-2 py-1 rounded border bg-[#1A1A1A] text-[#888888] border-[#333333]"
+                    title="Inspector"
+                  >
+                    Inspector
+                  </button>
+                )}
+              </div>
+            )}
             <ThemeControls compact={true} />
             <ModelSelector />
             <HistoryControls />
@@ -153,7 +202,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
               initial={false}
               animate={{ y: isShelfOpen ? 0 : 188 }}
               transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-              className="absolute left-0 right-0 bottom-0 h-[220px] bg-[#1E1E1E] border-t border-[#333333] shadow-[0_-8px_20px_rgba(0,0,0,0.35)]"
+              className="absolute left-0 right-0 bottom-0 h-[180px] md:h-[220px] bg-[#1E1E1E] border-t border-[#333333] shadow-[0_-8px_20px_rgba(0,0,0,0.35)]"
             >
               <div className="h-8 flex items-center justify-between px-4 border-b border-[#2A2A2A]">
                 <span className="text-xs text-[#888888]">Asset Shelf</span>
@@ -175,29 +224,57 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
 
       {/* Right Inspector Panel */}
       {right && (
-        <aside
-          className={`bg-[#1E1E1E] border-l border-[#333333] overflow-hidden transition-all duration-200 ${
-            isRightCollapsed ? 'w-8' : 'w-[320px]'
-          }`}
-        >
-          <div className="h-full flex flex-col">
-            <div className="h-8 flex items-center justify-between px-2 border-b border-[#2A2A2A]">
-              <span className={`text-[11px] text-[#888888] ${isRightCollapsed ? 'opacity-0' : 'opacity-100'} transition-opacity`}>
-                Inspector
-              </span>
-              <button
-                onClick={() => setIsRightCollapsed((prev) => !prev)}
-                className="text-[#888888] hover:text-[#E0E0E0]"
-                title={isRightCollapsed ? 'Expand' : 'Collapse'}
+        <>
+          <aside
+            className={`hidden md:block bg-[#1E1E1E] border-l border-[#333333] overflow-hidden transition-all duration-200 ${
+              isRightCollapsed ? 'w-8' : 'w-[320px]'
+            }`}
+          >
+            <div className="h-full flex flex-col">
+              <div className="h-8 flex items-center justify-between px-2 border-b border-[#2A2A2A]">
+                <span className={`text-[11px] text-[#888888] ${isRightCollapsed ? 'opacity-0' : 'opacity-100'} transition-opacity`}>
+                  Inspector
+                </span>
+                <button
+                  onClick={() => setIsRightCollapsed((prev) => !prev)}
+                  className="text-[#888888] hover:text-[#E0E0E0]"
+                  title={isRightCollapsed ? 'Expand' : 'Collapse'}
+                >
+                  {isRightCollapsed ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
+                </button>
+              </div>
+              <div className={`flex-1 overflow-auto ${isRightCollapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'} transition-opacity`}>
+                {right}
+              </div>
+            </div>
+          </aside>
+          {isMobile && (
+            <div className={`md:hidden fixed inset-0 z-40 ${isMobileInspectorOpen ? '' : 'pointer-events-none'}`}>
+              <div
+                className={`absolute inset-0 bg-black/40 transition-opacity ${isMobileInspectorOpen ? 'opacity-100' : 'opacity-0'}`}
+                onClick={() => setIsMobileInspectorOpen(false)}
+              />
+              <div
+                className={`absolute right-0 top-0 bottom-0 w-[85%] max-w-[360px] bg-[#1E1E1E] border-l border-[#333333] shadow-[-12px_0_24px_rgba(0,0,0,0.4)] transition-transform ${
+                  isMobileInspectorOpen ? 'translate-x-0' : 'translate-x-full'
+                }`}
               >
-                {isRightCollapsed ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
-              </button>
+                <div className="h-10 flex items-center justify-between px-3 border-b border-[#2A2A2A]">
+                  <span className="text-xs text-[#888888]">Inspector</span>
+                  <button
+                    onClick={() => setIsMobileInspectorOpen(false)}
+                    className="text-[#888888] hover:text-[#E0E0E0]"
+                  >
+                    Close
+                  </button>
+                </div>
+                <div className="h-[calc(100%-40px)] overflow-auto">
+                  {right}
+                </div>
+              </div>
             </div>
-            <div className={`flex-1 overflow-auto ${isRightCollapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'} transition-opacity`}>
-              {right}
-            </div>
-          </div>
-        </aside>
+          )}
+        </>
       )}
 
       {/* Health Modal */}

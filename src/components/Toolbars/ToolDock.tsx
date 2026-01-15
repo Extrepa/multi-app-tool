@@ -41,10 +41,10 @@ export const ToolDock: React.FC = () => {
   ];
 
   return (
-    <div className="w-16 bg-[#1E1E1E] border-r border-[#333333] flex flex-col py-2">
+    <div className="w-full md:w-16 bg-[#1E1E1E] md:border-r border-[#333333] flex flex-row md:flex-col py-2 px-1 md:px-0 overflow-x-auto md:overflow-visible">
       {toolGroups.map((group, groupIdx) => (
         <React.Fragment key={group.name}>
-          <div className="flex flex-col">
+          <div className="flex flex-row md:flex-col">
             {group.tools.map((tool) => (
               <button
                 key={tool.id}
@@ -61,7 +61,10 @@ export const ToolDock: React.FC = () => {
             ))}
           </div>
           {groupIdx < toolGroups.length - 1 && (
-            <div className="w-full h-px bg-[#333333] my-2" />
+            <>
+              <div className="hidden md:block w-full h-px bg-[#333333] my-2" />
+              <div className="block md:hidden w-px h-8 bg-[#333333] mx-2" />
+            </>
           )}
         </React.Fragment>
       ))}

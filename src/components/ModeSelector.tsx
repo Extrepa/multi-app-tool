@@ -14,7 +14,7 @@ export const ModeSelector: React.FC = () => {
   const { mode, setMode } = useStore();
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-row md:flex-col gap-2">
       {modes.map((modeOption) => {
         const isActive = mode.type === modeOption.type;
         return (
@@ -22,7 +22,7 @@ export const ModeSelector: React.FC = () => {
             key={modeOption.type}
             onClick={() => setMode({ type: modeOption.type })}
             className={`
-              p-3 rounded transition-colors
+              p-2 md:p-3 rounded transition-colors
               ${isActive 
                 ? 'bg-[#2D2D2D] text-[#00FF9D]' 
                 : 'text-[#888888] hover:bg-[#2D2D2D] hover:text-[#E0E0E0]'
@@ -37,4 +37,3 @@ export const ModeSelector: React.FC = () => {
     </div>
   );
 };
-
