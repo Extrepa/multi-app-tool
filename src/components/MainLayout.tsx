@@ -64,26 +64,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
             </button>
           </div>
           <div className="flex items-center gap-3">
-            {right && (
-              <button
-                onClick={() => setIsRightCollapsed((prev) => !prev)}
-                className="flex items-center gap-1 px-2 py-1 rounded text-xs bg-[#1A1A1A] border border-[#333333] text-[#888888] hover:text-[#E0E0E0] hover:border-[#555555]"
-                title={isRightCollapsed ? 'Show Inspector' : 'Hide Inspector'}
-              >
-                {isRightCollapsed ? <ChevronLeft size={12} /> : <ChevronRight size={12} />}
-                Inspector
-              </button>
-            )}
-            {bottom && (
-              <button
-                onClick={() => setIsShelfOpen((prev) => !prev)}
-                className="flex items-center gap-1 px-2 py-1 rounded text-xs bg-[#1A1A1A] border border-[#333333] text-[#888888] hover:text-[#E0E0E0] hover:border-[#555555]"
-                title={isShelfOpen ? 'Collapse Asset Shelf' : 'Expand Asset Shelf'}
-              >
-                {isShelfOpen ? <ChevronDown size={12} /> : <ChevronUp size={12} />}
-                Assets
-              </button>
-            )}
             <ThemeControls compact={true} />
             <ModelSelector />
             <HistoryControls />

@@ -428,12 +428,7 @@ export const StageCanvas: React.FC = () => {
     setSelection({ sceneObjectId: newObject.id, assetId });
   }, [project, addSceneObject, setSelection, gridSettings, getStagePoint]);
 
-  const aspectRatio = useMemo(() => {
-    const projectRatio = project?.meta?.resolution
-      ? project.meta.resolution[0] / project.meta.resolution[1]
-      : 1;
-    return Math.min(Math.max(projectRatio, 0.9), 1.25);
-  }, [project]);
+  const aspectRatio = 16 / 9;
 
   useLayoutEffect(() => {
     const host = canvasHostRef.current;
