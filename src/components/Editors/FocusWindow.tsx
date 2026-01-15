@@ -18,14 +18,13 @@ export const FocusWindow: React.FC = () => {
     const borderColor = mode.type === 'svg-edit' ? '#00FF9D' : '#FF007A';
     return (
       <motion.div
-        className="flex flex-col relative"
+        className="flex-1 min-w-0 flex flex-col relative"
         style={{ 
-          width: '40%',
           borderRight: `1px solid ${borderColor}`,
           boxShadow: `0 0 1px ${borderColor}`,
         }}
         initial={false}
-        animate={{ width: mode.type === 'svg-edit' ? '40%' : '40%' }}
+        animate={{ flexGrow: 1 }}
         transition={{ duration: 0.3 }}
       >
         {mode.type === 'fx-lab' && <FXToolbar />}
@@ -57,4 +56,3 @@ export const FocusWindow: React.FC = () => {
     </div>
   );
 };
-

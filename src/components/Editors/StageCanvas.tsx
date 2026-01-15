@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useCallback, useMemo, useRef, useLayoutEffect } from 'react';
 import { Grid, Grid3x3, Maximize2 } from 'lucide-react';
 import { useStore } from '../../state/useStore';
 import { SceneRenderer } from './SceneRenderer';
@@ -38,11 +38,13 @@ export const StageCanvas: React.FC = () => {
   const vibePreviewEnabled = useStore((state) => state.vibePreviewEnabled);
   const toggleVibePreview = useStore((state) => state.toggleVibePreview);
   const stageRef = useRef<HTMLDivElement>(null);
+  const canvasHostRef = useRef<HTMLDivElement>(null);
   const [draggedObject, setDraggedObject] = useState<string | null>(null);
   const [dragStart, setDragStart] = useState<{ x: number; y: number; objX: number; objY: number } | null>(null);
   const [alignmentGuides, setAlignmentGuides] = useState<AlignmentGuide[]>([]);
   const [boxSelection, setBoxSelection] = useState<{ startX: number; startY: number; endX: number; endY: number } | null>(null);
   const [viewportSize, setViewportSize] = useState<{ width: number; height: number } | null>(null);
+  const [autoViewportSize, setAutoViewportSize] = useState<{ width: number; height: number } | null>(null);
   const [showViewportResizer, setShowViewportResizer] = useState(false);
   const [transformState, setTransformState] = useState<TransformState | null>(null);
   const allObjects = useMemo(() => {
@@ -426,12 +428,36 @@ export const StageCanvas: React.FC = () => {
     setSelection({ sceneObjectId: newObject.id, assetId });
   }, [project, addSceneObject, setSelection, gridSettings, getStagePoint]);
 
-  // Calculate 16:9 aspect ratio container
-  const aspectRatio = 16 / 9;
-  const containerWidth = 1000; // Base width
-  const containerHeight = containerWidth / aspectRatio;
-  const viewportWidth = viewportSize?.width || containerWidth;
-  const viewportHeight = viewportSize?.height || containerHeight;
+  const aspectRatio = useMemo(() => {
+    const projectRatio = project?.meta?.resolution
+      ? project.meta.resolution[0] / project.meta.resolution[1]
+      : 1;
+    return Math.min(Math.max(projectRatio, 0.9), 1.25);
+  }, [project]);
+
+  useLayoutEffect(() => {
+    const host = canvasHostRef.current;
+    if (!host) return;
+    const padding = 32;
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      const availableWidth = Math.max(0, entry.contentRect.width - padding);
+      const availableHeight = Math.max(0, entry.contentRect.height - padding);
+      if (availableWidth === 0 || availableHeight === 0) return;
+      const widthByHeight = availableHeight * aspectRatio;
+      const heightByWidth = availableWidth / aspectRatio;
+      const nextWidth = widthByHeight <= availableWidth ? widthByHeight : availableWidth;
+      const nextHeight = widthByHeight <= availableWidth ? availableHeight : heightByWidth;
+      setAutoViewportSize({ width: Math.floor(nextWidth), height: Math.floor(nextHeight) });
+    });
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, [aspectRatio]);
+
+  const effectiveViewport = viewportSize ?? autoViewportSize ?? { width: 640, height: 640 };
+  const viewportWidth = effectiveViewport.width;
+  const viewportHeight = effectiveViewport.height;
   const overlayInfo = selectedObjectInfo
     ? (() => {
         const { object, dimensions } = selectedObjectInfo;
@@ -455,7 +481,7 @@ export const StageCanvas: React.FC = () => {
 
   return (
     <div 
-      className="flex-1 bg-[#121212] border-l border-[#7000FF] flex flex-col overflow-hidden"
+      className="flex-1 min-w-0 bg-[#121212] border-l border-[#7000FF] flex flex-col overflow-hidden"
       style={{
         borderLeft: '1px solid #7000FF',
         boxShadow: '0 0 1px #7000FF',
@@ -585,8 +611,9 @@ export const StageCanvas: React.FC = () => {
       )}
 
       {/* Canvas Area */}
-      <div 
-        className="flex-1 overflow-auto p-8"
+      <div
+        ref={canvasHostRef}
+        className="flex-1 overflow-hidden p-4"
         onMouseMove={(e) => {
           handleTransformDrag(e);
           handleObjectDrag(e);
