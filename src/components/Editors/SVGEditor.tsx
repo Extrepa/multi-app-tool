@@ -2,7 +2,6 @@ import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react'
 import { Grid, ZoomIn, ZoomOut, Play, Pause, Eye, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../../state/useStore';
-import { useShallow } from 'zustand/react/shallow';
 import { getVibeEffect } from '../../engine/vibeLogic';
 import { SyncIndicator } from '../Shared/SyncIndicator';
 import { SVGToolbar } from '../Toolbars/SVGToolbar';
@@ -12,16 +11,12 @@ import { performBooleanOperation, loadPaperJS } from '@/shared/utils/paper';
 import { convertTextToPathsInSvg } from '../../utils/textToPath';
 
 export const SVGEditor: React.FC = () => {
-  const { selection, project, updateAssetData, mode, activeTool, gridSettings } = useStore(
-    useShallow((state) => ({
-      selection: state.selection,
-      project: state.project,
-      updateAssetData: state.updateAssetData,
-      mode: state.mode,
-      activeTool: state.activeTool,
-      gridSettings: state.gridSettings,
-    }))
-  );
+  const selection = useStore((state) => state.selection);
+  const project = useStore((state) => state.project);
+  const updateAssetData = useStore((state) => state.updateAssetData);
+  const mode = useStore((state) => state.mode);
+  const activeTool = useStore((state) => state.activeTool);
+  const gridSettings = useStore((state) => state.gridSettings);
   const vibePreviewEnabled = useStore((state) => state.vibePreviewEnabled);
   const toggleVibePreview = useStore((state) => state.toggleVibePreview);
   const [showGrid, setShowGrid] = useState(true);

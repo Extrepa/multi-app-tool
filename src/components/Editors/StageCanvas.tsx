@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { Grid, Grid3x3, Maximize2 } from 'lucide-react';
 import { useStore } from '../../state/useStore';
-import { useShallow } from 'zustand/react/shallow';
 import { SceneRenderer } from './SceneRenderer';
 import { AlignmentGuides } from './AlignmentGuides';
 import { TransformOverlay } from './TransformOverlay';
@@ -29,25 +28,13 @@ interface TransformState {
 }
 
 export const StageCanvas: React.FC = () => {
-  const {
-    project,
-    selection,
-    setSelection,
-    updateSceneObject,
-    addSceneObject,
-    gridSettings,
-    setGridSettings,
-  } = useStore(
-    useShallow((state) => ({
-      project: state.project,
-      selection: state.selection,
-      setSelection: state.setSelection,
-      updateSceneObject: state.updateSceneObject,
-      addSceneObject: state.addSceneObject,
-      gridSettings: state.gridSettings,
-      setGridSettings: state.setGridSettings,
-    }))
-  );
+  const project = useStore((state) => state.project);
+  const selection = useStore((state) => state.selection);
+  const setSelection = useStore((state) => state.setSelection);
+  const updateSceneObject = useStore((state) => state.updateSceneObject);
+  const addSceneObject = useStore((state) => state.addSceneObject);
+  const gridSettings = useStore((state) => state.gridSettings);
+  const setGridSettings = useStore((state) => state.setGridSettings);
   const vibePreviewEnabled = useStore((state) => state.vibePreviewEnabled);
   const toggleVibePreview = useStore((state) => state.toggleVibePreview);
   const stageRef = useRef<HTMLDivElement>(null);
