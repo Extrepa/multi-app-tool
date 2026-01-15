@@ -1,0 +1,125 @@
+We are now moving to **Step #025**: Implementing the **Zustand `useStudioStore**`. This is the "Nervous System" of the Vibe Studio, acting as the single source of truth that allows the Forge, Lab, and Stage to sync instantly.
+
+### **1. The Studio State Engine (`src/store/useStudioStore.ts`)**
+
+This store manages the **Library** (blueprints) and the **Scene** (instances), ensuring that a surgical edit to a path in the Forge propagates to every animated instance on the Stage.
+
+```typescript
+import { create } from 'zustand';
+import { v4 as uuidv4 } from 'uuid';
+
+interface StudioState {
+  // --- Core Data ---
+  mode: 'FORGE' | 'LAB' | 'STAGE';
+  library: {
+    assets: any[];      // Raw SVG paths & styles
+  };
+  scene: {
+    instances: any[];   // Objects currently on the Stage
+    selection: string | null;
+  };
+
+  // --- Actions ---
+  setMode: (mode: 'FORGE' | 'LAB' | 'STAGE') => void;
+  
+  // Forge Actions: Surgical Path Editing
+  updateAssetPath: (id: string, pathData: string) => void;
+  
+  // Lab Actions: Real-time Vibe Control
+  updateVibe: (instanceId: string, vibeSettings: any) => void;
+  
+  // Stage Actions: World Composition
+  addInstance: (assetId: string) => void;
+  selectInstance: (id: string | null) => void;
+}
+
+export const useStudioStore = create<StudioState>((set) => ({
+  mode: 'STAGE',
+  library: {
+    assets: [
+      { id: 'pin-01', name: 'Main Pin', pathData: 'M50,10 L90,90 L10,90 Z', stroke: '#00ff9d' }
+    ],
+  },
+  scene: {
+    instances: [],
+    selection: null,
+  },
+
+  setMode: (mode) => set({ mode }),
+
+  updateAssetPath: (id, pathData) => set((state) => ({
+    library: {
+      ...state.library,
+      assets: state.library.assets.map(a => a.id === id ? { ...a, pathData } : a)
+    }
+  })),
+
+  updateVibe: (instanceId, vibeSettings) => set((state) => ({
+    scene: {
+      ...state.scene,
+      instances: state.scene.instances.map(i => 
+        i.id === instanceId ? { ...i, vibe: { ...i.vibe, ...vibeSettings } } : i
+      )
+    }
+  })),
+
+  addInstance: (assetId) => set((state) => {
+    const newInstance = {
+      id: uuidv4(),
+      assetId,
+      x: 100,
+      y: 100,
+      scale: 1,
+      vibe: { intensity: 0, frequency: 0 }
+    };
+    return { scene: { ...state.scene, instances: [...state.scene.instances, newInstance] } };
+  }),
+
+  selectInstance: (id) => set((state) => ({
+    scene: { ...state.scene, selection: id }
+  })),
+}));
+
+```
+
+---
+
+### **2. Connecting the UI to the "Nervous System"**
+
+Now, we update the **Surgical Inspector** (from Step #005) to interact with this real-time store.
+
+* **Forge Mode Sync:** When you drag a node in the Forge, it calls `updateAssetPath`, which instantly updates every copy of that pin on the Stage.
+* **Lab Mode Sync:** Adjusting the "Intensity" slider in the inspector calls `updateVibe`, triggering the mathematical oscillator in the Stage previewer.
+
+| Control | Action | Store Hook |
+| --- | --- | --- |
+| **Path Editor** | Move Node | `updateAssetPath()` |
+| **Vibe Slider** | Change Speed | `updateVibe()` |
+| **Layer Tree** | Select Item | `selectInstance()` |
+
+---
+
+### **3. The "Live" Selection Logic**
+
+To prevent visual clutter, the **Inspector** will now only show controls for the **Selected Instance**.
+
+```tsx
+// Inside your Right Sidebar component
+const selection = useStudioStore(state => state.scene.selection);
+const activeInstance = useStudioStore(state => 
+  state.scene.instances.find(i => i.id === selection)
+);
+
+if (!activeInstance) return <div className="p-4 text-gray-600">Select an object on the Stage.</div>;
+
+```
+
+---
+
+### **Verification Check**
+
+* [x] **Zustand Store:** Initialized with Library and Scene logic.
+* [x] **Surgical Link:** Paths are decoupled from instances but synced via AssetID.
+* [x] **Mode Persistence:** Workspace switches between Forge, Lab, and Stage seamlessly.
+
+**The "Nervous System" is now online. Would you like to proceed to Step #042 and build the "Node Editor ()" so you can surgically drag vector points on the canvas?**

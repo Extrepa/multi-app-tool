@@ -1,0 +1,171 @@
+To move from a static shell to a functional tool, we need to implement the **surgical editing logic** in the **Focus Window**. This is where the "SVG Creator" and "Pin Designer" live.
+
+We will use a "Vector-Node" approach: Cursor will treat the SVG not as a single string, but as a collection of **Points (Nodes)** that the user can drag.
+
+---
+
+### 4. The Surgical Editor (`src/components/FocusWindow.tsx`)
+
+This component handles the raw manipulation of the selected asset.
+
+```tsx
+import React, { useState } from 'react';
+import { useStudioStore } from '../store/useStudioStore';
+
+export default function FocusWindow() {
+  const selection = useStudioStore((state) => state.scene.selection);
+  const instance = useStudioStore((state) => 
+    state.scene.instances.find(i => i.id === selection)
+  );
+  const asset = useStudioStore((state) => 
+    state.library.assets.find(a => a.id === instance?.assetRef)
+  );
+
+  if (!asset) {
+    return (
+      <div className="h-full flex items-center justify-center text-gray-600 text-sm">
+        Select a prop on the stage to edit
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-full flex flex-col">
+      <div className="p-3 border-b border-[#333] flex justify-between items-center bg-[#1a1a1a]">
+        <span className="text-xs font-bold text-emerald-500 uppercase">Focus: {asset.name}</span>
+        <div className="flex gap-2">
+          <button className="text-[10px] bg-[#333] px-2 py-1 rounded">Nodes</button>
+          <button className="text-[10px] bg-[#333] px-2 py-1 rounded">Vibe</button>
+        </div>
+      </div>
+      
+      {/* The Surgical Canvas */}
+      <div className="flex-1 relative bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] bg-repeat">
+        <div className="absolute inset-0 flex items-center justify-center p-12">
+           {/* Scaled up version of the asset for editing */}
+           <div 
+             className="w-full h-full"
+             dangerouslySetInnerHTML={{ __html: asset.data }} 
+             style={{ transform: 'scale(4)', transformOrigin: 'center' }}
+           />
+        </div>
+        
+        {/* SVG Overlay for Node Manipulation */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none">
+          {/* Cursor will implement logic to map SVG path points to draggable handles here */}
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+```
+
+---
+
+### 5. The Vibe Engine Logic (`src/engine/vibeEngine.ts`)
+
+To make the "FX Lab" work, we need a mathematical bridge that converts "Vibe Settings" into CSS/Framer Motion animations.
+
+```typescript
+export const getVibeAnimation = (vibeConfig: any) => {
+  if (!vibeConfig) return {};
+
+  const { type, intensity, speed } = vibeConfig;
+
+  const animations: Record<string, any> = {
+    pulse: {
+      scale: [1, 1 + (intensity * 0.1), 1],
+      transition: { duration: 2 / speed, repeat: Infinity, ease: "easeInOut" }
+    },
+    float: {
+      y: [0, -intensity * 10, 0],
+      transition: { duration: 3 / speed, repeat: Infinity, ease: "easeInOut" }
+    },
+    shake: {
+      x: [0, intensity, -intensity, 0],
+      transition: { duration: 0.1 / speed, repeat: Infinity }
+    }
+  };
+
+  return animations[type] || {};
+};
+
+```
+
+---
+
+### 6. The Asset Tray (`src/components/AssetTray.tsx`)
+
+This is the "Inventory" where your Pins, SVGs, and PNGs are stored before being dragged onto the stage.
+
+```tsx
+import React from 'react';
+import { useStudioStore } from '../store/useStudioStore';
+
+export default function AssetTray() {
+  const assets = useStudioStore((state) => state.library.assets);
+  const addAsset = useStudioStore((state) => state.addAsset);
+
+  const createDefaultPin = () => {
+    const id = `asset_${Date.now()}`;
+    addAsset({
+      id,
+      name: "New Pin",
+      data: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#00FF9D" /></svg>`,
+      type: 'svg'
+    });
+  };
+
+  return (
+    <div className="h-40 border-t border-[#333] bg-[#1a1a1a] flex flex-col">
+      <div className="p-2 border-b border-[#333] flex justify-between items-center">
+        <span className="text-[10px] uppercase tracking-tighter text-gray-400">Project Assets</span>
+        <button 
+          onClick={createDefaultPin}
+          className="text-[10px] bg-emerald-600/20 text-emerald-400 border border-emerald-600/40 px-2 py-0.5 rounded hover:bg-emerald-600 hover:text-white transition-all"
+        >
+          + Create Pin
+        </button>
+      </div>
+      
+      <div className="flex-1 flex gap-4 p-4 overflow-x-auto items-center">
+        {assets.map(asset => (
+          <div 
+            key={asset.id}
+            draggable
+            onDragStart={(e) => e.dataTransfer.setData("assetId", asset.id)}
+            className="w-20 h-20 bg-[#121212] border border-[#333] rounded flex items-center justify-center cursor-grab active:cursor-grabbing hover:border-emerald-500 transition-colors"
+            title={asset.name}
+          >
+            <div className="w-12 h-12" dangerouslySetInnerHTML={{ __html: asset.data }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+```
+
+---
+
+### The "Stage" Interaction Strategy
+
+To make the **Scene Maker** feel professional, Cursor needs to implement **HTML5 Drag and Drop**. Here is the prompt for the next build phase:
+
+> "Build the **SceneStage.tsx** component.
+> 1. It must be a large relative `div` that handles `onDrop`.
+> 2. When an asset is dropped, calculate the drop coordinates relative to the Stage and call `instantiateAsset(assetId, x, y)`.
+> 3. Implement 'Selection' logic: Clicking a prop on the stage should call `selectInstance(id)`, which will automatically load it into the **Focus Window** for editing.
+> 4. Add 'Transform Handles' (little squares on the corners) so I can resize a prop directly on the stage."
+> 
+> 
+
+---
+
+### Final Blueprint for the "Logic Lab"
+
+Once the stage is functional, we will add the **Vibe Check Panel**. This will be a sidebar that maps the sliders (Speed, Intensity) directly to the JSON store, so you can see your "Pin" start pulsing the moment you move a slider.
+
+**Would you like me to generate the "Vibe Control Panel" code next, or should we focus on the "Pen Tool" for the SVG Creator?**

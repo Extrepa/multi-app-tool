@@ -1,0 +1,71 @@
+This concludes the technical architecture for your **Integrated Production Suite**. By consolidating these tools, you are moving from a collection of "utility apps" to a **Universal Content Engine** where assets have a lifecycle: they are born in the SVG Creator, electrified in the FX Lab, and deployed in the Scene Maker.
+
+To tie everything together for your final build, here are the remaining "Master Integration" files to ensure Cursor builds the system as a cohesive whole.
+
+---
+
+## File 19: COMPONENT_EXPORT_LOGIC.md
+
+This defines how the "FX Lab" components actually function when they leave your app.
+
+```markdown
+# Component & FX Export Logic
+
+## The "Vibe" Runtime
+When a component is exported, it must include its "Runtime Script." 
+- If exporting for **Web**: Export as a React/Vue component using the `Vibe_Engine.ts` logic.
+- If exporting for **Flash/Game Engines**: Export as a JSON manifest that defines the animation curves (Ease-in, Ease-out, Frequency) so the game engine can reconstruct the "Vibe."
+
+## Asset Bundling
+- **Flat Export:** A single SVG with all FX "baked" into CSS/SVG animations.
+- **Dynamic Export:** A JSON file containing the SVG paths + a separate logic object for real-time manipulation.
+
+```
+
+---
+
+## File 20: WORKSPACE_ORCHESTRATION.md
+
+This file tells Cursor how to manage the "UI Dance"—how the screen reacts when the user moves between the 18+ workflows.
+
+```markdown
+# Workspace Orchestration & UI State
+
+## Mode Transitions
+- **Focus Transition:** When switching from "Scene" to "SVG Edit," the Scene Canvas should scale down to a "Mini-Map" in the corner, and the Focus Window should expand to center-stage.
+- **Contextual Toolbars:** - **SVG Mode:** Toolbar shows Pen, Path, Union, Subtract.
+    - **Vibe Mode:** Toolbar shows Play/Pause, Timeline, Frequency Knobs.
+    - **Scene Mode:** Toolbar shows Layer Lock, Grouping, and Snap-to-Grid.
+
+## The "Universal" Asset Tray
+The bottom tray is the "Source of Truth." It must have:
+- **Folders:** To organize by "Environment," "UI," or "Characters."
+- **Search:** Instant filtering by tags.
+- **Drag-to-Stage:** Dropping an asset onto the Stage creates a new `Instance`.
+
+```
+
+---
+
+## Final System Map
+
+### How to Begin the Build in Cursor
+
+Now that you have all **20 specialized files**, your project is fully defined. Create a folder named `.cursor-docs` and place all these files inside it. Then, start a new chat with Cursor:
+
+> **"I am building a 4-in-1 Creator Suite (Component Maker, SVG Creator, Scene Maker, Pin Designer). I have provided 20 files in .cursor-docs that serve as the PRD, Schema, and UI Spec.
+> 1. Read all files in @.cursor-docs.
+> 2. Create a high-level React project structure using Tailwind and Zustand.
+> 3. Implement the 'Dual-Viewport' system where the left side is for 'Surgical Editing' and the right side is for 'Scene Layout'.
+> 4. Ensure that the 'Asset Tray' can hold the sample data from @SAMPLE_PROJECT.json.
+> 
+> 
+> Let's start by building the UI Shell and the Global State Store."**
+
+### Strategic Advice for Success
+
+* **Don't build everything at once.** Ask Cursor to build the **Stage Canvas** first so you can see your assets.
+* **Verify the Sync.** Once you can drag a prop onto the stage, ask Cursor to implement the "SVG Path Edit" in the Focus Window and confirm it updates the stage in real-time.
+* **The "Vibe" is the last step.** Save the FX Lab/Animations for after the core drawing and layering logic is solid.
+
+**Would you like me to write a custom "Flash/Haxe" or "PixiJS" wrapper script so you can immediately see your exported scenes running in a game engine?**

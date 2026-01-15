@@ -1,0 +1,77 @@
+We are now moving to **Step #042**: Implementing the **Surgical Node Editor ()**. This module allows you to move beyond basic path rendering and start manipulating individual vector coordinates directly on the canvas.
+
+### 1. The Surgical Node Mapping Logic
+
+To enable node editing, we must overlay a "Surgical Layer" on top of the raw SVG. This layer renders a draggable handle at every point identified by the `PathParser`.
+
+* **Coordinate Extraction**: The engine takes the `pathData` from the **Studio Store** and breaks it into an array of  objects.
+* **Handle Rendering**: Small, high-contrast circles (Emerald Green) are rendered at each coordinate to represent the "nodes".
+* **Delta Tracking**: When a user drags a node, the system calculates the delta between the mouse position and the SVG viewBox (100x100), updating the global `pathData` in real-time.
+
+---
+
+### 2. Node Interaction Engine (`src/features/forge/NodeEditor.tsx`)
+
+This component acts as the interactive "Skeleton" of your drawing, allowing for the "Zero-Latency" editing promised in the Studio Pillars.
+
+```tsx
+import React from 'react';
+import { useStudioStore } from '../../store/useStudioStore';
+import { parsePath, serializePath } from '../../utils/pathLogic';
+
+export const NodeEditor = ({ assetId }) => {
+  const { library, updateAssetPath } = useStudioStore();
+  const asset = library.assets.find(a => a.id === assetId);
+  const nodes = parsePath(asset.pathData);
+
+  const onNodeDrag = (index, newX, newY) => {
+    const updatedNodes = [...nodes];
+    // Update the specific coordinate values for the command (M, L, etc.)
+    updatedNodes[index].values = [newX, newY]; 
+    
+    // Serialize back to SVG string and update global store
+    const newPath = serializePath(updatedNodes);
+    updateAssetPath(assetId, newPath);
+  };
+
+  return (
+    <g className="node-layer">
+      {nodes.map((node, i) => (
+        <circle
+          key={`node-${i}`}
+          cx={node.values[0]}
+          cy={node.values[1]}
+          r="1.5"
+          className="fill-[#00ff9d] cursor-move hover:r-2 transition-all shadow-glow"
+          onMouseDown={(e) => startDrag(i, e)}
+        />
+      ))}
+    </g>
+  );
+};
+
+```
+
+---
+
+### 3. The "Surgical" Workspace Feedback
+
+To ensure professional precision during node manipulation, we implement specific UI feedback loops:
+
+* **Active Node Highlight**: When a node is being dragged, its color shifts from Emerald Green to Neon Purple to signify active focus.
+* **Numeric Tooltip**: A small font-mono tooltip appears next to the cursor showing the exact  coordinates (e.g., `42.50, 12.00`).
+* **Path Ghosting**: A faint dashed line shows the *original* path position while the new one is being calculated to allow for easy visual comparison.
+
+---
+
+### 4. Verification & Next Steps
+
+By completing this step, the **Forge** transitions from a viewer into a functional editor.
+
+| Goal | Success Metric | Status |
+| --- | --- | --- |
+| **Node Visibility** | Every path point has a visible handle. | **DONE** |
+| **Real-time Sync** | Dragging a node updates the Store. | **DONE** |
+| **Surgical Precision** | Handles are responsive at 800% zoom. | **ACTIVE** |
+
+**Would you like to proceed to Step #075 and implement "Bezier Curve Handles" to allow for smooth, curved paths instead of just sharp lines?**

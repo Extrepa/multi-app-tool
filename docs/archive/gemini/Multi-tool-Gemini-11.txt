@@ -1,0 +1,100 @@
+To truly finalize the "Professional Suite" feel, we need to address the **"Polish and Performance"** layer. Professional tools like Figma, Blender, or Adobe Animate feel good because they handle the boring stuff (memory, file size, and organization) perfectly.
+
+Here are the final three "Engine" workflows to ensure your suite doesn't just work, but thrives under heavy use.
+
+---
+
+## 1. The "Ghost-Instance" Performance Engine
+
+When a scene has 500 props, rendering 500 live SVGs with "Vibes" will lag the browser.
+
+* **Workflow:** When the user isn't interacting with a prop, the engine converts the SVG to a **Bitmap (PNG) Proxy**.
+* **Implementation:** As soon as you click the prop to edit it in the **Focus Window**, it "Hydrates" back into a vector. This keeps the Scene Maker running at 60fps regardless of complexity.
+
+## 2. The "Smart-Palette" System
+
+* **Workflow:** You change a specific "Neon Green" in your SVG Creator. You want every single prop in the entire project—even those not currently on the stage—to update to the new green.
+* **Implementation:** Introduce **Global Swatches**. Instead of hardcoding `#00FF9D`, assets use a variable `var(--accent-1)`.
+
+## 3. The "State-Logic" Visualizer
+
+* **Workflow:** In the **FX Lab**, you aren't just adding "Vibes"; you are adding "Behaviors."
+* **Visualizer:** A small flow-chart view that shows: *If [User Clicks] -> Play [Vibration Vibe] -> Switch to [Broken State].*
+
+---
+
+## File 24: GLOBAL_PALETTE_SYSTEM.md
+
+```markdown
+# Global Theme & Palette Management
+
+## Concept
+Decouple color data from vector data. This allows for "Skinning" or "Theming" a whole project in one click.
+
+## Implementation
+1. **Library Definition:** The `project.library` gains a `palettes` object containing named hex codes.
+2. **SVG Linking:** Instead of `<path fill="#ff0000">`, the Focus Window saves it as `<path fill="palette:primary_red">`.
+3. **The Renderer:** The Scene Maker injects a CSS variable map at the root of each SVG, allowing instant color swapping across thousands of instances.
+
+```
+
+---
+
+## File 25: INTERACTION_STATE_MACHINE.md
+
+```markdown
+# Component Logic & Interaction States
+
+## The "Action" Trigger System
+Every component made in the **FX Lab** can have simple conditional logic for game exports.
+
+- **Triggers:** `onPointerOver`, `onPointerDown`, `onTimer(ms)`, `onCollision(target_id)`.
+- **Responses:** `playVibe(id)`, `switchState(name)`, `emitSignal(message)`.
+
+## Cursor Instructions
+- Create a "Logic Tab" in the Inspector. 
+- Use a "When/Then" UI (e.g., "When **Click** -> Then **Switch State** to 'Active'").
+- Ensure these connections are serialized in the `scene_graph` JSON for game engine consumption.
+
+```
+
+---
+
+## File 26: PROJECT_HEALTH_DIAGNOSTICS.md
+
+```markdown
+# Optimization & Asset Sanitizer
+
+## Concept
+Prevent "Project Bloat." Games need to be small and fast.
+
+## Workflow Features
+1. **Unused Asset Finder:** Highlight any SVG or PNG in the Library that is not used in any Scene.
+2. **Path Simplification:** A button to run a "Simplify" algorithm on SVG paths to reduce the number of nodes (reducing file size).
+3. **Resolution Checker:** Warn the user if a PNG prop is being scaled up too high (causing pixelation) or if it's too large for its display size (wasting memory).
+
+```
+
+---
+
+## The Ultimate Cursor Prompt (The Final "Boss" Prompt)
+
+You now have a **26-file framework**. This is more detailed than most professional PRDs. When you start the project in Cursor, use this "Master Sequence" to ensure the AI doesn't lose the plot:
+
+> **"I am initializing a professional 4-in-1 Design Suite. I have 26 reference files in @.cursor-docs.**
+> **Step 1:** Build the core **App Shell** using @UI_LAYOUT_SPEC.md and @UI_THEME_TOKENS.json.
+> **Step 2:** Setup the **Zustand Store** using @ARCH_DATA_SCHEMA.md as the primary structure.
+> **Step 3:** Implement the **Focus/Stage Dual-Sync**. I want to see a change in the 'Surgical Editor' reflect on the 'Scene Stage' immediately.
+> **Step 4:** Integrate @GLOBAL_PALETTE_SYSTEM.md so colors are managed globally.
+> **Let's begin with Step 1 and 2. Show me the file structure and the Store implementation first."**
+
+---
+
+### One Last "Cool" Idea: The "Vibe-Sharing" Community
+
+Since your "Vibes" are just JSON parameters (Speed, Intensity, Type), you can easily create a **Copy-Paste String**.
+
+* "Hey, check out this 'Spooky Flicker' vibe I made!"
+* The user copies a tiny code string, hits "Import Vibe" in their FX Lab, and their prop instantly starts flickering with your exact math.
+
+**Is there anything else on the "Dream Feature" list, or are you ready to open Cursor and start the build?**

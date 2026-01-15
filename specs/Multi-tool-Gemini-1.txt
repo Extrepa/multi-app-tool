@@ -1,0 +1,138 @@
+To help you build this in **Cursor**, I have organized the architecture into three distinct Markdown files. You can copy these into your project root as `.md` files.
+
+### 1. `PRD_SYSTEM_OVERVIEW.md`
+
+This file explains the "What" and "Why" to Cursor, ensuring it understands the relationship between the Pin/SVG Creator and the Scene Maker.
+
+### 2. `ARCH_DATA_SCHEMA.md`
+
+This defines the JSON structure so Cursor can write the logic for saving/loading and passing data between the "Focus" and "Stage" windows.
+
+### 3. `UI_LAYOUT_SPEC.md`
+
+This describes the dual-viewport system and the contextual sidebars.
+
+---
+
+## File 1: PRD_SYSTEM_OVERVIEW.md
+
+```markdown
+# Project Overview: Integrated Component & Scene Creator
+
+## Core Concept
+A unified creative suite that handles the full pipeline of asset creation:
+1. **Asset Creation (The Atom):** SVG/PNG Designer and "Pin" Creator.
+2. **Logic & FX (The Molecule):** Component Maker / FX Lab / Vibe Check (adding behavior to assets).
+3. **Layout (The Universe):** Scene Maker (a playground for layering props and components).
+
+## Workflow Logic
+- **Starting Point:** Users create or import an SVG/PNG.
+- **The "Focus" Editor:** A dedicated window for surgical editing of a single asset (SVG Editor/Pin Designer).
+- **The "Stage" Canvas:** A secondary window showing the full scene where multiple assets are layered.
+- **Bi-directional Sync:** Changes in the Focus Editor must update all instances of that asset in the Scene Canvas in real-time.
+- **Output:** Completed Scenes (Flash/Game ready) or standalone UI Components/Modules.
+
+## Definitions
+- **Prop:** A raw SVG or PNG asset.
+- **Component:** A Prop plus "Vibe" data (FX, animations, or logic scripts).
+- **Scene:** A JSON-based manifest of Props and Components positioned on a 2D stage.
+
+```
+
+---
+
+## File 2: ARCH_DATA_SCHEMA.md
+
+```markdown
+# Data Architecture & JSON Schema
+
+## State Management Strategy
+The application uses a "Source of Truth" Library. The Scene Maker only stores **references** to IDs in the Library.
+
+## The Unified Project Schema
+```json
+{
+  "project": {
+    "meta": { "name": "Untitled", "resolution": [1920, 1080] },
+    "library": {
+      "assets": [
+        {
+          "id": "uuid_01",
+          "name": "Neon_Star",
+          "type": "svg",
+          "data": "<svg>...</svg>",
+          "fx": { "glow": true, "pulse": 0.5 }
+        }
+      ],
+      "components": [
+        {
+          "id": "comp_01",
+          "name": "Health_UI",
+          "base_asset": "uuid_01",
+          "logic": "vibe_check_script_v1"
+        }
+      ]
+    },
+    "scene": {
+      "layers": [
+        {
+          "id": "layer_1",
+          "objects": [
+            { "ref": "uuid_01", "x": 100, "y": 100, "z": 1, "scale": 1.0 }
+          ]
+        }
+      ]
+    }
+  }
+}
+
+```
+
+## Implementation Requirements
+
+1. **Sync Engine:** When `library.assets[i].data` changes, re-render all objects in `scene.layers` referencing that ID.
+2. **Export Modules:** - PNG/SVG Export for individual assets.
+* JSON Manifest export for the full Scene.
+* Script-bundled export for FX Lab components.
+
+
+
+```
+
+---
+
+## File 3: UI_LAYOUT_SPEC.md
+```markdown
+# UI/UX Specification: Dual-Viewport Studio
+
+## Screen Division
+1. **Left Panel (The Modes):** Vertical icon bar (SVG Edit, FX Lab, Scene Maker, Export).
+2. **Center-Left Window (Focus Workspace):** - High-detail zoom view of the active SVG/Pin.
+   - Grid toggles and vector point manipulation.
+3. **Center-Right Window (Scene Canvas):** - 16:9 aspect ratio "Stage."
+   - Ability to drag, drop, and layer multiple assets.
+4. **Right Panel (The Inspector):** - **Mode: SVG:** Show Stroke, Fill, Paths.
+   - **Mode: FX/Vibe:** Show Animation Sliders, Pulse, Glow settings.
+   - **Mode: Scene:** Show Layer Tree (Z-index management).
+5. **Bottom Tray (The Asset Shelf):** - Visual thumbnails of all "Props" and "Components."
+
+## Component Switching Logic
+- Clicking an object in the **Scene Canvas** automatically loads it into the **Focus Workspace**.
+- Switching "Modes" only changes the Tools (Sidebar) and the Inspector (Right Panel), not the Canvas positions.
+
+## UI Styling (Vibe)
+- Professional Dark Mode.
+- Minimalist borders to maximize drawing space.
+- Floating "Action" buttons for "Send to FX Lab" or "Add to Scene."
+
+```
+
+---
+
+### How to use these in Cursor:
+
+1. Create a folder called `.cursor-rules` (or just put them in your project root).
+2. Start a chat in Cursor (**Cmd+L** or **Ctrl+L**).
+3. Type: `@PRD_SYSTEM_OVERVIEW.md @ARCH_DATA_SCHEMA.md @UI_LAYOUT_SPEC.md Build the main layout shell using React/Tailwind (or your preferred stack) with a dual-viewport system.`
+
+**Would you like me to generate a specific list of "Vibe Check" FX parameters for the FX Lab component?**

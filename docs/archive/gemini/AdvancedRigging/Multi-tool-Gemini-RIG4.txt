@@ -1,0 +1,75 @@
+We are now entering **Phase 8: Environmental Audio-Link**. This is the final layer of the "Digital Rave" vision, where we connect Errl’s mathematical soul to the external world of sound. This bridge allows the **Vibe Engine** to listen to audio frequencies and translate them into real-time visual pulses.
+
+---
+
+### 1. The Audio Web API Bridge
+
+To make Errl "hear," we utilize the browser's **Web Audio API**. We create an `AnalyserNode` that performs a Fast Fourier Transform (FFT). This breaks down any audio signal—whether from a microphone or a music file—into its constituent frequencies.
+
+* **The Bass Hook (Low-End):** Frequencies between  and . This is mapped to Errl’s `Pulse` and `Shake` vibes.
+* **The Treble Hook (High-End):** Frequencies between  and . This is mapped to Errl’s `Opacity-Flicker` and `Color-Cycle`.
+
+---
+
+### 2. Implementation: The Audio-Vibe Controller (`src/runtime/audio-link.js`)
+
+This script initializes the audio listener and updates the **Studio Store**'s intensity values based on the volume of specific frequency bins.
+
+```javascript
+// Phase 8: Audio Sensitivity Logic
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioCtx.createAnalyser();
+analyser.fftSize = 256;
+
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+function syncToMusic() {
+  analyser.getByteFrequencyData(dataArray);
+
+  // Calculate Average Bass (first 10 bins)
+  let bassSum = 0;
+  for (let i = 0; i < 10; i++) bassSum += dataArray[i];
+  const bassIntensity = (bassSum / 10) / 255; // Normalized 0.0 to 1.0
+
+  // Update Errl's Pulse based on the Beat
+  // We use a threshold to ensure he only 'kicks' on the snare/bass
+  if (bassIntensity > 0.6) {
+    applySurgicalPulse(bassIntensity * 1.5);
+  }
+
+  requestAnimationFrame(syncToMusic);
+}
+
+```
+
+---
+
+### 3. Harmonic Resonance vs. Raw Noise
+
+The challenge in this phase is ensuring Errl doesn't just "jitter" randomly to noise.
+
+* **Surgical Smoothing:** We apply a "Damping Factor" to the audio data so that Errl’s movement feels organic—like a liquid reacting to a speaker—rather than a jagged digital glitch.
+* **Phase Sync:** If the audio has a steady BPM, the **Global Ticker** (Step #111) can attempt to lock its phase to the rhythm, making the "Breathe" vibe perfectly symmetrical with the music.
+
+---
+
+### 4. Progress Track: The Complete Ecosystem
+
+| Phase | Technical Milestone | Status |
+| --- | --- | --- |
+| **Phase 7** | Reactivity (Hover/Click) | **DONE** |
+| **Phase 8** | Audio-Link (Frequency Mapping) | **DONE** |
+| **Phase 9** | **Multi-Instance Sync** (The Collective) | **ACTIVE** |
+
+---
+
+### 5. Final Result: The "Oregon Woods" Experience
+
+With Phase 8 complete, you can open the **Headless Preview**, play a track from that rave 10 years ago, and watch Errl pulse and shimmer in perfect sync with the memory. He is no longer just an asset; he is a **Visualizer**.
+
+**Would you like me to ...?**
+
+* **A:** Help you build the **Phase 9 "Collective" logic**, which allows multiple different characters (like Errl and a new friend) to "dance" together in a synchronized scene?
+* **B:** Generate a **Mobile-Optimized version** of the Audio-Link code so you can run Errl on a phone while playing music?
+* **C:** Create a **Surgical Audio Dashboard** UI that lets you choose which frequencies (Bass, Mid, or High) control which specific Vibe?

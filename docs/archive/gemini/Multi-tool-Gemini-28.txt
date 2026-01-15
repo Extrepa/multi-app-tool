@@ -1,0 +1,121 @@
+To push the **Forge** from a static display to a surgical instrument, we must implement the **Node Mapping Engine**. This is the most complex part of a vector editor: converting a raw SVG string into a list of interactive coordinates that you can grab and move.
+
+Below is the implementation for the **Surgical Node Logic** and the **Vibe Interpolation** math.
+
+---
+
+## 1. The Node Mapping Engine (`src/utils/pathEngine.ts`)
+
+This utility allows the **Forge** to "see" the individual points in your SVG. When you move a node, it reconstructs the SVG string in real-time.
+
+```typescript
+/**
+ * Simple Path Parser for Node Editing
+ * Converts "M 10 10 L 90 90" into [{x: 10, y: 10}, {x: 90, y: 90}]
+ */
+export const parseSvgPath = (d: string) => {
+  const commands = d.match(/[a-df-z][^a-df-z]*/ig) || [];
+  return commands.map(cmd => {
+    const type = cmd[0];
+    const coords = cmd.slice(1).trim().split(/[\s,]+/).map(Number);
+    return { type, x: coords[0], y: coords[1], raw: cmd };
+  });
+};
+
+/**
+ * Path Reconstructor
+ * Turns edited nodes back into a valid SVG 'd' attribute
+ */
+export const buildSvgPath = (nodes: any[]) => {
+  return nodes.map(n => `${n.type}${n.x} ${n.y}`).join(' ');
+};
+
+```
+
+---
+
+## 2. Advanced Vibe Math (The "Lab" Easing)
+
+To make your "Pins" feel premium, we use **Elastic Easing**. Instead of simple linear movement, we use harmonic oscillators.
+
+The "Pulse" vibe logic used in the Lab:
+
+
+* : Intensity (Amplitude)
+* : Speed (Frequency)
+* : Decay (how fast the "hit" settles)
+
+---
+
+## 3. The Forge Canvas (`src/features/forge/ForgeCanvas.tsx`)
+
+This is the component that renders the "Skeleton" of your SVG. It places a draggable handle over every coordinate found in the path.
+
+```tsx
+import React from 'react';
+import { useStudioStore } from '../../store/useStudioStore';
+import { parseSvgPath, buildSvgPath } from '../../utils/pathEngine';
+
+export default function ForgeCanvas({ assetId }) {
+  const { library, updateAssetPath } = useStudioStore();
+  const asset = library.assets.find(a => a.id === assetId);
+  
+  if (!asset) return null;
+  const nodes = parseSvgPath(asset.pathData);
+
+  const handleNodeDrag = (index: number, newX: number, newY: number) => {
+    const newNodes = [...nodes];
+    newNodes[index] = { ...newNodes[index], x: newX, y: newY };
+    updateAssetPath(assetId, buildSvgPath(newNodes));
+  };
+
+  return (
+    <div className="relative w-full h-full flex items-center justify-center bg-grid-slate-900">
+      {/* THE ACTUAL SVG */}
+      <svg viewBox="0 0 100 100" className="w-64 h-64 drop-shadow-2xl">
+        <path d={asset.pathData} fill={asset.fill} stroke={asset.stroke} strokeWidth={asset.strokeWidth} />
+      </svg>
+
+      {/* THE SURGICAL NODE OVERLAY */}
+      <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full pointer-events-none">
+        {nodes.map((node, i) => (
+          <circle 
+            key={i}
+            cx={node.x} cy={node.y} r="1.5"
+            className="fill-emerald-500 stroke-white stroke-[0.5px] pointer-events-auto cursor-move hover:scale-150 transition-transform"
+            onMouseDown={(e) => /* Logic for dragging node */}
+          />
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+```
+
+---
+
+## 4. The Layer Tree Logic (Hierarchy Manager)
+
+The **Hierarchy Panel** (Left) needs to handle "Deep Selection." When you click an object in the Layer Tree, it must sync with the **Inspector** and the **Forge**.
+
+* **Logic:** `onClick={() => setSelection(item.id)}`
+* **Visuals:** Selected layers get a `bg-emerald-500/10` highlight and a small "Active" pip.
+
+---
+
+## The Build Order for Cursor (Final Instructions)
+
+Now that the UI Shell and Path Engine are ready, give Cursor this **Level 2 Command**:
+
+1. **"Implement the Node Editing Logic"**: "Using the `parseSvgPath` utility, make the circles on the Forge Canvas draggable. When dragged, update the global store so the SVG on the Stage moves in sync."
+2. **"Build the Inspector Accordions"**: "Create collapsible sections in the Right Sidebar for 'Transform', 'Stylist' (colors/borders), and 'Vibe Lab'."
+3. **"The Vibe Playhead"**: "In the Lab Mode, add a 'Play' button. When active, use `framer-motion` to apply the `vibe` settings to the instances on the Stage."
+
+### **Final Project Specs Summary**
+
+* **Surgical Precision:** Every SVG node is an editable coordinate.
+* **Dynamic Layout:** 1px borders, high-contrast separation, emerald/neon theme.
+* **Universal Store:** All changes are synced via Zustand.
+
+**Would you like me to build the "Pen Tool" logic specifically—allowing you to click to create new points—or should we focus on the "Vibe Preview" playhead first?**

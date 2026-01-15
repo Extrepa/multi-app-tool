@@ -1,0 +1,85 @@
+To give **Cursor** the specific logic it needs for the "Vibe Check" and the "FX Lab," we need a dedicated file for the behavior engine. This ensures the AI doesn't just build a static UI, but understands how to apply "vibrancy" and "motion" to your SVGs.
+
+Here are the next two Markdown files to complete your set.
+
+---
+
+## File 4: FX_LAB_VIBE_LOGIC.md
+
+```markdown
+# FX Lab & Vibe Check Logic Specification
+
+## Objective
+The FX Lab takes a static SVG/PNG "Prop" and applies non-destructive visual effects and behavioral logic to turn it into a "Component."
+
+## Vibe Parameters (The "Vibe Check")
+Every component should support a standard set of "Vibe" properties:
+1. **Pulse:** Scaling the asset up and down (Speed, Intensity).
+2. **Glow:** CSS filters or SVG filters for neon/bloom effects (Radius, Color, Flicker).
+3. **Float:** Sinusoidal movement on the Y-axis (Amplitude, Frequency).
+4. **Shake:** Random jitter for "unstable" or "energy" objects.
+5. **Rotation:** Constant spin or "pendulum" swing.
+
+## Scripting / Logic Bridge
+- **Trigger System:** Components should have basic triggers (OnHover, OnClick, OnLoad).
+- **State Changes:** Toggle between "Vibe A" and "Vibe B" (e.g., a button that glows brighter when hovered).
+
+## Implementation for Cursor
+- Use CSS Keyframes or a library like `Framer Motion` or `GSAP` to handle these vibes.
+- Ensure the "Scene Maker" can toggle these animations on/off globally to save performance during layout.
+
+```
+
+---
+
+## File 5: EXPORT_PIPELINE_FLASH.md
+
+```markdown
+# Export Pipeline & Platform Integration
+
+## Output Formats
+1. **The Flash Bundle:** - Convert the JSON Scene Graph into a format compatible with the target Flash engine (e.g., OpenFL or Haxe).
+   - Bundle all SVGs into a single asset manifest.
+2. **Component Module:** - Export a standalone React/JS component with the SVG embedded and FX logic as props.
+3. **Static Export:** - High-res PNG/SVG capture of the entire Scene.
+
+## Asset Optimization
+- **Path Simplification:** Clean up redundant SVG nodes during export.
+- **Atlas Generation:** Combine PNG props into a sprite sheet for game engine efficiency.
+
+## Cursor Instructions
+- Build an "Export Modal" that allows the user to select the target platform.
+- Write a "Sanitizer" function that ensures IDs in the JSON don't conflict when multiple components are exported together.
+
+```
+
+---
+
+## How to Organize the Workspace
+
+When you feed these to Cursor, suggest this folder structure to help the AI maintain the separation of concerns:
+
+```text
+/src
+  /components
+    /Editors
+      SVGEditor.tsx        <-- The "Focus" Window
+      SceneCanvas.tsx      <-- The "Stage" Window
+    /Library
+      AssetShelf.tsx       <-- The Bottom Tray
+    /Inspector
+      ContextualPanel.tsx  <-- Sidebar for SVG/FX/Scene
+  /state
+    useStore.ts            <-- Zustand/Redux using ARCH_DATA_SCHEMA
+  /engine
+    vibeLogic.ts           <-- Logic from FX_LAB_VIBE_LOGIC
+
+```
+
+### Final Step for your Cursor Prompt:
+
+Once you have these files in your project, use this prompt to start the coding process:
+
+> *"@PRD_SYSTEM_OVERVIEW.md @ARCH_DATA_SCHEMA.md @UI_LAYOUT_SPEC.md @FX_LAB_VIBE_LOGIC.md @EXPORT_PIPELINE_FLASH.md Start by initializing the project structure. Create the global state store first based on the JSON schema, then build the Dual-Viewport layout with a Focus Window on the left and a Stage Canvas on the right. Ensure clicking a Prop in the Stage loads it into the Focus Window."*
+
+**Would you like me to draft a sample `vibeLogic.ts` file so Cursor knows exactly how to code the pulse and glow animations?**

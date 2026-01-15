@@ -1,0 +1,71 @@
+To truly push this from a "tool" to a "powerhouse creator suite," we need to think about high-level workflows that bridge the gap between a simple drawing app and a professional game engine.
+
+Here are three "Power Workflows" and the final Markdown file to help Cursor implement them.
+
+---
+
+## 1. The "Recursive Component" Workflow (The Nesting Doll)
+
+Instead of a Component just being an SVG + FX, a Component can contain *other* Components.
+
+* **Workflow:** You design a "Neon Bolt" in the SVG Creator. You turn it into a "Flickering Bolt" in the FX Lab. You then go into the Component Maker and arrange five "Flickering Bolts" into a "Lightning Shield."
+* **Implementation:** The Scene Maker treats the "Lightning Shield" as a single prop, but you can still "Dive In" to edit the individual bolts.
+
+## 2. The "Vibe-Check" Sound Sync (Audio-Reactive UI)
+
+Since you are targeting Flash-style or Game outputs, syncing the "Vibe" to audio is a massive value-add.
+
+* **Workflow:** Upload an MP3. In the FX Lab, you map the `Pulse Intensity` to the `Bass` frequency of the track.
+* **Implementation:** The SVG/PNG literally dances to the beat of your game’s music automatically.
+
+## 3. The "Ghost Layer" Tracing Workflow
+
+* **Workflow:** You have a rough PNG sketch of a scene. You drop it into the Scene Maker as a background "Ghost Layer" (30% opacity). You then use the SVG Creator to "trace" props directly over the sketch in the Focus Window.
+* **Implementation:** A "Toggle Trace Mode" that keeps the Scene Maker background visible inside the Focus Window.
+
+---
+
+## File 12: ADVANCED_WORKFLOWS.md
+
+This file tells Cursor how to handle these high-end features.
+
+```markdown
+# Advanced Workflow Implementations
+
+## 1. Nested Component Logic (Prefabs)
+- **Concept:** Allow a "Component" to be a collection of other "Library Assets."
+- **Cursor Instruction:** Modify the Schema to allow `components[].children[]` which references other asset IDs. Ensure the renderer can handle recursive drawing.
+
+## 2. Audio-Reactive "Vibe" Hook
+- **Concept:** Map "Vibe" parameters (Scale, Glow, Shake) to an external value (Audio peak or Game Variable).
+- **Cursor Instruction:** Create a "Variable Mapper" in the FX Lab. Instead of a static slider value, allow the user to input a variable name (e.g., `global.bass_hit`).
+
+## 3. Ghost-Tracing Mode (Contextual Editing)
+- **Concept:** See the rest of the Scene while editing a single Prop.
+- **Cursor Instruction:** Implement a "Focus Transparency" mode. When active, the Focus Window shows the Scene Stage at 20% opacity behind the current SVG being edited, allowing for perfect alignment and scaling relative to other props.
+
+## 4. Flash Game Logic Hooks
+- **Concept:** Prepare assets for interactivity.
+- **Cursor Instruction:** Add a "Logic" tab to the Inspector. Allow users to add custom "Keys" and "Values" to any Prop (e.g., `health: 100`, `isSolid: true`). These must be included in the final JSON export for the game engine to read.
+
+```
+
+---
+
+## Final Visual Layout for Cursor to Follow
+
+### Final Implementation Checklist
+
+1. **State Management:** Ensure Zustand handles the "Library" and the "Stage" as two linked but separate objects.
+2. **Viewports:** Ensure the Focus Window has "Surgical Tools" (Pen, Node edit) and the Stage has "Director Tools" (Move, Scale, Rotate, Z-order).
+3. **Communication:** When a "Vibe" is changed in the Lab, it should update the instance on the Stage in real-time using CSS variables for performance.
+
+### Ready to Build?
+
+You now have **12 specialized files** to feed into Cursor.
+
+* **Step 1:** Create a new folder.
+* **Step 2:** Drop all these `.md` and `.json` files in.
+* **Step 3:** Open Cursor and say: *"Read the 12 files in the root. We are building a high-end SVG/Scene/Component suite. Let's start with the UI Layout and the Live Sync Engine."*
+
+**Would you like me to generate a specific "Component Logic" template for the Flash Game engine (ActionScript/Haxe) to show how it should read the final output?**

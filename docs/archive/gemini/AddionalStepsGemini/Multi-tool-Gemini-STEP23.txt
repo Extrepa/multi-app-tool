@@ -1,0 +1,75 @@
+We are now entering the final stretch—**Phase 6: The Bridge**. We begin with **Step #201: The Runtime JS Exporter**.
+
+This is where the "Studio" becomes an "Engine." We are building the logic that extracts your animated creations and packages them into a lightweight, high-performance JavaScript bridge that can live on any website or application without the overhead of the full editor.
+
+---
+
+### 1. The "Tiny Runtime" Philosophy
+
+The goal of the Bridge is to recreate the math you've built in the **Vibe Lab** using raw SVG and Vanilla JS.
+
+* **Zero Dependencies:** The exported code doesn't need React or Zustand; it uses a native `requestAnimationFrame` loop.
+* **SVG Injection:** The exporter generates a clean SVG string and a small "Brain" (the JS snippet) that handles the math for the specific oscillators (Pulse, Float, Shake) you applied to that asset.
+
+---
+
+### 2. Implementation: The Code Generator (`src/utils/bridgeExporter.ts`)
+
+This utility takes a selected instance and generates a "Self-Animating" HTML component.
+
+```typescript
+// Resource: Runtime JS Generation
+export const generateRuntimeSnippet = (instance: any, asset: any) => {
+  const { vibes } = instance;
+  
+  return `
+<div id="vibe-${instance.id}">
+  ${asset.pathData} </div>
+
+<script>
+  (function() {
+    const el = document.getElementById('vibe-${instance.id}');
+    const startTime = performance.now();
+    
+    function animate() {
+      const t = (performance.now() - startTime) / 1000;
+      let transform = "";
+      
+      // Inject the exact math from Step #111-#124
+      ${vibes.map(v => generateMathString(v)).join('\n')}
+      
+      el.style.transform = transform;
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
+</script>
+  `;
+};
+
+```
+
+---
+
+### 3. Step #202: The Headless Renderer
+
+While the exporter generates the code, the **Headless Renderer** ensures that the "Stage" can be previewed exactly as it will appear in the final export. This is a "What You See Is What You Get" (WYSIWYG) bridge.
+
+* **Isolated Styles:** It strips away the editor's surgical borders and grid lines.
+* **Production CSS:** It optimizes the SVG for web performance, minifying paths and flattening groups where possible.
+
+---
+
+### 4. Verification & Final Stretch
+
+With Step #201, you've unlocked the ability to "Ship" your designs.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#150** | JSON Serializer (Save/Load) functional. | **DONE** |
+| **#201** | Runtime JS Exporter (Code Gen) initialized. | **DONE** |
+| **#202** | **Headless Preview Mode** (Production View). | **ACTIVE** |
+
+**Would you like to proceed to Step #202 and implement the "Headless Preview"? This will give you a "Production View" button that hides all the UI and surgical tools so you can see your animated characters exactly as they'll look on a live website.**
+
+Would you like me to ...?

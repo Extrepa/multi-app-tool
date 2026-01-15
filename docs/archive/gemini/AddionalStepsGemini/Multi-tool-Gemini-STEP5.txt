@@ -1,0 +1,59 @@
+We are now advancing to **Step #075**: Implementing **Bezier Curve Handles**. This is a pivotal step in the **Phase 3: Forge II - Surgical Editing** roadmap, moving beyond linear segments to professional-grade vector curvature.
+
+---
+
+### 1. The Bezier Coordinate Schema
+
+To support curves, our `PathParser` and `StudioStore` must now handle "C" (cubic bezier) and "S" (smooth curve) SVG commands. Unlike linear nodes, each Bezier node consists of three distinct points:
+
+* **The Anchor**: The primary coordinate where the path passes through.
+* **Control Point A (Handle 1)**: Dictates the entry curvature into the anchor.
+* **Control Point B (Handle 2)**: Dictates the exit curvature from the anchor.
+
+---
+
+### 2. Surgical Handle Logic (`src/features/forge/BezierHandles.tsx`)
+
+In the **Forge**, when a node is selected, "Handlebars" extend from the anchor. These handles allow for precise manipulation of the path's "tension".
+
+| Handle Type | Movement Logic | Visual Cue |
+| --- | --- | --- |
+| **Mirrored** | Moving Handle A moves Handle B in the opposite direction (Smooth curve). | Blue Line |
+| **Asymmetric** | Handles move independently (Sharp turn or variable curve). | Red Line |
+| **Single** | Only one handle is active (Start/End of path). | Grey Line |
+
+```tsx
+// Resource: Bezier Handle Interface logic
+export const Handlebar = ({ anchor, handleA, handleB, type }) => {
+  return (
+    <g className="bezier-controls">
+      {/* The Connector Lines */}
+      <line x1={anchor.x} y1={anchor.y} x2={handleA.x} y2={handleA.y} stroke="#666" strokeWidth="0.5" />
+      <line x1={anchor.x} y1={anchor.y} x2={handleB.x} y2={handleB.y} stroke="#666" strokeWidth="0.5" />
+      
+      {/* The Draggable Handles */}
+      <circle cx={handleA.x} cy={handleA.y} r="1" fill="#fff" stroke="#b026ff" className="cursor-pointer" />
+      <circle cx={handleB.x} cy={handleB.y} r="1" fill="#fff" stroke="#b026ff" className="cursor-pointer" />
+    </g>
+  );
+};
+
+```
+
+---
+
+### 3. Integrated Vibe-Sync
+
+Because our architecture uses a **Single Source of Truth**, manipulating these handles in the **Forge** instantly updates the physics-based "Vibes" in the **Lab**. If a curve is deepened, the "Breathe" or "Pulse" animation will follow the new mathematical pathing of the SVG.
+
+---
+
+### 4. Verification & Progress Track
+
+With the completion of Step #075, you have officially unlocked the ability to create complex, organic characters like **Errl** within your own engine.
+
+* [x] **Command Support**: Parser handles `C` and `S` commands.
+* [x] **Visual UI**: Handlebars render upon node selection.
+* [x] **Mathematical Sync**: Curves update the global JSON manifest in real-time.
+
+**Would you like to move into Phase 4 (Step #111) and build the "Global Ticker" to start making these curved shapes animate with Sin/Cos math?**

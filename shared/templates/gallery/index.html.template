@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery Index</title>
+  <style>
+    :root {
+      --bg: #0a0b10;
+      --panel: rgba(255, 255, 255, 0.06);
+      --panel-hover: rgba(255, 255, 255, 0.12);
+      --border: rgba(255, 255, 255, 0.12);
+      --text: #f5f6ff;
+      --muted: rgba(245, 246, 255, 0.6);
+      --accent: #22d3ee;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    header {
+      max-width: 1400px;
+      margin: 0 auto 32px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      max-width: 1400px;
+      margin: 0 auto 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .search {
+      flex: 1;
+      min-width: 200px;
+      max-width: 400px;
+      padding: 10px 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .filter-btn {
+      padding: 10px 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      background: var(--panel-hover);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      background: var(--panel-hover);
+    }
+
+    .preview {
+      width: 100%;
+      height: 180px;
+      background: #000;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 16px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .card-description {
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gallery Title</h1>
+    <p class="subtitle">Gallery subtitle</p>
+  </header>
+
+  <div class="controls">
+    <input type="text" class="search" placeholder="Search..." id="searchInput">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <!-- Add more filter buttons as needed -->
+  </div>
+
+  <div class="grid" id="galleryGrid">
+    <!-- Gallery items will be inserted here by JavaScript -->
+  </div>
+
+  <script>
+    // Gallery data - UPDATE THIS
+    const galleryItems = [
+      // {
+      //   name: "Demo Name",
+      //   file: "demo.html",
+      //   thumbnail: "thumbnails/demo.png",
+      //   category: "category",
+      //   description: "Description"
+      // },
+    ];
+
+    const grid = document.getElementById('galleryGrid');
+    const searchInput = document.getElementById('searchInput');
+    let currentFilter = 'all';
+
+    function renderGallery(items) {
+      grid.innerHTML = items.map(item => `
+        <a href="${item.file}" class="card">
+          <img src="${item.thumbnail}" alt="${item.name}" class="preview" onerror="this.style.display='none'">
+          <div class="card-content">
+            <div class="card-title">${item.name}</div>
+            <div class="card-description">${item.description || ''}</div>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    function filterGallery() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const filtered = galleryItems.filter(item => {
+        const matchesSearch = !searchTerm || 
+          item.name.toLowerCase().includes(searchTerm) ||
+          (item.description && item.description.toLowerCase().includes(searchTerm));
+        const matchesFilter = currentFilter === 'all' || item.category === currentFilter;
+        return matchesSearch && matchesFilter;
+      });
+      renderGallery(filtered);
+    }
+
+    searchInput.addEventListener('input', filterGallery);
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        filterGallery();
+      });
+    });
+
+    // Initial render
+    renderGallery(galleryItems);
+  </script>
+</body>
+</html>

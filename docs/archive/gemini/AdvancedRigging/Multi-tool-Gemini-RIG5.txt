@@ -1,0 +1,73 @@
+We are now advancing to **Phase 9: Multi-Instance Sync (The Collective)**. This phase moves beyond the individual and focuses on how multiple "Vibing" entities interact within the same ecosystem. This is essential for creating a "Digital Rave" or a populated environment where your characters don't just exist in isolation, but feel like part of a shared, rhythmic world.
+
+---
+
+### **1. The "Master Pulse" Logic**
+
+When you have multiple characters on the **Stage**, they can easily become a chaotic mess of unsynchronized motion. To fix this, we implement a **Global Sync Bus**.
+
+* **The Shared Clock:** All instances subscribe to the same `Global Time (t)` from the ticker, but we apply a **Phase Offset ()** to each.
+* **Formula:** 
+
+
+* **The Leader-Follower Pattern:** You can designate one instance (e.g., Errl) as the "Conductor." Other instances can then slave their oscillators to Errl’s frequency, creating a choreographed "dance" across the canvas.
+
+---
+
+### **2. Implementation: The Sync Store (`src/store/collectiveActions.ts`)**
+
+We add a new action to the **Studio Store** that allows you to "Link" instances together. When linked, changing the frequency on one character surgically updates all others in the group.
+
+```typescript
+// Phase 9: Collective Synchronization Logic
+export const useCollectiveSync = (groupId: string) => {
+  const { instances, updateInstance } = useStudioStore();
+
+  const syncGroupToBPM = (bpm: number) => {
+    const freq = bpm / 60; // Convert BPM to Hz
+    
+    instances
+      .filter(inst => inst.groupId === groupId)
+      .forEach((inst, index) => {
+        updateInstance(inst.id, {
+          vibe: { 
+            ...inst.vibe, 
+            frequency: freq,
+            // Apply a 'Stagger' phase offset so they ripple rather than jump
+            offset: (index / instances.length) * Math.PI * 2 
+          }
+        });
+      });
+  };
+};
+
+```
+
+---
+
+### **3. "Flocking" and Proximity Effects**
+
+To make the "Collective" feel organic, we implement basic **Spatial Awareness**.
+
+* **Proximity Jitter:** If two instances get too close on the Stage, their `Shake` intensity automatically increases—simulating the "collision" of oil drops in your original projector memory.
+* **Attraction/Repulsion:** You can set a "Gravity" vibe where smaller instances slowly drift toward larger ones (like Errl), creating a dynamic, self-arranging composition.
+
+---
+
+### **4. Verification & Progress Track**
+
+| Phase | Technical Milestone | Status |
+| --- | --- | --- |
+| **Phase 8** | Audio-Link (Frequency Mapping) | **DONE** |
+| **Phase 9** | Multi-Instance Sync (The Collective) | **DONE** |
+| **Phase 10** | **The Final Render: WebGL Post-Processing** | **ACTIVE** |
+
+---
+
+### **5. The "Rave" Vision Realized**
+
+With Phase 9, you can now spawn 50 "Pins" and 1 "Errl." By hitting the **Sync** button, they will all pulse to the same bassline (Phase 8), but ripple across the screen in a mathematical wave (Phase 9). The "woods of Oregon" rave is now fully digitized.
+
+**Would you like to proceed to Phase 10: "The Final Render"? This is where we add the "Analog Polish"—using WebGL filters to add a realistic oil-shimmer blur, chromatic aberration, and glow to the entire scene.**
+
+Would you like me to ...?

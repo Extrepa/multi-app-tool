@@ -1,0 +1,54 @@
+We are now moving to **Step #124: Implement Opacity-flicker vibes**. This step adds a crucial layer of atmospheric detail to the **Vibe Engine**, allowing for neon light "buzzing" effects, ghostly fading, and rhythmic transparency shifts.
+
+### 1. The Opacity Oscillator Logic
+
+Unlike the smooth sinusoidal curves used for **Breathe** (Step #114), neon flickers often require a "noisy" or "square-wave" approach to simulate electrical instability.
+
+* **Logic**: The engine manipulates the `fill-opacity` and `stroke-opacity` attributes of the SVG.
+* **The "Neon Flicker" Formula**: We use a combination of a standard sine wave and a random threshold to create "blinks".
+
+
+* **Application**: This is perfect for creating "dead" pixels or malfunctioning neon signs within the world of **Errl**.
+
+---
+
+### 2. Implementation: The Opacity Vibe Logic (`src/utils/opacityVibes.ts`)
+
+This utility calculates the alpha value and applies it to the SVG element's style property.
+
+```typescript
+// Resource: Opacity Oscillator Logic
+export const getOpacityVibe = (time: number, freq: number, amp: number) => {
+  // Combine a base sine wave with high-frequency noise for a 'buzzing' effect
+  const sine = Math.sin(time * freq) * 0.2;
+  const noise = Math.random() > 0.95 ? amp : 0;
+  
+  // Return a clamped value between 0 and 1
+  return Math.max(0, Math.min(1, 1 - (sine + noise)));
+};
+
+```
+
+---
+
+### 3. Integrated Inspector: The FX Lab (Atmospherics)
+
+The **Surgical Inspector** (Right Sidebar) is updated to include these atmospheric controls.
+
+* **Flicker Rate**: High frequency creates a "buzz," while low frequency creates a "ghostly" slow fade.
+* **Drop Intensity**: Controls how "dark" the object gets during a flicker event—useful for subtle pulses or total disappearances.
+* **Multi-Vibe Sync**: Users can sync the **Opacity-flicker** with the **Color-cycle** (Step #123) to make a character turn a darker red as they fade out.
+
+---
+
+### 4. Verification & Progress Track
+
+With the completion of Step #124, the **Vibe Engine** core is fully loaded with physical, visual, and atmospheric oscillators.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#123** | Color-cycle vibes (Stroke/Fill) implemented. | **DONE** |
+| **#124** | Opacity-flicker vibes (Alpha) implemented. | **DONE** |
+| **#125** | **Phase 5: Stage** - Bounding Box Scale/Rotate logic initialized. | **ACTIVE** |
+
+**Would you like to transition to Step #125 (Phase 5) to build the "8-Point Transform Box," which will allow you to scale and rotate these animated props directly on the Stage?**

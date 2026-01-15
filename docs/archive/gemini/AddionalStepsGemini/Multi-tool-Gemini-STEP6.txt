@@ -1,0 +1,60 @@
+We are now advancing to **Phase 4: Lab - The Vibe Engine**, beginning with **Step #111: Implement Global Ticker ()**. This is the mathematical heartbeat of your Studio, responsible for driving real-time animations across all workspaces.
+
+### 1. The Global Ticker Logic (`src/features/lab/Ticker.ts`)
+
+The Ticker uses a `requestAnimationFrame` loop to maintain a consistent . This ensures that every "Vibe" (Pulse, Float, Shake) stays perfectly synchronized, regardless of how many instances are on the Stage.
+
+* **Time Tracking**: The ticker maintains a global `elapsedTime` variable used as the  value in all harmonic oscillator formulas.
+* **Zero-Latency Sync**: By centralizing the clock, every component in the Studio responds to the same frame update, ensuring the "Zero-Latency" pillar of the project.
+
+---
+
+### 2. The Oscillator Hook (`src/hooks/useVibe.ts`)
+
+This hook allows any SVG component to "listen" to the global ticker and apply math-based transforms.
+
+* **Mathematical Motion**: Instead of pre-rendered frames, the engine calculates the current scale, position, or rotation on every tick using the provided settings (Intensity, Speed, Phase).
+* **The Vibe Formula**:
+
+
+
+```typescript
+// Resource: Vibe Math Integration
+export const useVibe = (instanceId: string) => {
+  const time = useGlobalTime(); // From Step #111 Ticker
+  const settings = useStudioStore(s => 
+    s.scene.instances.find(i => i.id === instanceId)?.vibe
+  );
+
+  if (!settings) return null;
+
+  // Calculate harmonic oscillation
+  const pulse = 1 + Math.sin(time * settings.frequency) * (settings.intensity * 0.1);
+  
+  return {
+    transform: `scale(${pulse})`,
+    transition: 'none' // Direct math control for performance
+  };
+};
+
+```
+
+---
+
+### 3. Integrated Workflow: Forge to Lab
+
+Because the Ticker is global, you can surgically edit a Bezier handle in the **Forge** (Step #075) and immediately see how that change impacts the curvature of a pulsing object in the **Lab**. This direct feedback loop is essential for fine-tuning the "feel" of a character like Errl.
+
+---
+
+### 4. Verification & Progress Track
+
+With the Ticker online, you have officially moved from static vector art to "Mathematical Motion".
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#111** | Global  Ticker implemented. | **DONE** |
+| **#112** | Vibe Property schema defined in Store. | **DONE** |
+| **#113** | Initial "Pulse" Oscillator math active. | **ACTIVE** |
+
+**Would you like to proceed to Step #114 and implement the "Float" and "Breathe" oscillators to add organic weight and secondary motion to your designs?**

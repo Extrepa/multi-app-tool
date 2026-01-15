@@ -1,0 +1,54 @@
+We are now moving to **Step #123: Implement Color-cycle Vibes**. This step expands the **Vibe Engine** beyond physical transforms (scale/position) and into the domain of visual property oscillation, specifically targeting SVG stroke and fill attributes.
+
+### 1. The Color Oscillator Logic
+
+Unlike position offsets, color oscillation requires interpolating between two or more hex values or rotating through the HSL (Hue, Saturation, Lightness) spectrum. We implement a **HSL Hue-Rotation** oscillator to create seamless, "trippy" color shifts that align with the project's aesthetic.
+
+* **Logic**: The engine takes the base color and applies a degree offset to the "Hue" component based on the global ticker.
+* **Formula**:
+
+
+* **Application**: This can be applied to `stroke` for neon pulsing effects or `fill` for glowing character bodies.
+
+---
+
+### 2. Implementation: The Color Vibe Utility (`src/utils/colorVibes.ts`)
+
+This utility converts hex colors to HSL, applies the math, and returns a CSS-ready string for the SVG renderer.
+
+```typescript
+// Resource: Color-Cycle Math
+export const getAnimatedColor = (baseHex: string, time: number, freq: number, amp: number) => {
+  const hsl = hexToHsl(baseHex); // Utility to convert hex to HSL
+  // Oscillate the Hue value
+  const hueShift = Math.sin(time * freq) * amp;
+  const newHue = (hsl.h + hueShift) % 360;
+  
+  return `hsl(${newHue}, ${hsl.s}%, ${hsl.l}%)`;
+};
+
+```
+
+---
+
+### 3. Integrated Inspector: The FX Lab (Visuals)
+
+The **Surgical Inspector** (Right Sidebar) now includes a **Visual FX** section for color management.
+
+* **Target Selection**: Users can choose to apply the vibe to either the **Stroke** or the **Fill** (or both).
+* **Sync with Motion**: Because these visual vibes use the same **Global Ticker** (Step #111), the color shifts can be perfectly timed with a character's "Pulse" or "Heartbeat".
+* **Intensity Mapping**: In this context, **Intensity** dictates how far the hue shifts from its original color—low intensity creates subtle shifts, while high intensity creates a full-spectrum cycle.
+
+---
+
+### 4. Verification & Progress Track
+
+With color-cycle vibes implemented, the visual capabilities of the **Lab** are significantly enhanced.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#122** | Multi-Vibe stacking logic implemented. | **DONE** |
+| **#123** | Color-cycle vibes (Stroke/Fill oscillators) implemented. | **DONE** |
+| **#124** | Opacity-flicker vibes (SVG Alpha oscillators) initialized. | **ACTIVE** |
+
+**Would you like to proceed to Step #124 to implement "Opacity-flicker vibes," which are essential for creating neon light effects or ghostly transparency shifts?**

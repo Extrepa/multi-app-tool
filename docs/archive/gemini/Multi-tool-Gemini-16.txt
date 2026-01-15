@@ -1,0 +1,166 @@
+To start building this system, we need to move from the architectural blueprints into the **Core Foundation**. We will start by building the **State Management Engine** and the **UI Shell**.
+
+Since we are using **React**, **Zustand** (for lightweight, high-performance state), and **Tailwind CSS**, here is the code for the first three files Cursor needs to get the "Studio" running.
+
+---
+
+### 1. The Global Store (`src/store/useStudioStore.ts`)
+
+This is the "Brain" that connects the SVG Creator to the Scene Maker.
+
+```typescript
+import { create } from 'zustand';
+import { v4 as uuidv4 } from 'uuid';
+
+interface StudioState {
+  // The Library (Atoms & Molecules)
+  library: {
+    assets: any[]; // Raw SVGs/PNGs
+    components: any[]; // Assets + Vibes
+  };
+  // The Scene (The Universe)
+  scene: {
+    instances: any[]; // References to assets on stage
+    selection: string | null; // ID of currently clicked item
+  };
+  // Actions
+  addAsset: (asset: any) => void;
+  instantiateAsset: (assetId: string, x: number, y: number) => void;
+  updateAssetData: (assetId: string, newData: string) => void;
+  selectInstance: (instanceId: string | null) => void;
+}
+
+export const useStudioStore = create<StudioState>((set) => ({
+  library: { assets: [], components: [] },
+  scene: { instances: [], selection: null },
+
+  addAsset: (asset) => set((state) => ({
+    library: { ...state.library, assets: [...state.library.assets, asset] }
+  })),
+
+  instantiateAsset: (assetId, x, y) => set((state) => ({
+    scene: {
+      ...state.scene,
+      instances: [...state.scene.instances, {
+        id: uuidv4(),
+        assetRef: assetId,
+        x, y, scale: 1, rotation: 0
+      }]
+    }
+  })),
+
+  updateAssetData: (assetId, newData) => set((state) => ({
+    library: {
+      ...state.library,
+      assets: state.library.assets.map(a => a.id === assetId ? { ...a, data: newData } : a)
+    }
+  })),
+
+  selectInstance: (id) => set((state) => ({
+    scene: { ...state.scene, selection: id }
+  }))
+}));
+
+```
+
+---
+
+### 2. The Studio Shell (`src/App.tsx`)
+
+This creates the **Dual-Viewport** layout: The "Forge" on the left and the "Stage" on the right.
+
+```tsx
+import React from 'react';
+import Sidebar from './components/Sidebar';
+import FocusWindow from './components/FocusWindow';
+import SceneStage from './components/SceneStage';
+import AssetTray from './components/AssetTray';
+
+export default function StudioApp() {
+  return (
+    <div className="h-screen w-screen bg-[#121212] text-white flex flex-col overflow-hidden">
+      {/* Top Header */}
+      <header className="h-12 border-b border-[#333] flex items-center px-4 justify-between">
+        <h1 className="font-bold tracking-tighter text-emerald-400">VIBE STUDIO</h1>
+        <div className="flex gap-4 text-xs uppercase tracking-widest text-gray-500">
+          <span>Project: Untitled</span>
+          <button className="bg-emerald-600 text-white px-3 py-1 rounded">Export</button>
+        </div>
+      </header>
+
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar />
+        
+        {/* Main Dual-Workspace */}
+        <main className="flex-1 flex gap-px bg-[#333]">
+          {/* Left: Surgical Editor (40%) */}
+          <div className="w-[40%] bg-[#121212] overflow-hidden">
+            <FocusWindow />
+          </div>
+
+          {/* Right: Scene Stage (60%) */}
+          <div className="flex-1 bg-[#1a1a1a] relative">
+            <SceneStage />
+          </div>
+        </main>
+      </div>
+
+      {/* Bottom Asset Shelf */}
+      <AssetTray />
+    </div>
+  );
+}
+
+```
+
+---
+
+### 3. The Sync-Engine Component (`src/components/SceneInstance.tsx`)
+
+This component renders the SVG on the stage and ensures it updates when the library version changes.
+
+```tsx
+import React from 'react';
+import { useStudioStore } from '../store/useStudioStore';
+
+export default function SceneInstance({ instance }) {
+  // Get the raw asset data from the library using the reference
+  const asset = useStudioStore((state) => 
+    state.library.assets.find(a => a.id === instance.assetRef)
+  );
+
+  if (!asset) return null;
+
+  return (
+    <div 
+      style={{
+        position: 'absolute',
+        left: instance.x,
+        top: instance.y,
+        transform: `scale(${instance.scale}) rotate(${instance.rotation}deg)`,
+      }}
+      className="hover:outline hover:outline-emerald-500 cursor-move"
+    >
+      {/* Render the SVG string directly */}
+      <div dangerouslySetInnerHTML={{ __html: asset.data }} />
+    </div>
+  );
+}
+
+```
+
+---
+
+### Next Step for Cursor:
+
+To get the first "Visible" result, give Cursor this command:
+
+> "I've initialized the Store, the App Shell, and the Sync Component. Now, **build the AssetTray component**.
+> 1. It should have a 'Create New SVG' button.
+> 2. When clicked, it adds a default SVG path to the Store.
+> 3. Display thumbnails of these assets.
+> 4. When I drag an asset from the tray onto the **SceneStage**, use `instantiateAsset` to place it on the canvas."
+> 
+> 
+
+**Would you like me to write the `FocusWindow.tsx` logic so you can start clicking points on the SVG to move them?**

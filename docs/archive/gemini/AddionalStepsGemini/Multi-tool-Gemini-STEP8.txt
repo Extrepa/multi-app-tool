@@ -1,0 +1,46 @@
+We are now advancing to **Step #116: Implement the "Shake" Oscillator**. This completes the core movement suite in the **Lab**, providing the necessary logic for randomized impact and high-frequency vibrations.
+
+### 1. The "Shake" Logic (Randomized Displacement)
+
+Unlike the smooth harmonic curves of **Pulse** or **Float**, the **Shake** oscillator introduces controlled chaos into the coordinate system. It uses a pseudo-random seed to generate high-frequency displacement, perfect for "Damage" effects or environmental rumble.
+
+* **Logic**: On every tick of the **Global  Ticker**, the object's  and  coordinates are offset by a value within a specified amplitude range.
+* **Intensity Control**: The "Intensity" slider in the **Surgical Inspector** scales the maximum possible displacement, allowing for everything from a subtle nervous twitch to a violent screen-shaking impact.
+
+---
+
+### 2. Implementation: The Shake Function (`src/utils/vibeLibrary.ts`)
+
+The Shake function is added to the **Vibe Engine** to handle non-sinusoidal motion.
+
+```typescript
+// Resource: Shake Logic Extension
+export const ShakeOscillator = (amp: number) => {
+  // Returns a random offset between -amp and +amp
+  const offsetX = (Math.random() - 0.5) * 2 * amp;
+  const offsetY = (Math.random() - 0.5) * 2 * amp;
+  
+  return { x: offsetX, y: offsetY };
+};
+
+```
+
+---
+
+### 3. Integrated Vibe Stacking
+
+With all four core vibes (**Pulse, Float, Breathe, Shake**) active, the engine now supports **Vibe Stacking**. You can apply a slow **Float** to simulate weightlessness while adding a high-frequency **Pulse** to simulate a glowing "Neon" heart—all calculated in real-time within the **Studio Store**.
+
+---
+
+### 4. Verification & Progress Track
+
+With the "Shake" oscillator complete, you have finished the core "Vibe" movement suite.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#116** | Shake Oscillator (Randomized impact motion) implemented. | **DONE** |
+| **#117** | Speed (Frequency) controls finalized in Inspector. | **ACTIVE** |
+| **#118** | Intensity (Amplitude) controls finalized in Inspector. | **ACTIVE** |
+
+**Would you like to proceed to Step #117 to finalize the "Speed" and "Intensity" UI controls in the Surgical Inspector, ensuring they map perfectly to your math oscillators?**

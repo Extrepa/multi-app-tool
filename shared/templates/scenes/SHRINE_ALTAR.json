@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "id": "template_shrine_altar",
+  "name": "Shrine Altar",
+  "description": "Ceremonial altar with halo and candles",
+  "isTemplate": true,
+  "createdAt": "2025-11-22T00:00:00.000Z",
+  "updatedAt": "2025-11-22T00:00:00.000Z",
+  "viewport": { "width": 1920, "height": 1080, "aspectRatio": "16:9" },
+  "background": {
+    "sceneId": "SHRINE",
+    "moodId": "NIGHT",
+    "planes": {
+      "bgAssetId": "ERRL_BG_SHRINE_BG",
+      "mgAssetId": "ERRL_BG_SHRINE_MG",
+      "fgAssetId": "ERRL_BG_SHRINE_FG"
+    }
+  },
+  "fx": { "globalFx": [ { "id": "vignette", "fxId": "FX_VIGNETTE", "enabled": true, "params": { "darkness": 0.4 } } ] },
+  "weather": [],
+  "layers": [
+    { "id": "layer_bg", "name": "Background", "zIndex": 0, "zDepth": -1, "visible": true, "locked": true, "isBackgroundPlane": true },
+    { "id": "layer_main", "name": "Main", "zIndex": 1, "zDepth": 0, "visible": true, "locked": false },
+    { "id": "layer_fg", "name": "Foreground", "zIndex": 2, "zDepth": 0.6, "visible": true, "locked": false }
+  ],
+  "entities": [
+    {
+      "id": "entity_errl_full",
+      "assetId": "ERRL_CHAR_FULL_STANDING",
+      "layerId": "layer_main",
+      "transform": { "x": 960, "y": 540, "scaleX": 1, "scaleY": 1, "rotation": 0 },
+      "style": { "opacity": 1, "blendMode": "normal" },
+      "motion": [ { "id": "pulse", "motionId": "MOTION_PULSE", "enabled": true, "params": { "speed": 0.4, "intensity": 0.2 } } ]
+    },
+    {
+      "id": "entity_portal",
+      "assetId": "ERRL_FX_MYSTERY_PORTAL_A",
+      "layerId": "layer_fg",
+      "transform": { "x": 960, "y": 620, "scaleX": 0.8, "scaleY": 0.8, "rotation": 0 },
+      "style": { "opacity": 0.7, "blendMode": "screen" },
+      "motion": []
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "id": "template_festival_stage",
+  "name": "Festival Stage",
+  "description": "Outdoor stage, Errl floating above the riser with flags",
+  "isTemplate": true,
+  "createdAt": "2025-11-22T00:00:00.000Z",
+  "updatedAt": "2025-11-22T00:00:00.000Z",
+  "viewport": { "width": 1920, "height": 1080, "aspectRatio": "16:9" },
+  "background": {
+    "sceneId": "FESTIVAL",
+    "moodId": "NEON",
+    "planes": {
+      "bgAssetId": "ERRL_BG_FESTIVAL_BG",
+      "mgAssetId": "ERRL_BG_FESTIVAL_MG",
+      "fgAssetId": "ERRL_BG_FESTIVAL_FG"
+    }
+  },
+  "fx": { "globalFx": [] },
+  "weather": [
+    { "id": "weather_orbs", "weatherId": "WEATHER_ORB_DRIFT", "enabled": true, "params": { "spawn_interval": 4, "drift_speed": 0.2 } }
+  ],
+  "layers": [
+    { "id": "layer_bg", "name": "Background", "zIndex": 0, "zDepth": -1, "visible": true, "locked": true, "isBackgroundPlane": true },
+    { "id": "layer_main", "name": "Main", "zIndex": 1, "zDepth": 0, "visible": true, "locked": false },
+    { "id": "layer_fg", "name": "Foreground", "zIndex": 2, "zDepth": 0.6, "visible": true, "locked": false }
+  ],
+  "entities": [
+    {
+      "id": "entity_errl_float",
+      "assetId": "ERRL_CHAR_FULL_FLOATING",
+      "layerId": "layer_main",
+      "transform": { "x": 960, "y": 520, "scaleX": 1.1, "scaleY": 1.1, "rotation": -4 },
+      "style": { "opacity": 1, "blendMode": "normal" },
+      "motion": [ { "id": "float", "motionId": "MOTION_FLOAT", "enabled": true, "params": { "speed": 0.5, "intensity": 0.5 } } ]
+    },
+    {
+      "id": "entity_stage_riser",
+      "assetId": "ERRL_ENV_STAGE_RISER",
+      "layerId": "layer_main",
+      "transform": { "x": 960, "y": 780, "scaleX": 1, "scaleY": 1, "rotation": 0 },
+      "style": { "opacity": 1, "blendMode": "normal" },
+      "motion": []
+    },
+    {
+      "id": "entity_truss",
+      "assetId": "ERRL_ENV_TRUSS_SIMPLE",
+      "layerId": "layer_fg",
+      "transform": { "x": 512, "y": 240, "scaleX": 1, "scaleY": 1, "rotation": 0 },
+      "style": { "opacity": 0.8, "blendMode": "normal" },
+      "motion": []
+    }
+  ]
+}

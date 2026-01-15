@@ -1,0 +1,23 @@
+{
+  "theme_name": "Studio-Dark-Vibe",
+  "colors": {
+    "bg_main": "#121212",
+    "bg_surface": "#1E1E1E",
+    "bg_active": "#2D2D2D",
+    "accent_primary": "#00FF9D",
+    "accent_secondary": "#7000FF",
+    "border_subtle": "#333333",
+    "text_main": "#E0E0E0",
+    "text_dim": "#888888"
+  },
+  "spacing": {
+    "sidebar_width": "280px",
+    "tray_height": "200px",
+    "focus_window_ratio": "40%"
+  },
+  "ui_elements": {
+    "border_radius": "4px",
+    "shadows": "0 4px 20px rgba(0,0,0,0.5)"
+  }
+}
+

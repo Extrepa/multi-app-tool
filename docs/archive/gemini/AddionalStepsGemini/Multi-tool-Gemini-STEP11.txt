@@ -1,0 +1,57 @@
+We are now advancing to **Step #120: Implement "Vibe Preview" in Forge Mode**. This feature fulfills the "Zero-Latency Editing" pillar by allowing you to see surgical vector edits and mathematical animations simultaneously.
+
+### 1. The Vibe Preview Logic
+
+Typically, **Forge Mode** is a static environment for node manipulation. By implementing the **Vibe Preview** toggle, we allow the **Global Ticker** (Step #111) to apply oscillator math to the SVG path even while the "Surgical Nodes" are visible and active.
+
+* **Real-time Feedback**: As you drag a Bezier handle (Step #075), the object continues to pulse or float, giving you an immediate sense of how the new shape "feels" in motion.
+* **State Control**: A new boolean, `isVibePreviewActive`, is added to the **Studio Store** to toggle the application of transforms in the Forge view.
+
+---
+
+### 2. Implementation: The Forge Toggle (`src/features/forge/ForgeToolbar.tsx`)
+
+We add a high-contrast toggle button to the top of the **Forge** workspace, styled to match the neon aesthetic of the Studio.
+
+```tsx
+// Resource: Vibe Preview Toggle Logic
+export const ForgeToolbar = () => {
+  const { isVibePreviewActive, toggleVibePreview } = useStudioStore();
+
+  return (
+    <div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-2 bg-[#13131f] border border-[#222] p-1 rounded-md">
+      <button 
+        onClick={toggleVibePreview}
+        className={`px-3 py-1 text-[10px] font-bold rounded flex items-center gap-2 transition-all
+          ${isVibePreviewActive 
+            ? 'bg-[#00ff9d] text-black shadow-[0_0_10px_rgba(0,255,157,0.5)]' 
+            : 'text-gray-500 hover:text-white'}`}
+      >
+        <Zap size={12} fill={isVibePreviewActive ? "black" : "none"} />
+        VIBE_PREVIEW {isVibePreviewActive ? "ON" : "OFF"}
+      </button>
+    </div>
+  );
+};
+
+```
+
+---
+
+### 3. Surgical Node Persistence
+
+To maintain precision while animating, the nodes must stay "anchored" to the path segments even as the path scales or floats. This requires the **Node Layer** (Step #043) to be a child of the same transform group as the SVG path so they move in perfect sync during the preview.
+
+---
+
+### 4. Verification & Progress Track
+
+With this toggle active, the **Forge** and **Lab** are effectively merged into a single surgical environment.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#120** | Vibe Preview toggle implemented in Forge Mode. | **DONE** |
+| **#121** | Vibe Preset Library (Neon Breathe, Ghost Drift) initialized. | **ACTIVE** |
+| **#122** | Multi-Vibe stacking logic implemented. | **ACTIVE** |
+
+**Would you like to proceed to Step #121 to initialize the "Vibe Preset Library," allowing you to save and apply complex motion sets (like a "Heartbeat" or "Neon Flicker") with a single click?**

@@ -1,0 +1,64 @@
+Since the **Vibe Studio OS** is now fully operational, we will move from software architecture to **High-Fidelity Character Rigging**.
+
+We are going to surgically assemble "Errl" using the tools you've built. Instead of a single flat SVG, we will treat him as a **Dynamic Rig**—a collection of independent parts, each with its own mathematical "Vibe" stack.
+
+---
+
+### **1. The Rigging Blueprint**
+
+To capture the essence of Errl’s origin (oil, water, and food coloring on an overhead projector), we need to layer motion to simulate liquid buoyancy.
+
+| Layer Name | Forge Tool | Vibe Stack | Purpose |
+| --- | --- | --- | --- |
+| **Errl_Body** | Pen Tool () | `Breathe` + `Color-Cycle` | Simulates the slow expansion of an oil drop. |
+| **Internal_Bubbles** | Circle Tool () | `Float` + `Opacity-Flicker` | Simulates carbonation/texture moving inside. |
+| **Eye_Left / Right** | Bezier () | `Pulse` + `Shake` (Low) | Gives him a conscious, slightly nervous gaze. |
+| **Liquid_Trail** | Path Tool | `Float` (High Phase Offset) | Simulates the "drip" effect as he moves. |
+
+---
+
+### **2. Surgical Step: The "Fluid" Body Path**
+
+In the **Forge**, you won't just draw a circle. You will use **Step #075 (Bezier Handles)** to create an irregular, organic blob.
+
+* **Surgical Note:** Ensure the start and end points of your path are perfectly aligned to avoid a "seam" during the `Breathe` cycle.
+* **The Math:** Set the `Breathe` oscillator to a very low frequency () so the expansion feels heavy and viscous, like oil.
+
+---
+
+### **3. Implementing the "Oil & Water" Texture**
+
+We will use **Step #124 (Opacity-Flicker)** to recreate the shimmering effect of the overhead projector.
+
+```tsx
+// Applying the 'Oil Shimmer' to the Internal_Bubbles layer
+updateVibe('bubble-instance-id', {
+  type: 'OPACITY_FLICKER',
+  frequency: 4.2,   // High-speed 'buzz'
+  intensity: 0.15,  // Subtle enough to look like light hitting liquid
+  offset: Math.random() * 360 // Each bubble flickers independently
+});
+
+```
+
+---
+
+### **4. Final Assembly: The Grouping Lock**
+
+Once each part is designed in the **Forge** and "Vibed" in the **Lab**, use **Step #147 (Grouping)** to lock them together.
+
+1. Select all Errl components on the **Stage**.
+2. Press ****.
+3. Apply a master `Float` vibe to the **Group**.
+
+Now, the bubbles will flicker and the body will breathe *locally*, while the entire character drifts through the digital woods of Oregon *globally*.
+
+---
+
+### **Verification: The "Vibe Check"**
+
+1. **Is it liquid?** (Check the `Float` phase offsets).
+2. **Is it alive?** (Check the `Breathe` frequency).
+3. **Is it Errl?** (Check the `Color-Cycle` matches the original 10-year-old food coloring memory).
+
+**Would you like me to generate the "Production Snippet" (Phase 6 Bridge code) for this completed Errl rig so you can see him move in a standalone browser window?**

@@ -1,0 +1,87 @@
+To turn your four distinct tools into a professional-grade "Studio Ecosystem," the interface must be divided into rigid, functional zones. This ensures that every mouse click and every tool has a predictable location and a specific purpose within your creation-to-animation pipeline.
+
+The layout is structured around a **Master Design Shell**, divided into five key sections.
+
+---
+
+### 1. The Global Toolbar (The "Brain")
+
+**Location:** Fixed at the very top of the screen.
+
+**Purpose:** High-level project management and global settings.
+
+* **Mode Switcher:** Icons to toggle between **Forge** (SVG Creation), **Stage** (Scene Layout), **Lab** (Animation), and **Pin** (Final Polish).
+* **Project Meta:** Project name, "Auto-save" status, and the **Master Export** button.
+* **Universal Settings:** Global snap-to-grid toggles, canvas zoom level, and dark/light mode.
+
+### 2. The Tool Dock (The "Forge")
+
+**Location:** Narrow vertical strip on the far left.
+
+**Purpose:** Every capability of a common vector editor, logically grouped.
+
+* **Creation Group:** * **Pen Tool ():** For Bezier curves and custom node placement.
+* **Shape Tool ():** Standard vectors (Rect, Circle, Star, Polygon).
+* **Text Tool ():** Vectorized typography.
+
+
+* **Modification Group:** * **Node Tool ():** Specifically for editing individual anchor points on an SVG path.
+* **Bucket Fill ():** For applying gradients and solid fills.
+* **Stroke Stylist:** Controls for border width, dash arrays, and corner miter/roundness.
+
+
+
+### 3. The Hierarchy & Layer Tree (The "Structure")
+
+**Location:** Nested on the inner-left, next to the Tool Dock.
+
+**Purpose:** Clear vertical organization of every asset.
+
+* **Groups & Folders:** Icons to collapse/expand nested components.
+* **Visibility & Lock:** Eye icons to hide elements and padlocks to prevent accidental edits.
+* **Type Indicators:** Visual cues that distinguish a raw **SVG Path** from a **Vibe-Checked Component**.
+
+### 4. The Workspace Viewport (The "Stage")
+
+**Location:** The expansive central area.
+
+**Purpose:** Direct interaction with your assets.
+
+* **Clear Borders:** The workspace is separated from toolbars by a high-contrast 1px border.
+* **Dual-Canvas Logic:**
+* In **Forge Mode**, this shows a single asset at 400% zoom with a visible node grid.
+* In **Stage Mode**, it shows the full scene boundary with "Director's" guides (safe areas, rule of thirds).
+
+
+
+### 5. The Inspector & FX Lab (The "Control")
+
+**Location:** Broad panel on the far right.
+
+**Purpose:** Contextual controls that change based on what you select.
+
+* **Section A: Basic Properties:** X/Y coordinates, Width/Height, Rotation, and Opacity.
+* **Section B: The Border & Fill Lab:** * Color pickers with HEX, RGB, and HSL support.
+* Border (Stroke) style controls.
+
+
+* **Section C: The Vibe Check (Animation):**
+* A mini-timeline for keyframing.
+* Preset dropdowns for "Pulse," "Float," or "Shake" (Vibes).
+* Logic triggers: "On Click," "On Hover," or "Looping."
+
+
+
+---
+
+### The Functional Workflow Summary
+
+| Section | Action | Result |
+| --- | --- | --- |
+| **Tool Dock** | Select Pen Tool | Ready to draw raw vector paths. |
+| **Hierarchy** | Move Layer Up | Changes Z-index, bringing prop to the front. |
+| **Workspace** | Drag Object | Updates X/Y coordinates in the Inspector. |
+| **FX Lab** | Set "Pulse" | Applies real-time CSS/JSON animation to the asset. |
+| **Global Bar** | Hit "Export" | Bundles everything into a production-ready file. |
+
+**Would you like me to refine the "FX Lab" controls specifically for your Flash/Game engine exports, or shall we focus on the "Pen Tool" node-editing logic next?**

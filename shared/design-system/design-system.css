@@ -1,0 +1,458 @@
+/**
+ * Errl Club Design System - CSS Variables
+ * 
+ * Comprehensive CSS custom properties extracted from the Errl Club project.
+ * Import this file to use the design system in any CSS project.
+ */
+
+:root {
+    /* ============================================
+       COLORS
+       ============================================ */
+    
+    /* Core Colors */
+    --color-background: rgba(20, 20, 20, 0.9);
+    --color-border: #00ffff;
+    --color-text: #ffffff;
+    --color-accent: #00ffff;
+    --color-title: #00ffff;
+    
+    /* Interactive States */
+    --color-hover: #00ff00;
+    --color-pressed: #222222;
+    --color-disabled: #666666;
+    --color-focus: #00ff00;
+    
+    /* Status Colors */
+    --color-success: #00ff00;
+    --color-error: #ff0000;
+    --color-warning: #ffaa00;
+    --color-info: #00ffff;
+    
+    /* Glow Colors */
+    --color-glow-white: rgba(255, 255, 255, 0.8);
+    --color-glow-cyan: rgba(0, 255, 255, 0.8);
+    --color-glow-green: rgba(0, 255, 0, 0.8);
+    --color-glow-magenta: rgba(255, 0, 255, 0.8);
+    
+    /* Button State Colors */
+    --color-button-normal: #333333;
+    --color-button-hover: #444444;
+    --color-button-pressed: #222222;
+    --color-button-disabled: #1a1a1a;
+    
+    /* ============================================
+       SPACING
+       ============================================ */
+    
+    --spacing-padding: 16px;
+    --spacing-margin: 12px;
+    --spacing-gap: 8px;
+    --spacing-title-padding-bottom: 8px;
+    --spacing-button-padding: 10px 20px;
+    --spacing-input-padding: 8px 12px;
+    --spacing-panel-padding: 16px;
+    
+    /* ============================================
+       TYPOGRAPHY
+       ============================================ */
+    
+    --font-family: 'Arial', sans-serif;
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 24px;
+    --font-size-3xl: 3rem;
+    
+    --font-weight-normal: normal;
+    --font-weight-medium: 500;
+    --font-weight-bold: bold;
+    
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.8;
+    
+    --title-size: 18px;
+    --title-weight: bold;
+    
+    /* ============================================
+       BORDERS
+       ============================================ */
+    
+    --border-width: 2px;
+    --border-radius: 8px;
+    --border-title-bottom: 1px solid var(--color-border);
+    --border-style-solid: solid;
+    --border-style-dashed: dashed;
+    
+    /* ============================================
+       SHADOWS
+       ============================================ */
+    
+    --shadow-panel: 0 4px 20px rgba(0, 255, 255, 0.3);
+    --shadow-button: 0 0 20px rgba(0, 255, 255, 0.8);
+    --shadow-text: 0 0 10px rgba(255, 255, 255, 0.5);
+    
+    --shadow-glow-white: 
+        0 0 10px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.3),
+        0 0 30px rgba(255, 255, 255, 0.2);
+    --shadow-glow-cyan: 0 0 10px rgba(0, 255, 255, 0.8);
+    --shadow-glow-green: 0 0 10px rgba(0, 255, 0, 0.8);
+    --shadow-glow-magenta: 0 0 10px rgba(255, 0, 255, 0.8);
+    
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    
+    --animation-duration-fast: 0.2s;
+    --animation-duration-normal: 0.3s;
+    --animation-duration-slow: 1s;
+    
+    --animation-easing-ease: ease;
+    --animation-easing-ease-in: ease-in;
+    --animation-easing-ease-out: ease-out;
+    --animation-easing-ease-in-out: ease-in-out;
+    
+    /* ============================================
+       GRADIENTS
+       ============================================ */
+    
+    --gradient-background: linear-gradient(
+        135deg,
+        #667eea 0%,
+        #764ba2 25%,
+        #f093fb 50%,
+        #4facfe 75%,
+        #00f2fe 100%
+    );
+    
+    --gradient-progress: linear-gradient(90deg, #ff00ff, #ff88ff);
+}
+
+/* ============================================
+   COMPONENT STYLES
+   ============================================ */
+
+/* Panel */
+.ui-panel {
+    background: var(--color-background);
+    border: var(--border-width) var(--border-style-solid) var(--color-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-panel-padding);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    box-shadow: var(--shadow-panel);
+    box-sizing: border-box;
+}
+
+.ui-panel-title {
+    font-size: var(--title-size);
+    font-weight: var(--title-weight);
+    color: var(--color-title);
+    border-bottom: var(--border-title-bottom);
+    padding-bottom: var(--spacing-title-padding-bottom);
+    margin-bottom: var(--spacing-margin);
+}
+
+/* Button */
+.ui-button {
+    padding: var(--spacing-button-padding);
+    background: var(--color-button-normal);
+    color: var(--color-text);
+    border: var(--border-width) var(--border-style-solid) var(--color-border);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family);
+    transition: all var(--animation-duration-fast) var(--animation-easing-ease);
+}
+
+.ui-button:hover {
+    background: var(--color-button-hover);
+    border-color: var(--color-hover);
+    transform: scale(1.05);
+}
+
+.ui-button:active {
+    background: var(--color-button-pressed);
+    border-color: var(--color-border);
+    transform: scale(0.95);
+}
+
+.ui-button:disabled {
+    background: var(--color-button-disabled);
+    border-color: var(--color-disabled);
+    color: var(--color-disabled);
+    cursor: not-allowed;
+    transform: scale(1);
+}
+
+/* Input Field */
+.ui-input-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-gap);
+    margin: var(--spacing-gap) 0;
+}
+
+.ui-input-field label {
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family);
+}
+
+.ui-input-field input {
+    padding: var(--spacing-input-padding);
+    background: var(--color-background);
+    color: var(--color-text);
+    border: var(--border-width) var(--border-style-solid) var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family);
+    outline: none;
+}
+
+.ui-input-field input:focus {
+    border-color: var(--color-focus);
+}
+
+.ui-input-field input:invalid {
+    border-color: var(--color-error);
+}
+
+.ui-input-error {
+    color: var(--color-error);
+    font-size: var(--font-size-xs);
+    font-family: var(--font-family);
+}
+
+/* Dropdown */
+.ui-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-gap);
+    margin: var(--spacing-gap) 0;
+}
+
+.ui-dropdown label {
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family);
+}
+
+.ui-dropdown select {
+    padding: var(--spacing-input-padding);
+    background: rgba(51, 51, 51, 0.8);
+    color: var(--color-text);
+    border: var(--border-width) var(--border-style-solid) var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family);
+    cursor: pointer;
+    outline: none;
+}
+
+.ui-dropdown select:focus {
+    border-color: var(--color-focus);
+}
+
+/* Slider */
+.ui-slider {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-gap);
+    margin: var(--spacing-gap) 0;
+}
+
+.ui-slider label {
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family);
+}
+
+.ui-slider input[type="range"] {
+    flex: 1;
+    height: 6px;
+    background: rgba(51, 51, 51, 0.8);
+    border-radius: 3px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.ui-slider-value {
+    color: var(--color-accent);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family);
+    min-width: 50px;
+    text-align: right;
+}
+
+/* Modal */
+.ui-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.ui-modal {
+    background: var(--color-background);
+    border: var(--border-width) var(--border-style-solid) var(--color-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-panel-padding);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    box-shadow: var(--shadow-panel);
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.ui-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-panel-padding);
+    border-bottom: var(--border-title-bottom);
+}
+
+.ui-modal-content {
+    padding: var(--spacing-panel-padding);
+    overflow-y: auto;
+    flex: 1;
+    color: var(--color-text);
+    font-family: var(--font-family);
+}
+
+/* Reticle */
+.reticle-dot {
+    width: 8px;
+    height: 8px;
+    border: 2px solid var(--color-success);
+    border-radius: 50%;
+    background: rgba(0, 255, 0, 0.3);
+    box-shadow: var(--shadow-glow-green);
+    margin: 0 auto;
+    animation: reticlePulse 1s ease-in-out infinite;
+}
+
+.reticle-label {
+    color: var(--color-success);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    margin-top: 15px;
+    text-shadow: var(--shadow-glow-green);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+    backdrop-filter: blur(5px);
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #ff00ff;
+    border-radius: 10px;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-progress);
+    width: 0%;
+    transition: width var(--animation-duration-normal) var(--animation-easing-ease);
+    box-shadow: var(--shadow-glow-magenta);
+}
+
+.progress-label {
+    color: #ff00ff;
+    font-size: var(--font-size-sm);
+    text-align: center;
+    margin-top: 5px;
+    text-shadow: var(--shadow-glow-magenta);
+}
+
+/* Emote Wheel */
+.emote-button {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--color-border);
+    color: var(--color-border);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--animation-duration-fast) var(--animation-easing-ease);
+    backdrop-filter: blur(10px);
+}
+
+.emote-button:hover,
+.emote-button.highlighted {
+    background: rgba(0, 255, 255, 0.3);
+    border-color: #ff00ff;
+    color: #ff00ff;
+    transform: scale(1.2);
+    box-shadow: var(--shadow-button);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes hueShift {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes titleGlow {
+    0% {
+        text-shadow: var(--shadow-glow-white);
+    }
+    100% {
+        text-shadow: 
+            0 0 20px rgba(255, 255, 255, 0.8),
+            0 0 30px rgba(255, 255, 255, 0.5),
+            0 0 40px rgba(255, 255, 255, 0.3);
+    }
+}
+
+@keyframes reticlePulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}

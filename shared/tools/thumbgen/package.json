@@ -1,0 +1,13 @@
+{
+  "name": "shared-thumbgen",
+  "version": "1.0.0",
+  "description": "Shared thumbnail generator for HTML gallery files",
+  "private": true,
+  "main": "generate-thumbs.js",
+  "scripts": {
+    "generate": "node generate-thumbs.js"
+  },
+  "dependencies": {
+    "playwright": "^1.57.0"
+  }
+}

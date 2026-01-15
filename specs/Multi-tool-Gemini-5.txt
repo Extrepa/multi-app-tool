@@ -1,0 +1,95 @@
+To ensure your project is truly "production-ready," we need to provide Cursor with a sample data file. This acts as a **test bench**—it allows the AI to verify that the Sync Engine, the Scene Maker, and the FX Lab all speak the same language.
+
+Here is the final piece of the puzzle: a sample "Project Manifest" and a guide on how to handle the **Component Maker’s** specific UI logic.
+
+---
+
+## File 10: SAMPLE_PROJECT.json
+
+Save this as `dummy_data.json`. Feed this to Cursor so it can auto-populate the UI during development.
+
+```json
+{
+  "project_name": "Ghost Forest Prototype",
+  "library": {
+    "assets": [
+      {
+        "id": "prop_001",
+        "name": "Ethereal Tree",
+        "type": "svg",
+        "data": "<svg viewBox='0 0 100 100'><path d='M50 10 L80 90 L20 90 Z' fill='#00FF9D'/></svg>",
+        "vibe": { "type": "float", "intensity": 5, "speed": 1 }
+      },
+      {
+        "id": "prop_002",
+        "name": "Glowing Orb",
+        "type": "svg",
+        "data": "<circle cx='50' cy='50' r='40' fill='#7000FF'/>",
+        "vibe": { "type": "pulse", "intensity": 1.2, "speed": 2 }
+      }
+    ]
+  },
+  "scene": {
+    "background": "#0a0a0a",
+    "instances": [
+      { "id": "inst_1", "asset_ref": "prop_001", "x": 200, "y": 400, "scale": 2, "rotation": 0 },
+      { "id": "inst_2", "asset_ref": "prop_001", "x": 600, "y": 400, "scale": 1.5, "rotation": 15 },
+      { "id": "inst_3", "asset_ref": "prop_002", "x": 400, "y": 200, "scale": 1, "rotation": 0 }
+    ]
+  }
+}
+
+```
+
+---
+
+## File 11: COMPONENT_FX_INTERFACE.md
+
+The **Component Maker / FX Lab** needs a specific UI for "Vibe Checks." This file tells Cursor how to build the controls for the "Lab" mode.
+
+```markdown
+# FX Lab: Interface & Parameter Controls
+
+## The Vibe Check Panel
+When in "FX Lab" mode, the right sidebar should display a "Vibe Stack."
+
+1. **Active Vibe Selector:** A dropdown to add "Pulse," "Float," "Shake," or "Glow."
+2. **Dynamic Sliders:** - Each vibe has unique sliders (e.g., "Pulse" has `Scale Multiplier` and `Frequency`).
+   - Use a "Live Preview" toggle to stop/start animations in the Focus Window.
+3. **Vibe Presets:** Buttons for "Ghostly," "Aggressive," "Stable," and "Flicker." Clicking these should batch-update the sliders.
+
+## Visual Feedback
+- **Bounding Box:** In FX Lab mode, show a pulsing bounding box around the asset that reflects the "Vibe" in real-time.
+- **On-Canvas Controls:** Allow users to drag a "Handle" in the Focus Window to set the `Amplitude` of a Float effect visually.
+
+```
+
+---
+
+## Final Development Roadmap for Cursor
+
+When you are ready to begin, follow this sequence with Cursor to avoid "AI Hallucinations" (where it makes up its own logic):
+
+### Step 1: The Foundation
+
+> *"Using @ARCH_DATA_SCHEMA.md and @SAMPLE_PROJECT.json, initialize a Zustand store. Create a 'ProjectProvider' that can load this JSON. Ensure the 'library' and 'scene' are accessible globally."*
+
+### Step 2: The Viewports
+
+> *"Now, build the layout from @UI_LAYOUT_SPEC.md. Use Tailwind to create the 'Focus Window' (left 40%) and the 'Scene Stage' (right 60%). The Stage should render the 'instances' from the JSON sample using an SVG renderer."*
+
+### Step 3: The Surgical Sync
+
+> *"Implement the 'Surgical Edit' feature. When I click an instance in the 'Stage', load its source SVG into the 'Focus Window'. Use @SYNC_ENGINE_SPECS.md to ensure that any change I make to the SVG path in the Focus Window updates all instances on the Stage instantly."*
+
+### Step 4: The Lab
+
+> *"Add the FX Lab mode based on @FX_LAB_VIBE_LOGIC.md and @COMPONENT_FX_INTERFACE.md. When I switch to 'Lab Mode', the sidebar should show sliders that modify the 'vibe' property of the asset. Use Framer Motion to animate the assets based on these values."*
+
+---
+
+### Pro-Tip for Cursor Use:
+
+If Cursor gets stuck on the SVG editing logic, tell it: **"Use a library like `react-svg-curve` or `points-on-path` to handle the vector manipulation in the Focus Window."**
+
+**Would you like me to generate a specific "Export Script" template for the Flash Game engine integration?**

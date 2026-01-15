@@ -1,0 +1,80 @@
+We are now advancing to **Step #148: Implement Multi-Select Marquee Tool**. This feature is the final core piece of the **Director's Stage** selection logic, allowing you to efficiently manage large groups of animated props by dragging a selection rectangle over the workspace.
+
+---
+
+### 1. The Marquee Selection Logic
+
+The Marquee tool creates a temporary visual rectangle as the user drags their mouse. The engine then performs a geometric "Intersection Test" to determine which instances on the **Stage** fall within those bounds.
+
+* **Coordinate Mapping**: The tool translates screen-space mouse coordinates () into the SVG world-space coordinates used by your instances.
+* **AABB Intersection (Axis-Aligned Bounding Box)**: The system checks if the bounding box of each instance overlaps with the marquee rectangle.
+* **Selection State**: Overlapping IDs are added to the `selectedIds` array in the **Studio Store**, instantly highlighting them with the neon purple surgical border.
+
+---
+
+### 2. Implementation: The Marquee Component (`src/features/stage/Marquee.tsx`)
+
+This component renders the translucent selection box and triggers the store update on `mouseUp`.
+
+```tsx
+// Resource: Marquee Selection Logic
+export const Marquee = () => {
+  const { startPoint, endPoint, isDragging } = useMarqueeState();
+  const { instances, setSelectedIds } = useStudioStore();
+
+  const handleMouseUp = () => {
+    // Calculate the selection bounds
+    const selectionRect = {
+      x: Math.min(startPoint.x, endPoint.x),
+      y: Math.min(startPoint.y, endPoint.y),
+      width: Math.abs(startPoint.x - endPoint.x),
+      height: Math.abs(startPoint.y - endPoint.y),
+    };
+
+    // Find all instances that intersect with the marquee
+    const newSelection = instances.filter(inst => 
+      isIntersecting(selectionRect, inst.boundingBox)
+    ).map(inst => inst.id);
+
+    setSelectedIds(newSelection);
+  };
+
+  if (!isDragging) return null;
+
+  return (
+    <rect 
+      x={selectionRect.x} y={selectionRect.y} 
+      width={selectionRect.width} height={selectionRect.height}
+      className="fill-[#b026ff]/10 stroke-[#b026ff] stroke-1"
+      strokeDasharray="4,2"
+    />
+  );
+};
+
+```
+
+---
+
+### 3. Integrated "Deep Selection"
+
+Combined with **Step #147 (Grouping)**, the Marquee tool supports advanced hierarchy selection:
+
+* **Top-Level Focus**: By default, the marquee selects the highest-level parent (the Group).
+* **Surgical Override ( + Click)**: Allows you to "drill down" into a group to select individual children without ungrouping them first.
+* **Additive Selection ()**: Dragging a second marquee while holding Shift adds new items to the existing selection rather than replacing it.
+
+---
+
+### 4. Verification & Progress Track
+
+With the Marquee tool implemented, the **Stage** is now fully equipped for complex scene direction.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#147** | Grouping and Hierarchy nesting functional. | **DONE** |
+| **#148** | Multi-Select Marquee tool implemented. | **DONE** |
+| **#150** | **Phase 5 Review**: Scene Serialization (Save/Load JSON). | **ACTIVE** |
+
+**The Stage is now functionally complete. Would you like to proceed to Step #150 to implement the "JSON Serializer"? This will allow you to save your entire workspace—including Forge paths, Lab vibes, and Stage layouts—into a single file.**
+
+Would you like me to ...?

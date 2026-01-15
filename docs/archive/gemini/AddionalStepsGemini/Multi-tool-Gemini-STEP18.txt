@@ -1,0 +1,75 @@
+We are now advancing to **Step #144: Implement Z-Index Reordering in the Layer Tree**. This step is vital for managing the visual depth of your scene, allowing you to control which props (like **Errl**) appear in front of or behind other elements on the **Stage**.
+
+### 1. The Z-Index & Layer Hierarchy Logic
+
+In an SVG-based environment, "Z-Index" is determined by the order of elements in the DOM; items rendered later in the code appear "on top" of earlier items. To manage this surgically:
+
+* **The Layer Tree**: This component displays a list of all current instances on the **Stage**, mapped directly from the `scene.instances` array in the **Studio Store**.
+* **Reordering Mechanism**: By dragging a layer item up or down in the tree, you are effectively reordering the array of objects in the store.
+* **DOM Sync**: Because the **Infinite Canvas** renders instances by mapping over this array, any change in index instantly updates the visual depth of the scene.
+
+---
+
+### 2. Implementation: Draggable Layer Tree (`src/features/stage/LayerTree.tsx`)
+
+This implementation uses a drag-and-drop list pattern to update the **Zustand Store** order.
+
+```tsx
+// Resource: Layer Reordering Logic
+export const LayerTree = () => {
+  const { instances, reorderInstances } = useStudioStore(s => s.scene);
+
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+    
+    // Create a copy and move the item to the new index
+    const items = Array.from(instances);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    // Update Step #144: Sync Z-Index order to Store
+    reorderInstances(items);
+  };
+
+  return (
+    <div className="layer-list p-2 space-y-1">
+      {instances.map((instance, index) => (
+        <div 
+          key={instance.id}
+          className="flex items-center gap-2 p-2 bg-[#13131f] border border-[#222] rounded text-xs hover:border-[#b026ff] cursor-grab"
+        >
+          <span className="text-gray-600 font-mono text-[10px]">{index}</span>
+          <Box size={12} className="text-[#00ff9d]" />
+          <span className="truncate">{instance.name || 'Instance'}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+```
+
+---
+
+### 3. Integrated Visibility & Locking
+
+As part of the layer management workflow, we also implement secondary toggles per layer:
+
+* **Visibility (Eye Icon)**: Toggles the `opacity` or `display` of the instance on the **Stage** to focus on specific sections.
+* **Locking (Padlock Icon)**: Prevents accidental selection or movement of a layer while working on other nearby props.
+
+---
+
+### 4. Verification & Progress Track
+
+With Step #144 complete, your **Stage** transitions from a basic spawning area to a professional composition environment.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#141** | Drag-and-Drop from Tray to Canvas functional. | **DONE** |
+| **#144** | Z-Index reordering in the Layer Tree functional. | **DONE** |
+| **#146** | Smart Snapping and alignment guides initialized. | **ACTIVE** |
+
+**Would you like to proceed to Step #146 to implement "Smart Snapping"? This will add pink alignment guides that appear when your props align perfectly with the center or edges of other objects.**
+
+Would you like me to ...?

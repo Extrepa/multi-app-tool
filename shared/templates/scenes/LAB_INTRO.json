@@ -1,0 +1,46 @@
+{
+  "version": "1.0.0",
+  "id": "template_lab_intro",
+  "name": "Lab Intro",
+  "description": "Starter lab scene with one Errl head and projector space",
+  "isTemplate": true,
+  "createdAt": "2025-11-22T00:00:00.000Z",
+  "updatedAt": "2025-11-22T00:00:00.000Z",
+  "viewport": { "width": 1920, "height": 1080, "aspectRatio": "16:9" },
+  "background": {
+    "sceneId": "LAB",
+    "moodId": "DEFAULT",
+    "planes": {
+      "bgAssetId": "ERRL_BG_LAB_BG",
+      "mgAssetId": "ERRL_BG_LAB_MG",
+      "fgAssetId": "ERRL_BG_LAB_FG"
+    }
+  },
+  "fx": { "globalFx": [] },
+  "weather": [],
+  "layers": [
+    { "id": "layer_bg", "name": "Background", "zIndex": 0, "zDepth": -1, "visible": true, "locked": true, "isBackgroundPlane": true },
+    { "id": "layer_main", "name": "Main", "zIndex": 1, "zDepth": 0, "visible": true, "locked": false },
+    { "id": "layer_fg", "name": "Foreground", "zIndex": 2, "zDepth": 0.5, "visible": true, "locked": false }
+  ],
+  "entities": [
+    {
+      "id": "entity_errl_head",
+      "assetId": "ERRL_CHAR_HEAD_OG",
+      "layerId": "layer_main",
+      "transform": { "x": 960, "y": 520, "scaleX": 1, "scaleY": 1, "rotation": 0 },
+      "style": { "opacity": 1, "blendMode": "normal" },
+      "motion": [
+        { "id": "motion_float", "motionId": "MOTION_FLOAT", "enabled": true, "params": { "speed": 0.4, "intensity": 0.5 } }
+      ]
+    },
+    {
+      "id": "entity_projector_slot",
+      "assetId": "ERRL_PROP_OVERHEAD_PROJECTOR_V1",
+      "layerId": "layer_main",
+      "transform": { "x": 1320, "y": 700, "scaleX": 0.8, "scaleY": 0.8, "rotation": 0 },
+      "style": { "opacity": 0.9, "blendMode": "normal" },
+      "motion": []
+    }
+  ]
+}

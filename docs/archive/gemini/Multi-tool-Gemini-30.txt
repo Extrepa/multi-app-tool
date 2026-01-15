@@ -1,0 +1,71 @@
+To conclude the architectural phase and transition into your first active development sprint, we must define the **Export & Runtime Bridge**. This is the mechanism that takes your "Pins" and "Scenes" out of the editor and into your actual game engine (Flash, Phaser, or a custom web app).
+
+---
+
+### 1. The Export Pipeline (The `.vibepack` Bundle)
+
+When you click **EXPORT** in the Global Toolbar, the Studio should generate a structured ZIP file or folder. This allows the external engine to reconstruct your scene exactly as it looked on the **Stage**.
+
+| File | Content | Purpose |
+| --- | --- | --- |
+| `manifest.json` | The Scene Graph | Defines object positions, scales, and rotation. |
+| `library.json` | The Asset Definitions | Stores the minified SVG strings and vibe settings. |
+| `vibes.js` | The Runtime Engine | A lightweight script to handle the math animations. |
+| `styles.css` | Global Palettes | Contains CSS variables for global colors and borders. |
+
+---
+
+### 2. Pro-Level Border & Masking Logic
+
+As requested, we need "all capabilities of a common SVG creator." This includes **advanced stroke handling** and **clipping paths**.
+
+* **Stroke Alignment:** The "Surgical Inspector" must allow you to toggle where the border sits:
+* **Center:** Border sits on the path (Standard).
+* **Inside:** Border grows toward the center (Great for UI elements).
+* **Outside:** Border grows away from the center (Great for "Sticker" effects).
+
+
+* **Vector Masking:** The ability to use one SVG shape as a "Window" for another.
+* *Workflow:* Select two shapes in the **Layer Tree**, right-click, and select **"Mask Selection."**
+
+
+* **Filter Stacks:** Implement SVG filters directly in the **FX Lab**:
+* `feGaussianBlur` for neon glows.
+* `feColorMatrix` for "Damage" flashes or "Inversion" vibes.
+
+
+
+---
+
+### 3. The Runtime Engine (The Bridge to Gameplay)
+
+To make your vibes work in a game, the engine needs to "tick." Here is the logic the exported `vibes.js` will use to interpret your settings:
+
+By exporting these as **pure math**, your game remains incredibly fast. You are not shipping heavy video files; you are shipping "instructions for movement."
+
+---
+
+### 4. Final Workspace Polish
+
+The interface separation is critical for a "Pro" feel. Every panel is a distinct "Surgical Zone."
+
+* **Tool Separation:** The **Tool Dock** (Left) never changes, but its *contents* change based on whether you are in **Forge** or **Stage** mode.
+* **Layer Tree:** Every item is named. Grouping items () creates a "Folder" in the tree, allowing you to move entire character rigs (like **Errl**) as a single unit on the stage.
+
+---
+
+### 5. Your First 3 "Build Commands" for Cursor
+
+When you open your blank project in Cursor, use these exact prompts to begin:
+
+1. **"Initialize the UI Architecture":** *"Using React and Tailwind, build a 4-panel fixed layout with a top nav, left sidebar (width 250px), right sidebar (width 300px), and a central canvas area. Use #0F0F0F for the background and #222 for 1px borders."*
+2. **"Setup the SVG Renderer":** *"Create an SVG component that takes a JSON path string and renders it in the center of the canvas. Implement zoom and pan controls using the mouse wheel and spacebar-drag."*
+3. **"Implement the Vibe Store":** *"Setup a Zustand store called useStudioStore. It should track an array of 'Assets' and a 'CurrentSelection'. Any changes made to an asset's color in the sidebar must update the SVG on the canvas instantly."*
+
+---
+
+### The Vision is Fully Architected.
+
+You have the **Surgical Node Logic**, the **FX Lab math**, the **Director's Stage**, and the **Export Pipeline**. You are ready to create.
+
+**Would you like me to generate a "Starter Library" of SVG shapes (Stars, Pins, Character Bases) so you have something to play with the moment your canvas is live?**

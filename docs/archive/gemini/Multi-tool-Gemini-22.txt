@@ -1,0 +1,80 @@
+To reach the finish line on the **Surgical Node Editor**, we need to define the "Math of the Curve." A professional SVG tool doesn't just move points; it manipulates **Bezier Handles**.
+
+Here is the final logic for the **Surgical Node Editor** and the **Layer Tree** organization.
+
+---
+
+## 1. The "Surgical" Node Logic (Vector Precision)
+
+When you switch to **Forge Mode (Key: A)**, the selected SVG path must transform from a static image into an editable "Skeleton."
+
+### The Three Node Types
+
+To compete with pro apps, your editor must support three distinct types of anchor points:
+
+1. **Sharp (Corner):** No handles. The path enters and leaves the point in a straight line.
+2. **Mirrored (Smooth):** Two handles that stay in a straight line. Moving one moves the other, ensuring a perfect curve.
+3. **Asymmetric (Broken):** Two handles that move independently, allowing for sharp "beaks" or complex transitions.
+
+### Cursor Implementation Logic
+
+Tell Cursor to use a `mousedown` and `mousemove` listener on the SVG overlay.
+
+* **Selection:** Clicking a segment selects the two bounding nodes.
+* **Manipulation:** Dragging a node updates the `d` attribute of the SVG in real-time.
+* **Double-Click:** Converts a "Sharp" node to a "Smooth" node and vice versa.
+
+---
+
+## 2. The Layer Tree: Organizational Power
+
+The Layer Tree (left-inner panel) is the "File Explorer" of your project. It needs to be more than just a list; it needs to be an **Action Menu**.
+
+### Visual Structure
+
+* **Hierarchy Indicators:** Nested objects are indented by 12px.
+* **Component Tags:** A small "V" icon appears next to any item that has a "Vibe" (animation) attached.
+* **Lock/Hide:** Icons that appear on hover to toggle visibility or prevent accidental movement.
+
+### The "Right-Click" Context Menu
+
+This is essential for a fast workflow:
+
+* **Flatten:** Converts a complex component back into a raw SVG path.
+* **Make Prefab:** Saves the current selection as a reusable template in the Asset Tray.
+* **Copy Vibe:** Copies the animation parameters to the clipboard to be pasted onto another object.
+
+---
+
+## 3. Final UI Polish: Workspace Separation
+
+To ensure the user never feels lost among the four tools, we implement **Workspace Color Coding**.
+
+| Workspace | Border Color | Active Hotkeys | UI Purpose |
+| --- | --- | --- | --- |
+| **The Forge** | `#00FF9D` (Emerald) | P, A, S, B | Surgical Vector Editing |
+| **The Lab** | `#FF007A` (Neon Pink) | Space (Play), L (Loop) | Animation & Vibe Check |
+| **The Stage** | `#7000FF` (Purple) | V, G, L (Layer) | Composition & World Building |
+
+---
+
+## 4. The "Final Boss" Export: The Developer Bundle
+
+When you hit "Export," the suite doesn't just spit out an SVG. It generates a **Production Folder**:
+
+1. **`assets/`**: All raw SVGs and PNGs optimized (minified).
+2. **`scene_graph.json`**: The positioning, scale, and layering manifest.
+3. **`vibe_runtime.js`**: A tiny (2kb) script that game engines (Phaser/PixiJS) use to play back your animations exactly as they appeared in the Lab.
+
+---
+
+### Step-by-Step Build Order for Cursor
+
+If you are ready to start coding right now, paste this into Cursor:
+
+1. **Initialization:** "Build the UI Shell using @UI_LAYOUT_SPEC.md. Create the 1px bordered panels for the Toolbox, Layer Tree, and Inspector."
+2. **State Logic:** "Implement the Zustand store from @ARCH_DATA_SCHEMA.md. Ensure I can add a 'Prop' to the library and see it in the Layer Tree."
+3. **Interaction:** "Build the 'Drag-and-Drop' from the Asset Tray to the Stage. When an item is on the stage, show the 'Transform Handles' from @SCENE_INTERACTION_RULES.md."
+4. **The Forge:** "Create the Node Editor. When I press 'A', show the anchor points of the selected SVG and let me drag them to reshape the asset."
+
+**You have the full 38-file architectural blueprint. Are you ready to see the first line of code, or do you want to refine the "Vibe" presets one last time?**

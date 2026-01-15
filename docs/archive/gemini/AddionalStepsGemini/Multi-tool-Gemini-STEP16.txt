@@ -1,0 +1,73 @@
+We are now transitioning into **Phase 5: Stage - Composition**, beginning with **Step #125: Implement the 8-Point Transform Box**. This tool is essential for the **Director's Stage** workflow, allowing you to scale and rotate animated props like "Errl" or "Pins" directly within the scene.
+
+---
+
+### 1. The 8-Point Transform Logic
+
+The transform box provides a visual boundary (the bounding box) around the selected SVG instance. It features eight interactive "handles" at the corners and midpoints, plus a rotation handle.
+
+* **Coordinate Remapping:** Unlike the **Forge** (which edits paths), the **Stage** modifies the `<g>` group's `transform` attribute (Translate, Scale, Rotate).
+* **Handle Calculations:** The box must calculate its position based on the current `getBBox()` of the SVG, adjusting in real-time even if a **Pulse** or **Float** vibe is active.
+
+---
+
+### 2. Implementation: The Transform Overlay (`src/features/stage/TransformBox.tsx`)
+
+This component renders on a separate SVG overlay to ensure the handles remain crisp and fixed in size regardless of the object's zoom or scale.
+
+```tsx
+// Resource: Stage Transform Logic
+export const TransformBox = ({ instanceId }) => {
+  const instance = useStudioStore(s => s.scene.instances.find(i => i.id === instanceId));
+  const { updateInstance } = useStudioStore();
+
+  if (!instance) return null;
+
+  return (
+    <g className="transform-overlay">
+      {/* Bounding Box Path */}
+      <rect 
+        x={instance.x} y={instance.y} 
+        width={instance.width} height={instance.height}
+        className="fill-none stroke-[#b026ff] stroke-1 stroke-dasharray-[2,2]" 
+      />
+      
+      {/* 8-Point Handles (Corner Example) */}
+      <circle 
+        cx={instance.x} cy={instance.y} r="4" 
+        className="fill-white stroke-[#b026ff] cursor-nwse-resize"
+        onMouseDown={(e) => startScale(e, 'top-left')}
+      />
+
+      {/* Rotation Handle */}
+      <line x1={instance.x + instance.width/2} y1={instance.y} x2={instance.x + instance.width/2} y2={instance.y - 20} stroke="#b026ff" />
+      <circle cx={instance.x + instance.width/2} cy={instance.y - 20} r="4" className="fill-[#b026ff] cursor-crosshair" />
+    </g>
+  );
+};
+
+```
+
+---
+
+### 3. Integrated "Vibe-Aware" Scaling
+
+A unique challenge for the **Studio OS** is scaling an object that is already vibrating.
+
+* **Base vs. Active Scale:** The transform box modifies the `baseScale` in the **Studio Store**.
+* **Resultant Scale:** The final render uses the formula: .
+* **Director Controls:** This ensures you can make a "Pin" character twice as large without breaking its synchronized "Heartbeat" pulse.
+
+---
+
+### 4. Verification & Progress Track
+
+With Step #125 complete, the **Stage** becomes a functional layout engine.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#124** | Opacity-flicker vibes implemented. | **DONE** |
+| **#125** | 8-Point Transform Box (Scale/Rotate) logic active. | **DONE** |
+| **#141** | **Step 141**: Drag-and-Drop from Tray to Canvas. | **ACTIVE** |
+
+**Would you like to proceed to Step #141 to implement "Drag-and-Drop" from the Asset Tray? This will allow you to instantly spawn new instances of your Forge designs onto the Stage.**

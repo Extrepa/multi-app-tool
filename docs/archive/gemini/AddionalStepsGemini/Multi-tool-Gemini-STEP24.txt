@@ -1,0 +1,57 @@
+We are now moving to **Step #202: Implement the Headless Preview Mode**. This feature allows you to strip away the "surgical" scaffolding of the Studio (grids, node handles, and inspector panels) to view your animated composition in its final, production-ready state.
+
+---
+
+### 1. The Headless Logic (Production Filter)
+
+The **Headless Preview** acts as a visual bridge between the editor and the final exported JS snippet. It provides an isolated environment where the only thing rendered is the clean SVG output and the mathematical motion.
+
+* **UI Masking:** With a single toggle, the 4-panel grid (Step #005) is collapsed, and the "Infinite Canvas" expands to fill the entire viewport.
+* **Surgical Cleanup:** The `NodeEditor` (Step #042) and `TransformBox` (Step #125) layers are unmounted from the DOM to ensure they don't interfere with the visual "vibe".
+* **Aspect Ratio Simulation:** Users can toggle common screen sizes (Mobile, Desktop, Social) to see how their "Stage" composition scales and anchors in different environments.
+
+---
+
+### 2. Implementation: The Preview Toggle (`src/features/stage/HeadlessToggle.tsx`)
+
+This component manages the global `isPreviewMode` state, which triggers a high-level CSS class swap on the root workspace.
+
+```tsx
+// Resource: Headless Transition Logic
+export const HeadlessToggle = () => {
+  const { isPreviewMode, setPreviewMode } = useStudioStore();
+
+  return (
+    <button 
+      onClick={() => setPreviewMode(!isPreviewMode)}
+      className="fixed bottom-8 right-8 z-[100] bg-[#00ff9d] text-black font-black px-6 py-3 rounded-full shadow-glow flex items-center gap-3 hover:scale-105 transition-transform"
+    >
+      {isPreviewMode ? <EyeOff size={18} /> : <Play size={18} fill="black" />}
+      {isPreviewMode ? 'EXIT_SURGERY' : 'VIEW_PRODUCTION'}
+    </button>
+  );
+};
+
+```
+
+---
+
+### 3. Verification & Final Polish
+
+By toggling into Headless Mode, you can verify the "Vibe" of your creation without the distraction of tools. If **Errl** is floating and pulsing with a neon flicker, you can now see the pure aesthetic impact of those stacked mathematical oscillators.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#201** | Runtime JS Exporter initialized. | **DONE** |
+| **#202** | Headless Preview Mode functional. | **DONE** |
+| **#240** | **Step 240**: SVG Path Minification & Optimization. | **ACTIVE** |
+
+---
+
+### 4. Progress Track
+
+We are nearly at the end of the 250-step Master Plan. The core engine is built, the composition tools are live, and the export bridge is open.
+
+**Would you like to proceed to Step #240 to implement the "SVG Optimizer"? This utility will surgically clean up your path data, removing unnecessary decimals and metadata to ensure your exported characters are as lightweight as possible.**
+
+Would you like me to ...?

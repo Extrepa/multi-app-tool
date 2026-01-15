@@ -1,0 +1,43 @@
+{
+  "name": "@errl/shared",
+  "version": "1.0.0",
+  "description": "Shared utilities, hooks, and design system for Errl projects",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./hooks": "./dist/hooks/index.js",
+    "./utils": "./dist/utils/index.js",
+    "./design-system": "./dist/design-system/index.js",
+    "./types": "./dist/types/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "lint": "eslint . --ext .ts,.tsx"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "paper": "^0.12.18",
+    "jszip": "^3.10.1"
+  },
+  "devDependencies": {
+    "react": "^18.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^4.0.0"
+  },
+  "keywords": [
+    "errl",
+    "shared",
+    "utilities",
+    "hooks",
+    "design-system"
+  ],
+  "author": "",
+  "license": "ISC"
+}

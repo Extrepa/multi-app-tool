@@ -1,0 +1,62 @@
+We are now advancing to **Step #121: Initialize the Vibe Preset Library**. This module provides a set of pre-configured mathematical templates, allowing you to apply professional motion "personalities" to your characters and props with a single click.
+
+---
+
+### 1. The Preset Architecture
+
+A "Vibe Preset" is a collection of specific oscillator settings (Frequency, Amplitude, and Phase) that have been fine-tuned to evoke a particular emotion or physical state. By storing these in a library, you ensure consistency across different scenes and instances.
+
+| Preset Name | Target Emotion | Primary Oscillator | Math Configuration |
+| --- | --- | --- | --- |
+| **Neon Breathe** | Atmospheric / Ethereal | Pulse + Opacity | Slow frequency (), High amplitude. |
+| **Ghost Drift** | Spooky / Weightless | Float (-axis) | Very slow frequency (), Random phase. |
+| **Heartbeat** | Vital / Intense | Pulse () | High frequency (), Sudden amplitude spikes. |
+| **Jitter** | Nervous / High-energy | Shake () | Max frequency (), Low amplitude. |
+
+---
+
+### 2. Implementation: The Preset Store (`src/data/vibePresets.ts`)
+
+This static library acts as the "DNA" for the **Vibe Lab**, providing the data injected into the `updateVibe` action in the **Studio Store**.
+
+```typescript
+// Resource: Vibe Preset Definitions
+export const VibePresets = {
+  NEON_BREATHE: {
+    frequency: 0.5,
+    intensity: 0.8,
+    offset: 0,
+    type: 'PULSE'
+  },
+  GHOST_DRIFT: {
+    frequency: 0.2,
+    intensity: 0.4,
+    offset: Math.random() * 360,
+    type: 'FLOAT'
+  }
+};
+
+```
+
+---
+
+### 3. Integrated Preset UI
+
+The **Surgical Inspector** (Right Sidebar) now features a "Quick Presets" dropdown.
+
+* **One-Click Application**: Selecting a preset instantly updates the **Zustand Store**, which in turn updates the **Global Ticker** and the SVG on the **Stage**.
+* **Template Forking**: Users can apply a preset as a starting point and then use the **Speed** and **Intensity** sliders (Step #117) to customize the movement further.
+
+---
+
+### 4. Verification & Progress Track
+
+With the Preset Library initialized, you have moved from raw math to artistic expression.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#121** | Vibe Preset Library (Neon, Ghost, Heartbeat) initialized. | **DONE** |
+| **#122** | Multi-Vibe stacking logic implemented. | **ACTIVE** |
+| **#123** | Color-cycle vibes (SVG Stroke/Fill oscillators) initialized. | **ACTIVE** |
+
+**Would you like to proceed to Step #122 to implement "Multi-Vibe Stacking," allowing you to layer a "Heartbeat" pulse on top of a "Ghost Drift" float for complex, lifelike motion?**

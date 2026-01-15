@@ -1,0 +1,66 @@
+We are now advancing to **Step #141: Drag-and-Drop from Tray to Canvas**. This step bridges the **Library** and the **Stage**, enabling the "Director's" workflow by allowing you to spawn Forge-created assets into the world with a single motion.
+
+### 1. The Drag-and-Drop Pipeline
+
+To implement this, we use a custom drag handler that interfaces with the **Zustand Studio Store**. When an asset is dragged from the **Bottom Tray**, it carries its `assetId` as a data payload.
+
+* **Source (Tray):** Each item in the library is wrapped in a draggable container that stores the `assetId`.
+* **Target (Stage):** The Infinite Canvas acts as a drop zone, converting the drop's screen coordinates into SVG world coordinates.
+* **Spawn Logic:** On a successful drop, the `addInstance` action is triggered, creating a new "Stage Instance" linked to the original "Forge Asset".
+
+### 2. Implementation: The Drop Logic (`src/features/stage/StageDropZone.tsx`)
+
+This component handles the spatial translation needed to ensure the object appears exactly where your cursor is released.
+
+```tsx
+// Resource: Drag-and-Drop Coordinate Translation
+export const StageDropZone = () => {
+  const { addInstance } = useStudioStore();
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    const assetId = e.dataTransfer.getData("assetId");
+    
+    // Convert mouse pixels to Stage coordinates
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Trigger Step #141: New Instance Creation
+    addInstance(assetId, { x, y });
+  };
+
+  return (
+    <div 
+      onDragOver={(e) => e.preventDefault()} 
+      onDrop={handleDrop}
+      className="absolute inset-0 z-0"
+    />
+  );
+};
+
+```
+
+---
+
+### 3. Verification & Director Flow
+
+With Step #141 complete, the core "Create -> Animate -> Place" loop is functional.
+
+| Action | Result | System Update |
+| --- | --- | --- |
+| **Grab from Tray** | Visual "ghost" of the Pin appears. | UI State update. |
+| **Drop on Stage** | New object spawns at cursor. | `scene.instances` array grows. |
+| **Surgical Edit** | All instances update instantly. | "Zero-Latency" sync active. |
+
+---
+
+### 4. Progress Track
+
+We have now connected the Library, the Forge, and the Stage.
+
+* [x] **Step #141**: Drag-and-Drop from Tray to Canvas functional.
+* [ ] **Step #144**: Implement **Z-Index Reordering** in the Layer Tree.
+* [ ] **Step #146**: Add **Smart Snapping** and alignment guides.
+
+**Would you like to proceed to Step #144 to build the Z-Index reordering logic, so you can drag layers up and down to change which props appear in front of or behind each other?**

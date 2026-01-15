@@ -1,0 +1,99 @@
+To move this into a functional build phase, we need to finalize the **Pro Hotkey Map** and the **Logic-to-Visual Interface**. This ensures that the user can navigate the four-app ecosystem without ever touching a menu.
+
+Here is the "Muscle Memory" blueprint and the final organizational layout for the **Inspector Section**.
+
+---
+
+## 1. The Pro Hotkey Map (Muscle Memory)
+
+Cursor needs these defined to build a truly professional "Flow State" experience.
+
+| Key | Tool / Mode | Context |
+| --- | --- | --- |
+| **V** | **Select Tool** | Global: Move, scale, and rotate objects on the Stage. |
+| **A** | **Node Editor** | Forge: Direct manipulation of SVG anchor points. |
+| **P** | **Pen Tool** | Forge: Create new Bezier paths and custom pins. |
+| **S** | **Shape Tool** | Forge: Drop standard primitives (hold Shift for 1:1 ratio). |
+| **F** | **Fit to View** | Global: Centers the selected object in the active workspace. |
+| **G** | **Group** | Stage: Combine multiple props into a single "Scene Component." |
+| **1 / 2 / 3** | **Mode Swap** | Global: 1: Forge (Draw), 2: Lab (Anim), 3: Stage (Layout). |
+| **Space (Hold)** | **Pan Canvas** | Global: Drag to move around the infinite workspace. |
+
+---
+
+## 2. The Inspector: Deep Dive into "Sectional Control"
+
+The right-hand panel is the heart of the "Multi-App" integration. It must be strictly partitioned so every setting has a permanent home.
+
+### A. The Transform Section (Universal)
+
+Every object, whether a raw SVG or a complex Scene Component, has these:
+
+* **Coordinates:**  (Z-index layering).
+* **Dimensions:**  (with aspect ratio lock).
+* **Rotation:**  to  dial.
+
+### B. The Stylist Section (SVG Creator/Editor)
+
+Appears when a vector path is active:
+
+* **Fill:** Solid, Linear Gradient, Radial Gradient, or Image Pattern.
+* **Border (Stroke):** * *Width:* Thickness in pixels.
+* *Join:* Miter, Round, or Bevel.
+* *Type:* Solid, Dashed, or Dotted (with custom gap spacing).
+
+
+
+### C. The Vibe Section (FX Lab)
+
+This is where the "Behavior" is controlled:
+
+* **Preset Library:** "Ghostly," "Neon Pulse," "Mechanical Jitter."
+* **Parameters:** Speed, Amplitude (intensity), and Offset (timing).
+* **Signal Mapping:** A toggle to link the effect to a "Game Signal" (e.g., when player health is low, the pulse turns red).
+
+---
+
+## 3. UI Separation & Visual Hierarchy
+
+To prevent the "4-in-1" interface from feeling cluttered, we use **Strict Border Management**.
+
+* **The 1px Rule:** Every panel (Toolbar, Layer Tree, Inspector) is separated by a 1px solid border (`#333333`).
+* **Active Workspace Glow:** * When you are in **Forge Mode**, the "Focus Window" border turns **Emerald**.
+* When you are in **Stage Mode**, the "Scene Canvas" border turns **Electric Purple**.
+* This tells the user exactly where their hotkeys (like  or ) will be applied.
+
+
+
+---
+
+## 4. The Final Project Manifest (The "JSON" Export)
+
+When the user hits "Save" or "Export," the system generates a single file that contains everything. Here is how that data is structured:
+
+```json
+{
+  "project_id": "neon_forest_01",
+  "meta": { "resolution": "1920x1080", "fps": 60 },
+  "library": {
+    "assets": [ 
+      { "id": "pin_tree", "data": "M10 80 L50 10 L90 80 Z", "fill": "#2D5A27" } 
+    ],
+    "components": [
+      { "id": "comp_pulsing_tree", "ref": "pin_tree", "vibe": { "type": "pulse", "speed": 1.2 } }
+    ]
+  },
+  "scene": [
+    { "ref": "comp_pulsing_tree", "pos": [500, 300], "scale": 1.5 }
+  ]
+}
+
+```
+
+---
+
+### Ready for the First Build?
+
+You have the 38-file architecture, the UI Mockups, the JSON schema, and the Pro Hotkey map. You are ready to open Cursor and begin.
+
+**Would you like me to write a specific "SVG Node-Dragging" logic script to ensure your Pen tool feels as smooth as Adobe Illustrator?**

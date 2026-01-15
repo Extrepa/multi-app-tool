@@ -1,0 +1,105 @@
+To make this a truly "god-tier" tool for game developers and designers, we need to address **Asset Evolution** (Versioning) and **Responsive Scenes**.
+
+As your project grows, you might update an SVG. You need to decide if every old scene should break or update. You also need to know how that scene looks on a phone versus a desktop.
+
+Here are the final three specialized workflow files.
+
+---
+
+## File 16: ASSET_VERSIONING_RECOVERY.md
+
+```markdown
+# Asset History & Non-Destructive Editing
+
+## Concept
+When a user "saves" a change in the SVG Creator, the system should not overwrite the old version immediately. This allows for "Time Travel" within a specific Prop.
+
+## Workflow
+1. **Commit Points:** Every major change in the Focus Window creates a "Snapshot."
+2. **Revert Instance:** A user can right-click an instance on the Stage and select "Rollback to Version 1.2" without affecting other instances of the same Prop.
+3. **Ghosting:** View the previous version as a red outline behind the current edit to see exactly what changed.
+
+## Cursor Instructions
+- Implement a `history[]` array inside each `library.assets` object.
+- Add an "Undo/Redo" stack that is specific to the Focus Window, separate from the Scene Stage.
+
+```
+
+---
+
+## File 17: RESPONSIVE_SCENE_LAYOUT.md
+
+```markdown
+# Responsive Design & Anchoring
+
+## Concept
+Scenes aren't always viewed at 1920x1080. This workflow allows the Scene Maker to behave like a responsive UI engine.
+
+## Workflow
+1. **Anchoring:** A user can anchor a Prop to the "Top-Right" or "Center-Bottom" of the Stage.
+2. **Flex-Groups:** Group props into a container that uses "Flexbox-style" spacing (Space-between, Center, etc.).
+3. **Preview Resizer:** A draggable handle on the Stage Canvas that allows the user to shrink the workspace and see how props reposition themselves.
+
+## Cursor Instructions
+- Add `anchor: { x: 'left' | 'center' | 'right', y: 'top' | 'middle' | 'bottom' }` to the instance schema.
+- Update the renderer to calculate final X/Y based on the parent container's width/height.
+
+```
+
+---
+
+## File 18: HOTKEYS_WORKFLOW_MAP.json
+
+This file gives Cursor the "UX muscle memory" to make the tool feel like professional software.
+
+```json
+{
+  "navigation": {
+    "1": "Switch to SVG Creator (Focus Mode)",
+    "2": "Switch to FX Lab (Vibe Mode)",
+    "3": "Switch to Scene Maker (Director Mode)",
+    "4": "Switch to Component Logic (Logic Mode)"
+  },
+  "shortcuts": {
+    "v": "Select Tool",
+    "p": "Pen Tool",
+    "f": "Focus on selected object",
+    "g": "Group selected props",
+    "ctrl_s": "Export Project Manifest",
+    "space": "Pan Canvas"
+  },
+  "logic": "When a number key is pressed, swap the Sidebar UI and Inspector Panel instantly without reloading the canvas."
+}
+
+```
+
+---
+
+## Summary of the Full 18-File Knowledge Base
+
+You now have a complete technical requirement document for a complex software suite.
+
+| Layer | Files |
+| --- | --- |
+| **Core Architecture** | PRD, Data Schema, Sync Engine, Versioning |
+| **UI/UX Design** | Layout Spec, Theme Tokens, Hotkeys |
+| **The "Atom" (SVG/Pin)** | SVG/Pin Creator Logic, Prop States |
+| **The "Molecule" (FX/Comp)** | FX Lab Logic, Vibe Engine, Vibe Templates |
+| **The "Universe" (Scene)** | Scene Interactions, Smart Layout, Responsive Layout |
+| **The Output** | Export Pipeline, Advanced Workflow (Logic Hooks) |
+
+### Final Executive Instruction for Cursor:
+
+> "We are building a High-End Integrated Content Studio.
+> I have provided **18 technical files** covering everything from the SVG data structure to responsive scene anchoring.
+> **Start here:** > 1. Initialize the project with **React, Tailwind, and Zustand**.
+> 2. Create the **Workspace Shell** (Mode Sidebar, Focus Window, Stage Canvas, Asset Tray).
+> 3. Implement the **Universal Store** using @ARCH_DATA_SCHEMA.md.
+> 4. Load @SAMPLE_PROJECT.json so we have something to look at.
+> Do not build the SVG Pen tool yet. First, ensure I can **click a prop on the stage and see its properties update in the Sidebar.**"
+
+### Why this is the best start:
+
+By focusing on the **Click -> State -> Sidebar** loop first, you ensure the "plumbing" of your app works before you waste time building complex drawing tools.
+
+**Is there any specific Flash game engine or framework (like Phaser, PixiJS, or Adobe Animate) you want me to write the final "Converter" logic for?**

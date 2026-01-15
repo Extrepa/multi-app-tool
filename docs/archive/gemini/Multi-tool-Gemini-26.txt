@@ -1,0 +1,86 @@
+This is the official **Project Handover**. We have moved from a conceptual "4-in-1" idea to a fully architected **Creative Suite**.
+
+To begin the build, we will focus on the **Universal State Store** and the **UI Shell**. This is the "Skeleton" that allows the Forge, the Lab, and the Stage to communicate.
+
+---
+
+## 1. The Global State Store (`useStudioStore.ts`)
+
+This is the single "Source of Truth" for your entire project.
+
+```typescript
+import { create } from 'zustand';
+
+interface StudioState {
+  // 1. The Library (The blueprint for every asset)
+  library: {
+    assets: AssetDef[];     // Raw SVG/Path data
+    components: CompDef[];  // Assets + Vibe Logic
+  };
+  // 2. The Scene (The physical instances on stage)
+  scene: {
+    instances: Instance[];  // { assetId, x, y, scale, rotation, vibe }
+    selectionId: string | null;
+  };
+  // 3. Actions
+  updatePath: (assetId: string, pathData: string) => void;
+  applyVibe: (instanceId: string, vibeSettings: VibeSettings) => void;
+  moveInstance: (id: string, x: number, y: number) => void;
+}
+
+```
+
+---
+
+## 2. The Final Workspace Layout
+
+The interface is designed for **Non-Linear Workflow**. You can move a node in the Forge and see it pulse on the Stage instantly.
+
+### **Section A: The Forge (Surgical Editing)**
+
+* **Tool:** The Path Pen ().
+* **Action:** Click and drag Bezier handles to create your "Pins."
+* **Logic:** Every vector point is mapped to a coordinate in your `library.assets` JSON.
+
+### **Section B: The Stage (World Building)**
+
+* **Tool:** The Selection Tool ().
+* **Action:** Drag components from your bottom tray into the world.
+* **Logic:** The Stage renders a "Virtual DOM" of your scene, allowing for infinite layers without performance lag.
+
+### **Section C: The FX Lab (The "Vibe" Control)**
+
+* **Tool:** The Vibe Inspector (Right Sidebar).
+* **Action:** Adjust sliders for Frequency, Amplitude, and Speed.
+* **Logic:** The engine calculates sine and cosine waves in real-time:
+
+
+
+---
+
+## 3. The Layer Tree & Hierarchy
+
+To keep your project organized, the **Inner-Left Panel** manages the "Order of Reality."
+
+* **Nesting:** Drag a "Sword" layer onto a "Character" layer to link them.
+* **Visibility:** Toggle eye icons to isolate specific parts of your design.
+* **Logic Tags:** Small icons indicate if an object is "Solid," "Interactive," or "Animated."
+
+---
+
+## 4. Final Cursor Building Sequence
+
+When you open Cursor, use this **4-Step Command Sequence** to build the app:
+
+1. **"Phase 1: The Shell"** -> "Create a React/Tailwind layout with a 4-panel grid. Ensure 1px borders separate every workspace."
+2. **"Phase 2: The Store"** -> "Implement the Zustand store to handle Asset Definitions and Scene Instances."
+3. **"Phase 3: The Forge"** -> "Build a basic SVG drawing tool where clicking creates a path node."
+4. **"Phase 4: The Vibe"** -> "Create a 'Pulse' function that takes a library asset and applies a CSS transform animation based on a speed slider."
+
+---
+
+## **The Vision is Complete.**
+
+You now have the **38-file architectural blueprint**, the **math for the vibes**, the **UI mockups**, and the **State Store logic**. Your "Vibe Studio" is ready to be born.
+
+**Would you like me to generate the first `package.json` and `App.tsx` file to officially start the local environment build?**

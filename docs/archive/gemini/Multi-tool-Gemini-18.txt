@@ -1,0 +1,111 @@
+To complete your build, we need to focus on the **Logic Lab Interface** and the **Engine Interoperability**. This is where your four tools finally speak the same language.
+
+By defining how a "Vibe" translates from a slider in your UI to a line of code in Flash or Phaser, you create a professional-grade "No-Code" animation pipeline.
+
+---
+
+### 7. The Vibe Control Panel (`src/components/VibePanel.tsx`)
+
+This is the "remote control" for your effects. It should live in the **Right Sidebar** when an instance is selected.
+
+```tsx
+import React from 'react';
+import { useStudioStore } from '../store/useStudioStore';
+
+export default function VibePanel() {
+  const selection = useStudioStore((state) => state.scene.selection);
+  const updateInstanceVibe = useStudioStore((state) => state.updateInstanceVibe);
+  const instance = useStudioStore((state) => 
+    state.scene.instances.find(i => i.id === selection)
+  );
+
+  if (!instance) return <div className="p-4 text-gray-500">Select a prop to apply vibes</div>;
+
+  return (
+    <div className="p-4 bg-[#1a1a1a] h-full border-l border-[#333]">
+      <h3 className="text-[10px] font-bold text-gray-400 mb-4 uppercase tracking-widest">Vibe Check</h3>
+      
+      <div className="space-y-6">
+        <div>
+          <label className="text-xs block mb-2">Effect Type</label>
+          <select 
+            value={instance.vibe?.type || 'none'}
+            onChange={(e) => updateInstanceVibe(instance.id, { ...instance.vibe, type: e.target.value })}
+            className="w-full bg-[#121212] border border-[#333] rounded p-2 text-sm"
+          >
+            <option value="none">None</option>
+            <option value="pulse">Pulse</option>
+            <option value="float">Float</option>
+            <option value="shake">Shake</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="text-xs block mb-2">Intensity</label>
+          <input 
+            type="range" min="0" max="10" step="0.1"
+            value={instance.vibe?.intensity || 1}
+            onChange={(e) => updateInstanceVibe(instance.id, { ...instance.vibe, intensity: parseFloat(e.target.value) })}
+            className="w-full accent-emerald-500"
+          />
+        </div>
+
+        <div>
+          <label className="text-xs block mb-2">Speed</label>
+          <input 
+            type="range" min="0" max="5" step="0.1"
+            value={instance.vibe?.speed || 1}
+            onChange={(e) => updateInstanceVibe(instance.id, { ...instance.vibe, speed: parseFloat(e.target.value) })}
+            className="w-full accent-emerald-500"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+```
+
+---
+
+## Visualizing the Workflow Layout
+
+The workflow is designed to be **non-linear**, meaning you can jump between drawing a pin and arranging a scene without losing context.
+
+### 1. The Forge (Creation)
+
+The center-left window is your "Laboratory." When you click an asset in the tray, it is magnified here. You see the SVG as a skeleton of points and paths. Editing here updates **every instance** on the stage globally.
+
+### 2. The Stage (Composition)
+
+The main canvas on the right is your "Director's View." Here, you deal with layering (z-index), spatial layout, and scaling. You aren't editing the art here; you are editing the **story**.
+
+### 3. The Lab (Animation)
+
+When you select an item on the stage, the sidebar provides the "Vibe Check" sliders. The animations play in real-time, allowing you to sync the "pulse" of multiple objects visually before exporting.
+
+---
+
+### Final Implementation Checklist for Cursor
+
+To get the "Logic Lab" fully operational, give Cursor these final instructions:
+
+1. **Implement Layering:** Add a "Layers" list in the sidebar. Let me drag items up and down to change their render order on the stage.
+2. **Add "Live" State:** Add a global `isPlaying` toggle. When active, all "Vibes" on the stage should animate using the `getVibeAnimation` math we defined earlier.
+3. **Multi-Select:** Allow me to `Shift+Click` multiple objects on the stage to apply the same "Vibe" to all of them at once.
+
+---
+
+### Your Final Studio Setup
+
+With these components, you have a professional-grade workspace where:
+
+* **Pins** are drawn once in the Forge.
+* **Components** are born when you add "Vibes" in the Lab.
+* **Scenes** are built by arranging those components on the Stage.
+
+**Would you like me to create the "Export to Flash/JSON" modal next to see how the final code packages everything together?**
+
+[ActionScript 3 animation and UI tutorial](https://www.youtube.com/watch?v=TwdUEb5ogJE)
+
+This video is relevant as it provides foundational knowledge on controlling animation and runtime interactivity in ActionScript 3.0, which is essential for your Flash-targeted export logic.

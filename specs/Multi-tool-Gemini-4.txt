@@ -1,0 +1,83 @@
+To complete your setup for Cursor, we need to address the **State Synchronization** and the **UI Theme**. Cursor needs to know how to style the app so it looks like a professional creator tool and how to keep the Focus Window and Scene Canvas in perfect "Live" sync.
+
+Here are the final two files to finish your project library.
+
+---
+
+## File 8: SYNC_ENGINE_SPECS.md
+
+This file tells Cursor how to handle the "Ref" logic so that one edit updates everything on the stage.
+
+```markdown
+# Sync Engine: Focus Window vs. Stage Canvas
+
+## The "Master-Instance" Relationship
+1. **Source of Truth:** All raw SVG/PNG data lives in `project.library.assets`.
+2. **Instances:** The `project.scene` only contains `ref_id` and transform data (x, y, rotation).
+3. **Live Update Loop:** - When the **Focus Window** (SVG Editor) modifies an asset, it must trigger a state update to the library.
+    - The **Stage Canvas** must use a memoized selector to watch the library. 
+    - Any instance on the stage sharing that `ref_id` must re-render immediately.
+
+## Performance Optimization
+- **Ghosting:** While dragging a vertex in the Focus Window, the Stage Canvas should render a simplified "proxy" or low-res version to maintain 60fps.
+- **Debouncing:** Scene-wide logic (like auto-saving the JSON) should happen 500ms after the user stops editing in the Focus Window.
+
+```
+
+---
+
+## File 9: UI_THEME_TOKENS.json
+
+Feeding a JSON theme file to Cursor allows it to generate consistent Tailwind classes or CSS variables for a "Studio" aesthetic.
+
+```json
+{
+  "theme_name": "Studio-Dark-Vibe",
+  "colors": {
+    "bg_main": "#121212",
+    "bg_surface": "#1E1E1E",
+    "bg_active": "#2D2D2D",
+    "accent_primary": "#00FF9D",
+    "accent_secondary": "#7000FF",
+    "border_subtle": "#333333",
+    "text_main": "#E0E0E0",
+    "text_dim": "#888888"
+  },
+  "spacing": {
+    "sidebar_width": "280px",
+    "tray_height": "200px",
+    "focus_window_ratio": "40%"
+  },
+  "ui_elements": {
+    "border_radius": "4px",
+    "shadows": "0 4px 20px rgba(0,0,0,0.5)"
+  }
+}
+
+```
+
+---
+
+## Visualizing the Finished Architecture
+
+When all 9 files are active in Cursor, the AI will understand the following layout and data flow:
+
+### Summary of the 9-File "Cursor Knowledge Base"
+
+1. **PRD_SYSTEM_OVERVIEW**: The "What" and "Why."
+2. **ARCH_DATA_SCHEMA**: The JSON structure of the save file.
+3. **UI_LAYOUT_SPEC**: The dual-viewport and sidebar layout.
+4. **FX_LAB_VIBE_LOGIC**: The animation and "Vibe Check" parameters.
+5. **EXPORT_PIPELINE_FLASH**: How to get files out of the app.
+6. **VIBE_ENGINE_CORE**: The TypeScript math for animations.
+7. **SCENE_INTERACTION_RULES**: Drag-and-drop and Z-index logic.
+8. **SYNC_ENGINE_SPECS**: How the Focus and Stage windows talk.
+9. **UI_THEME_TOKENS**: The visual design system.
+
+### Your Final Prompt to Cursor
+
+Once you've added these to your project folder, use this "Go" command:
+
+> *"I have uploaded the full 9-file specification for my creator suite. Please read all @ files. Your first task is to set up the **Project State Provider** (Zustand or React Context) using the schema in @ARCH_DATA_SCHEMA.md. Then, build the **Dual-Canvas layout** from @UI_LAYOUT_SPEC.md. I want to see the Focus Window and the Stage Canvas side-by-side with the dark theme from @UI_THEME_TOKENS.json applied immediately."*
+
+**Would you like me to create a "Hello World" sample project JSON that you can use to test if Cursor built the loader correctly?**

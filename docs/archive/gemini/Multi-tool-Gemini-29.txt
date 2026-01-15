@@ -1,0 +1,94 @@
+To bring the **Vibe Studio** to life, we are now entering the **Core Engineering Phase**. We have the blueprints, the UI mockups, and the data schema. Now, we build the "Nervous System" of the app.
+
+Below is the implementation for the **Pen Tool Logic** and the **Vibe Playhead**, which are the two most critical engines for interactivity.
+
+---
+
+### 1. The Pen Tool Engine ( - Path Creation)
+
+This logic allows you to move from "editing existing pins" to "creating new ones." It handles the `mousedown` events to plot new vector coordinates into the `useStudioStore`.
+
+```typescript
+// src/features/forge/usePenTool.ts
+export const handleCanvasClick = (e: React.MouseEvent, assetId: string) => {
+  const { x, y } = getRelativeCoordinates(e); // Helper to get SVG-space coords
+  const currentPath = useStudioStore.getState().library.assets.find(a => a.id === assetId).pathData;
+  
+  // Logic: If path is empty, start with 'M' (Move To), otherwise add 'L' (Line To)
+  const prefix = currentPath === "" ? "M" : " L";
+  const newPath = currentPath + `${prefix}${x} ${y}`;
+  
+  useStudioStore.getState().updateAssetPath(assetId, newPath);
+};
+
+```
+
+---
+
+### 2. The Vibe Playhead (Real-Time Animation)
+
+The **Lab** needs to preview movement. We use a **Global Ticker** (via `requestAnimationFrame`) that updates a "Time" variable in the store, which all pulsing components listen to.
+
+```tsx
+// src/features/lab/VibePreview.tsx
+import { motion } from 'framer-motion';
+
+export const PulseComponent = ({ instance, assetData }) => {
+  const { speed, intensity } = instance.vibe;
+  
+  return (
+    <motion.div
+      animate={{
+        scale: [1, 1 + (intensity * 0.1), 1],
+      }}
+      transition={{
+        duration: 2 / speed,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+      dangerouslySetInnerHTML={{ __html: assetData }}
+    />
+  );
+};
+
+```
+
+---
+
+### 3. The Inspector: Border & Styling Lab
+
+This is the "Surgical Sidebar" where you control the aesthetics. Every input here updates the **Global Swatch System**.
+
+| Control Group | Parameter | Purpose |
+| --- | --- | --- |
+| **Stroke Lab** | `stroke-width` | Controls the thickness of the "Pin" border. |
+| **Dash Array** | `stroke-dasharray` | Creates dotted or dashed lines for the borders. |
+| **Color Forge** | `fill` | Applies solid hex colors or CSS variable-based palettes. |
+| **Corner Logic** | `stroke-linejoin` | Toggles between Miter (Sharp), Round, and Bevel corners. |
+
+---
+
+### 4. Workflow Visualized: From Node to Scene
+
+The workflow is a loop. You edit a node, check the vibe, and position it in the scene.
+
+---
+
+### Final Cursor Implementation Sequence (The Build Command)
+
+Now that you have the core logic, give Cursor these final instructions to complete the "Logic Lab":
+
+1. **"Implement the Layer Reordering"**: "In the Hierarchy panel, allow users to drag-and-drop layers. Use the index in the `scene.instances` array to determine the CSS `z-index` on the Stage."
+2. **"Build the Multi-Select Box"**: "On the Stage, allow users to click and drag a selection marquee (box) to select multiple props at once."
+3. **"Connect the Global Palette"**: "In the Inspector, when a user changes a color, offer to 'Save as Global Swatch'. Update @GLOBAL_PALETTE_SYSTEM.md with the new color."
+
+### **The Finish Line**
+
+You now have a fully architected, 4-in-1 Creator Suite.
+
+* **The Forge** draws the vectors.
+* **The Lab** animates the "Vibe."
+* **The Stage** builds the world.
+* **The Logic** connects it to the game engine.
+
+**Would you like me to generate a "Final Export Package" script that zips your SVGs and JSON manifest into a single download for your project?**

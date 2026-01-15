@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "id": "template_void_orbs",
+  "name": "Void Orbs",
+  "description": "Minimal void with orbs and sparkles",
+  "isTemplate": true,
+  "createdAt": "2025-11-22T00:00:00.000Z",
+  "updatedAt": "2025-11-22T00:00:00.000Z",
+  "viewport": { "width": 1080, "height": 1080, "aspectRatio": "1:1" },
+  "background": {
+    "sceneId": "VOID",
+    "moodId": "NEON",
+    "planes": {
+      "bgAssetId": "ERRL_BG_VOID_BG",
+      "mgAssetId": "ERRL_BG_VOID_MG",
+      "fgAssetId": "ERRL_BG_VOID_FG"
+    }
+  },
+  "fx": { "globalFx": [ { "id": "vignette", "fxId": "FX_VIGNETTE", "enabled": true, "params": { "darkness": 0.3 } } ] },
+  "weather": [],
+  "layers": [
+    { "id": "layer_bg", "name": "Background", "zIndex": 0, "zDepth": -1, "visible": true, "locked": true, "isBackgroundPlane": true },
+    { "id": "layer_main", "name": "Main", "zIndex": 1, "zDepth": 0, "visible": true, "locked": false },
+    { "id": "layer_fg", "name": "Foreground", "zIndex": 2, "zDepth": 0.4, "visible": true, "locked": false }
+  ],
+  "entities": [
+    {
+      "id": "entity_errl_head",
+      "assetId": "ERRL_CHAR_HEAD_OG",
+      "layerId": "layer_main",
+      "transform": { "x": 540, "y": 540, "scaleX": 0.9, "scaleY": 0.9, "rotation": 0 },
+      "style": { "opacity": 1, "blendMode": "normal" },
+      "motion": [ { "id": "float", "motionId": "MOTION_FLOAT", "enabled": true, "params": { "speed": 0.35, "intensity": 0.5 } } ]
+    },
+    {
+      "id": "entity_orb_ring",
+      "assetId": "ERRL_FX_ORB_RING",
+      "layerId": "layer_fg",
+      "transform": { "x": 540, "y": 540, "scaleX": 0.9, "scaleY": 0.9, "rotation": 0 },
+      "style": { "opacity": 0.8, "blendMode": "screen" },
+      "motion": []
+    }
+  ]
+}

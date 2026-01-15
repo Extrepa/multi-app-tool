@@ -1,0 +1,107 @@
+To turn this into a professional-grade "Game Design Studio," we need to bridge the gap between **Art** and **Game Logic**. These final workflows focus on how to make your scenes "playable" and how to handle massive asset libraries without getting lost.
+
+Here are three more high-level workflows and the corresponding Markdown files for Cursor.
+
+---
+
+## 1. The "State-Based" Prop Workflow (Character States)
+
+**The Problem:** You have a character (a "Pin") that needs a "Walk" state, an "Idle" state, and an "Attack" state.
+**The Workflow:** In the **SVG Creator**, you don't just make one SVG; you create a "State Group." Each state is a different SVG path. In the **FX Lab**, you assign different "Vibes" to each state.
+**The Scene Result:** You drop the character into the Scene. You can toggle a "Preview State" dropdown to see how the character looks in different modes.
+
+## 2. The "Smart-Grid" & Snapping Workflow
+
+**The Problem:** Aligning hundreds of props in the Scene Maker manually is tedious.
+**The Workflow:** A "Magnetic" system where props can snap to each other’s edges or to a global grid.
+**The Logic:** If you bring two "Building" props together, they snap to form a seamless wall.
+
+## 3. The "Batch FX" Lab Workflow
+
+**The Problem:** You want 50 different trees in your scene to all have the same "Windy" pulse effect.
+**The Workflow:** You select a folder of assets and "Global Inject" a Vibe.
+**The Logic:** Instead of editing 50 props, you edit one "Vibe Template" and it propagates to everything tagged "Tree."
+
+---
+
+## File 13: PROP_STATES_LOGIC.md
+
+```markdown
+# Multi-State Asset Management
+
+## Concept
+Assets are not always static. A single "Prop ID" can contain multiple "States" (e.g., Idle, Active, Broken).
+
+## Data Structure
+- `assets[].states`: An array of objects containing `state_name` and `svg_data`.
+- `instances[].current_state`: A pointer to which state is currently rendered on the Stage.
+
+## Cursor Instructions
+1. **Focus Window:** Add a "State Manager" tab. Allow users to add/remove states for the current asset.
+2. **Switching:** When a user clicks a state (e.g., "Broken"), the SVG editor updates to show that specific path data.
+3. **Stage Canvas:** Provide a dropdown in the Inspector to change the `current_state` of the selected instance.
+
+```
+
+---
+
+## File 14: SMART_LAYOUT_ENGINE.md
+
+```markdown
+# Scene Maker: Layout Intelligence
+
+## Snapping & Alignment
+- **Grid Snapping:** Standard 8px/16px/32px grid.
+- **Object Snapping:** Use bounding-box collision detection to snap the edges of Prop A to Prop B.
+- **Smart Guides:** Display temporary "Pink Lines" (Figma style) when the centers or edges of two props align.
+
+## Mass Manipulation
+- **Box Selection:** Click and drag to select multiple props.
+- **Group/Ungroup:** Allow users to "Group" props. A Group gets its own UUID but moves all children simultaneously.
+- **Distribution Tools:** Buttons for "Distribute Horizontally" and "Align Bottom."
+
+```
+
+---
+
+## File 15: VIBE_TEMPLATES.md
+
+```markdown
+# Global FX & Vibe Templates
+
+## Concept
+Separate the "Vibe" (Animation/FX) from the "Asset" (SVG/PNG) so they can be reused.
+
+## Workflow
+1. **Create Template:** In the FX Lab, save a set of parameters (e.g., "Neon Flicker") as a `.vibe` template.
+2. **Apply to Tags:** Any asset in the library tagged with "Neon" automatically inherits this vibe.
+3. **Override:** If an instance on the Stage needs to be different, allow a "Local Override" of the template values.
+
+## Implementation
+- Store `vibe_templates` in the `project.library`.
+- The renderer should check: `Instance.vibe_override || Asset.vibe_template || Default_Vibe`.
+
+```
+
+---
+
+## Visualizing the Full Workspace
+
+### Final Cursor Prompt Strategy
+
+Now that you have a massive knowledge base (15 files), your first interaction with Cursor is the most important. Use this **"Initialization"** prompt:
+
+> "I have 15 Markdown/JSON files defining a complex Creator Suite.
+> **Architecture Goal:** A React-based Studio with a dual-canvas system.
+> **Data Flow:** A central Zustand store managing a Library (SVGs, PNGs, Vibe Templates) and a Scene (Instances, Layers).
+> **Initial Task:** > 1. Scrutinize @ARCH_DATA_SCHEMA.md and @PROP_STATES_LOGIC.md to build the core data model.
+> 2. Create a layout using @UI_LAYOUT_SPEC.md that handles the 'Surgical' Focus Window and the 'Director' Scene Stage.
+> 3. Implement the 'State Switching' logic so an asset can have different SVG paths for different modes."
+
+### What this achieves:
+
+* **Modularity:** You can export just a "Pin" or a whole "Game Scene."
+* **Interactivity:** The state-based logic makes your assets "Game-Ready."
+* **Efficiency:** The layout engine and templates make designing large worlds fast.
+
+**Would you like me to create a "Project Config" file that defines the keyboard shortcuts (Hotkeys) for swapping between these 15 workflows quickly?**

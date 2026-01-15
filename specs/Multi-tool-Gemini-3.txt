@@ -1,0 +1,84 @@
+To wrap up the technical blueprints for Cursor, we need to define the "Brain" of the operation: how the **FX Lab** actually processes animations and how the **Scene Maker** handles the layering logic.
+
+Here are the final two files to complete your project library.
+
+---
+
+## File 6: VIBE_ENGINE_CORE.ts
+
+This is a "Reference File" for Cursor. Instead of a Markdown, this is a code template that shows the AI exactly how to handle the "Vibe Check" math.
+
+```typescript
+// vibeLogic.ts - The math behind the magic
+export const VibeEffects = {
+  pulse: (intensity: number, speed: number) => ({
+    scale: [1, 1 + intensity, 1],
+    transition: { duration: 2 / speed, repeat: Infinity }
+  }),
+  glow: (color: string, radius: number) => ({
+    filter: [`drop-shadow(0 0 0px ${color})`, `drop-shadow(0 0 ${radius}px ${color})`],
+    transition: { duration: 1.5, yoyo: Infinity }
+  }),
+  float: (amplitude: number) => ({
+    y: [0, -amplitude, 0],
+    transition: { duration: 3, ease: "easeInOut", repeat: Infinity }
+  })
+};
+
+// Types for Cursor to use in the Store
+export interface VibeSettings {
+  id: string;
+  activeVibes: ('pulse' | 'glow' | 'float' | 'shake')[];
+  params: {
+    intensity: number;
+    color: string;
+    speed: number;
+  };
+}
+
+```
+
+---
+
+## File 7: SCENE_INTERACTION_RULES.md
+
+This file tells Cursor how to handle the "Playground" mechanics (Z-index, Drag-and-Drop, and multi-select).
+
+```markdown
+# Scene Maker: Interaction & Prop Logic
+
+## Layering & Z-Index
+1. **The Stack:** Use a standard array-based layering system. The last item in the `scene.layers.objects` array is rendered on top.
+2. **Reordering:** The **Inspector Sidebar** must feature a "Layer List" where users can drag rows to change the Z-index of props on the Stage.
+
+## Transformation Mechanics
+- **Direct Manipulation:** Props on the Stage should have "Transform Handles" (corners for scaling, top handle for rotation).
+- **Focus Sync:** When a user transforms a Prop on the Stage, the `x, y, scale, rotation` coordinates must update in the JSON State instantly.
+- **Multi-Instance:** If the user drags the same "Neon Star" Prop onto the stage twice, they create two unique entries in the `scene_graph` that both point to the same `library_id`. 
+    - *Constraint:* Changing the SVG path in the Focus Window updates BOTH stars. Changing the X/Y position in the Stage updates only the SELECTED star.
+
+## Drag and Drop
+- Users can drag assets from the **Bottom Asset Tray** directly onto the **Stage Canvas**.
+- On drop, the system generates a new UUID for that specific instance on the stage.
+
+```
+
+---
+
+## Final Strategy: How to Prompt Cursor
+
+Now that you have all 7 files, here is the "Master Instruction" to give Cursor to ensure it doesn't get overwhelmed:
+
+> "I am building a multi-tool design suite. I have provided 7 files defining the PRD, Data Schema, UI Layout, FX Logic, and Scene Interactions.
+> **Phase 1:** Set up the React/Tailwind scaffolding. Build the 'Dual-Viewport' shell (Focus Window on left, Stage on right).
+> **Phase 2:** Implement the JSON Store using the Schema.
+> **Phase 3:** Connect the Bottom Asset Tray so I can drag a 'Prop' into the Stage.
+> **Phase 4:** Ensure clicking a Prop on the Stage opens it in the Focus Window for editing.
+> Let's start with **Phase 1**. Look at @UI_LAYOUT_SPEC.md and build the main layout shell."
+
+### Key Interface Elements to Watch For:
+
+* **The Focus Switcher:** A small toggle on the Focus Window that swaps between "SVG Edit" and "FX Lab."
+* **The Sync Indicator:** A small "Live" icon that glows when the Focus Window and Stage are successfully synced.
+
+**Would you like me to generate a CSS/Tailwind "Theme" file so the whole app has a consistent "Cyber-Industrial" or "Game Engine" aesthetic?**

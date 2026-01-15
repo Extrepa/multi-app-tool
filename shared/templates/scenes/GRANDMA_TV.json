@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "id": "template_grandma_tv",
+  "name": "Grandma TV Shrine",
+  "description": "Cozy living room with Errl head and vintage TV",
+  "isTemplate": true,
+  "createdAt": "2025-11-22T00:00:00.000Z",
+  "updatedAt": "2025-11-22T00:00:00.000Z",
+  "viewport": { "width": 1920, "height": 1080, "aspectRatio": "16:9" },
+  "background": {
+    "sceneId": "GRANDMAROOM",
+    "moodId": "WARM_COZY",
+    "planes": {
+      "bgAssetId": "ERRL_BG_GRANDMAROOM_BG",
+      "mgAssetId": "ERRL_BG_GRANDMAROOM_MG",
+      "fgAssetId": "ERRL_BG_GRANDMAROOM_FG"
+    }
+  },
+  "fx": { "globalFx": [ { "id": "fx_grain", "fxId": "FX_GRAIN", "enabled": true, "params": { "strength": 0.2 } } ] },
+  "weather": [],
+  "layers": [
+    { "id": "layer_bg", "name": "Background", "zIndex": 0, "zDepth": -1, "visible": true, "locked": true, "isBackgroundPlane": true },
+    { "id": "layer_main", "name": "Main", "zIndex": 1, "zDepth": 0, "visible": true, "locked": false },
+    { "id": "layer_fg", "name": "Foreground", "zIndex": 2, "zDepth": 0.5, "visible": true, "locked": false }
+  ],
+  "entities": [
+    {
+      "id": "entity_errl_head",
+      "assetId": "ERRL_CHAR_HEAD_HAPPY",
+      "layerId": "layer_main",
+      "transform": { "x": 780, "y": 520, "scaleX": 0.9, "scaleY": 0.9, "rotation": 0 },
+      "style": { "opacity": 1, "blendMode": "normal" },
+      "motion": [ { "id": "float", "motionId": "MOTION_FLOAT", "enabled": true, "params": { "speed": 0.3, "intensity": 0.4 } } ]
+    },
+    {
+      "id": "entity_tv",
+      "assetId": "ERRL_PROP_TV_GRANDMA_V2_ROUNDED",
+      "layerId": "layer_main",
+      "transform": { "x": 1120, "y": 700, "scaleX": 0.9, "scaleY": 0.9, "rotation": 0 },
+      "style": { "opacity": 1, "blendMode": "normal" },
+      "motion": []
+    }
+  ]
+}

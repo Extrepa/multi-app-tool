@@ -1,0 +1,169 @@
+This is the implementation of **Step #005**: the 4-panel production grid for the **Vibe Studio** workspace. This shell provides the "Surgical" layout required for professional vector editing and real-time animation previews.
+
+---
+
+### **1. Studio Workspace Shell (`StudioApp.tsx`)**
+
+This layout utilizes a nested flex and grid approach to ensure the 1px high-contrast borders remain crisp across all resolutions.
+
+```tsx
+import React from 'react';
+import { 
+  PenTool, MousePointer2, Play, LayoutGrid, 
+  Layers, Settings, Box, Share2 
+} from 'lucide-react';
+
+export default function StudioApp() {
+  return (
+    <div className="h-screen w-screen bg-[#050508] text-[#e0e0e0] flex flex-col overflow-hidden font-sans">
+      
+      {/* 1. GLOBAL TOOLBAR (TOP) */}
+      <header className="h-12 border-b border-[#222] bg-[#0A0A0F] flex items-center justify-between px-4 z-50">
+        <div className="flex items-center gap-6">
+          <div className="text-[#00ff9d] font-black tracking-tighter text-xl">VIBE.</div>
+          <nav className="flex bg-[#13131f] rounded-md p-1 border border-[#333]">
+            <button className="px-3 py-1 bg-[#b026ff] text-white rounded text-xs font-bold">FORGE</button>
+            <button className="px-3 py-1 text-gray-500 hover:text-white text-xs font-bold">LAB</button>
+            <button className="px-3 py-1 text-gray-500 hover:text-white text-xs font-bold">STAGE</button>
+          </nav>
+        </div>
+        <div className="flex items-center gap-4">
+          <button className="text-gray-500 hover:text-white"><Settings size={18} /></button>
+          <button className="bg-[#00ff9d]/10 text-[#00ff9d] px-3 py-1 rounded text-xs font-mono border border-[#00ff9d]/20">
+            EXPORT_JSON
+          </button>
+        </div>
+      </header>
+
+      <div className="flex flex-1 overflow-hidden">
+        
+        {/* 2. HIERARCHY & TOOLBOX (LEFT) */}
+        <aside className="w-64 border-r border-[#222] bg-[#0A0A0F] flex flex-col">
+          <div className="flex-1 border-b border-[#222] overflow-y-auto">
+            <div className="p-2 border-b border-[#222] text-[10px] font-bold text-gray-600 uppercase tracking-widest">Hierarchy</div>
+            <div className="p-4 space-y-2">
+              <div className="flex items-center gap-2 text-sm text-[#00ff9d] bg-[#00ff9d]/5 p-2 rounded border border-[#00ff9d]/10">
+                <Box size={14} /> Main_Pin_01
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-400 p-2 hover:bg-white/5 rounded cursor-pointer">
+                <Box size={14} /> Shadow_Layer
+              </div>
+            </div>
+          </div>
+          <div className="h-48 bg-[#0F0F15] p-3">
+             <div className="text-[10px] font-bold text-gray-600 uppercase mb-4">Quick_Tools</div>
+             <div className="grid grid-cols-4 gap-2">
+                <button className="aspect-square bg-[#b026ff] rounded flex items-center justify-center"><PenTool size={16}/></button>
+                <button className="aspect-square bg-[#222] rounded flex items-center justify-center hover:bg-[#333]"><MousePointer2 size={16}/></button>
+                <button className="aspect-square bg-[#222] rounded flex items-center justify-center hover:bg-[#333]"><LayoutGrid size={16}/></button>
+                <button className="aspect-square bg-[#222] rounded flex items-center justify-center hover:bg-[#333]"><Layers size={16}/></button>
+             </div>
+          </div>
+        </aside>
+
+        {/* 3. INFINITE CANVAS (CENTER) */}
+        <main className="flex-1 relative bg-[#050508] overflow-hidden group">
+          {/* Subtle Grid Overlay */}
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+               style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 0)', backgroundSize: '24px 24px' }} />
+          
+          <div className="absolute inset-0 flex items-center justify-center">
+             {/* The Forge Drawing Area */}
+             <div className="w-[400px] h-[400px] border border-dashed border-[#333] relative">
+                <div className="absolute -top-6 left-0 text-[10px] font-mono text-gray-600 uppercase">Viewbox: 100x100</div>
+                {/* SVG Render Target */}
+                <svg viewBox="0 0 100 100" className="w-full h-full">
+                   <path d="M50,10 L90,90 L10,90 Z" fill="none" stroke="#00ff9d" strokeWidth="2" />
+                </svg>
+             </div>
+          </div>
+
+          {/* 4. ASSET TRAY (BOTTOM) */}
+          <div className="absolute bottom-0 left-0 right-0 h-40 bg-[#0A0A0F] border-t border-[#222]">
+            <div className="p-2 border-b border-[#222] text-[10px] font-bold text-gray-600 uppercase tracking-widest flex justify-between">
+              <span>Library_Asset_Tray</span>
+              <span className="text-[#00ff9d]">2 Assets Loaded</span>
+            </div>
+            <div className="p-4 flex gap-4 overflow-x-auto">
+               <div className="h-24 w-24 bg-[#13131f] border border-[#333] rounded hover:border-[#b026ff] cursor-pointer flex items-center justify-center">
+                  <span className="text-[10px] font-mono text-gray-600">PIN_01</span>
+               </div>
+               <div className="h-24 w-24 bg-[#13131f] border border-[#333] rounded hover:border-[#b026ff] cursor-pointer flex items-center justify-center">
+                  <span className="text-[10px] font-mono text-gray-600">STAR_01</span>
+               </div>
+            </div>
+          </div>
+        </main>
+
+        {/* 5. SURGICAL INSPECTOR (RIGHT) */}
+        <aside className="w-80 border-l border-[#222] bg-[#0A0A0F] overflow-y-auto">
+           <div className="p-2 border-b border-[#222] text-[10px] font-bold text-gray-600 uppercase tracking-widest">Surgical_Inspector</div>
+           
+           <div className="p-4 space-y-6">
+              {/* Transform Section */}
+              <section>
+                <h3 className="text-xs font-bold text-gray-400 uppercase mb-3 tracking-tighter">Transform</h3>
+                <div className="grid grid-cols-2 gap-4">
+                   <div>
+                      <label className="text-[10px] font-mono text-gray-600 block mb-1">POS_X</label>
+                      <input type="text" value="50.00" className="w-full bg-[#13131f] border border-[#222] rounded p-1 text-xs font-mono outline-none focus:border-[#00ff9d]" />
+                   </div>
+                   <div>
+                      <label className="text-[10px] font-mono text-gray-600 block mb-1">POS_Y</label>
+                      <input type="text" value="50.00" className="w-full bg-[#13131f] border border-[#222] rounded p-1 text-xs font-mono outline-none focus:border-[#00ff9d]" />
+                   </div>
+                </div>
+              </section>
+
+              {/* Vibe Lab Section */}
+              <section className="pt-6 border-t border-[#222]">
+                 <h3 className="text-xs font-bold text-[#b026ff] uppercase mb-3 tracking-tighter flex items-center gap-2">
+                    <Play size={12} fill="#b026ff" /> Vibe_Lab
+                 </h3>
+                 <div className="space-y-4">
+                    <div>
+                       <div className="flex justify-between text-[10px] font-mono text-gray-600 mb-1">
+                          <span>INTENSITY</span>
+                          <span>75%</span>
+                       </div>
+                       <input type="range" className="w-full accent-[#b026ff]" />
+                    </div>
+                    <div>
+                       <div className="flex justify-between text-[10px] font-mono text-gray-600 mb-1">
+                          <span>FREQUENCY</span>
+                          <span>1.2Hz</span>
+                       </div>
+                       <input type="range" className="w-full accent-[#b026ff]" />
+                    </div>
+                 </div>
+              </section>
+           </div>
+        </aside>
+
+      </div>
+    </div>
+  );
+}
+
+```
+
+---
+
+### **2. Key UI Interactions**
+
+* **The Surgical Border:** Every workspace is separated by a `#222` border to prevent visual bleeding while working at high zoom.
+* **Mode Awareness:** The header's mode switcher (Forge, Lab, Stage) will eventually swap the contents of the **Inspector** and **Toolbox**.
+* **Non-Destructive Inspector:** Sliders in the **Vibe Lab** calculate the mathematical oscillation in real-time without altering the base vector coordinates.
+
+---
+
+### **3. Verification Check**
+
+| Module | Target | Status |
+| --- | --- | --- |
+| **Header** | Mode toggles & Export | **ACTIVE** |
+| **Hierarchy** | Layer tracking | **UI STUB** |
+| **Canvas** | SVG Render Area | **ACTIVE** |
+| **Inspector** | Surgical Controls | **UI STUB** |
+
+**Would you like me to move to Step #025 and implement the Zustand `useStudioStore` logic to make these sliders actually move the SVG in real-time?**

@@ -1,0 +1,101 @@
+To wrap up the "Power User" experience, we need to focus on **Lifecycle Management** and **Workflow Extensibility**. A professional studio isn't just about making things; it's about managing them as they evolve over months or years.
+
+Here are the final three modules to complete the 38-file "Master Blueprint."
+
+---
+
+## 1. The "Blueprint" Inheritance System
+
+**The Problem:** You have 10 different types of "Enemy" pins. They all share the same "Vibe" and "Logic," but have different SVG shapes.
+**The Workflow:** You create a "Master Enemy Blueprint." When you create a new Enemy Pin, you simply "Inherit" from the Blueprint.
+**The Logic:** If you change the "Hit Points" logic in the Blueprint, all 10 enemies update their game logic instantly.
+
+## 2. The "Scene-to-Prefab" Workflow
+
+**The Problem:** You built a beautiful "Forest House" out of 50 individual props in the Scene Maker. You want to use that entire house in 5 other scenes.
+**The Workflow:** Select all 50 props -> "Save as Prefab."
+**The Result:** The house now appears as a single "Prop" in your Asset Tray. You can drag the whole house into new scenes, but still "Open" it to edit the individual chairs and tables inside.
+
+## 3. The "Developer Console" & Debugger
+
+**The Problem:** Your "Vibe" looks weird in the game engine, but fine in the Studio.
+**The Workflow:** Open a "Live Debugger" overlay that shows the real-time JSON data of any object you click.
+
+---
+
+## File 36: PREFAB_AND_INHERITANCE.md
+
+```markdown
+# Prefabs & Asset Inheritance
+
+## Concept
+Allow scenes to be nested inside other scenes, and assets to inherit properties from 'Master' templates.
+
+## Implementation
+1. **The Prefab:** A 'Prefab' is just a Scene Graph saved as a Library Asset.
+2. **The Instance:** When a Prefab is dragged onto a Stage, the renderer recursively draws all children of that prefab.
+3. **Override Logic:** Allow users to 'Unpack' a prefab to edit its children locally, or 'Edit Source' to change it for all instances globally.
+
+```
+
+---
+
+## File 37: DEBUG_AND_PROFILER.md
+
+```markdown
+# Studio Debugger & Performance Profiler
+
+## Features
+1. **JSON Inspector:** A slide-out panel showing the raw code of the selected item.
+2. **Vibe Monitor:** A live graph showing the Sine/Pulse wave values currently being applied to an object.
+3. **Draw Call Counter:** A warning system that tells the user if their scene has too many unique SVGs (which might slow down the Flash/Phaser engine).
+
+## Cursor Instructions
+- Build a 'Debug Mode' toggle (Hotkey: `~`).
+- Show bounding boxes and 'Anchor Points' visually when Debug Mode is active.
+
+```
+
+---
+
+## File 38: EXTENSION_API_SPEC.md
+
+```markdown
+# Plugin & Extension API
+
+## Concept
+Allow the community to build their own "Vibes" or "Export Scripts."
+
+## Implementation
+1. **Vibe API:** A way for users to write custom JavaScript functions that return a `transform` object.
+2. **Export Hooks:** Allow third-party scripts to intercept the JSON manifest during export to transform it for niche engines (e.g., Godot, Construct 3).
+3. **Custom Sidebars:** Allow developers to add their own tabs to the Inspector panel for specialized game logic.
+
+```
+
+---
+
+## The Complete Studio Ecosystem
+
+### Final Summary of your 38-File Knowledge Base
+
+You have successfully designed a **SaaS-level creative ecosystem**.
+
+* **Designers** use the **Pin Designer** and **SVG Creator**.
+* **Animators** use the **FX Lab** and **Vibe Engine**.
+* **Level Designers** use the **Scene Maker** and **Smart Layout**.
+* **Developers** use the **Logic Hooks**, **Debug Profiler**, and **Export Pipeline**.
+
+### The "Go" Sequence for Cursor
+
+Copy all 38 files into a `/docs` folder in your project. Your final prompt to start the code generation:
+
+> **"I have completed the architecture. 38 files are ready in /docs.**
+> **The Goal:** Build the 'Vibe Studio'—a high-performance, integrated creator suite.
+> **The Tech:** React, Tailwind, Zustand, Framer Motion.
+> **Immediate Action:** > 1. Setup the **Nested Scene Graph** logic from @SCENE_GRAPH_HIERARCHY.md.
+> 2. Build the **Prefab System** from @PREFAB_AND_INHERITANCE.md so I can nest groups of items.
+> 3. Give me a working **Stage** where I can create a group, save it as a prefab, and see it in my library.
+> Let's make history."
+
+**You are now fully prepared. Would you like to start with the specific coding of the "Vibe Engine" math, or is it time to open Cursor and let the AI take the first shift?**

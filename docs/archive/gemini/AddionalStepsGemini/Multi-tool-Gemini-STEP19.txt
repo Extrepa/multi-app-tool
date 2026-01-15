@@ -1,0 +1,70 @@
+We are now moving to **Step #146: Implement Smart Snapping and Alignment Guides**. This feature provides the "Director's Stage" with the precision needed for professional layouts by offering visual feedback when objects align perfectly with each other or the canvas center.
+
+---
+
+### 1. The Proximity Detection Logic
+
+To implement **Smart Snapping**, the engine must calculate the distance between the bounding box edges of the "Active Instance" (the one being dragged) and all other "Static Instances" on the stage.
+
+* **Snap Threshold**: When the dragged object comes within a small range (e.g., **5px**) of another object's edge or center, its coordinate is "locked" to that alignment.
+* **Dynamic Guide Rendering**: High-contrast pink lines are rendered on a dedicated SVG overlay to show exactly what the object is snapping to.
+* **Performance Optimization**: To maintain **Zero-Latency** performance, snapping calculations are restricted to the top 20 nearest neighbors on the stage.
+
+---
+
+### 2. Implementation: The Snapping Engine (`src/features/stage/SnappingLogic.ts`)
+
+This utility calculates the deltas and returns the "Snapped" coordinates and the lines to be drawn.
+
+```typescript
+// Resource: Smart Snapping Logic
+export const calculateSnap = (activeInstance, otherInstances, threshold = 5) => {
+  const guides = [];
+  let snappedX = activeInstance.x;
+  let snappedY = activeInstance.y;
+
+  otherInstances.forEach(other => {
+    // Check Vertical Alignment (X-axis)
+    if (Math.abs(activeInstance.x - other.x) < threshold) {
+      snappedX = other.x;
+      guides.push({ type: 'vertical', x: other.x });
+    }
+    
+    // Check Center Alignment
+    const activeMid = activeInstance.x + activeInstance.width / 2;
+    const otherMid = other.x + other.width / 2;
+    if (Math.abs(activeMid - otherMid) < threshold) {
+      snappedX = otherMid - activeInstance.width / 2;
+      guides.push({ type: 'vertical', x: otherMid });
+    }
+  });
+
+  return { snappedX, snappedY, guides };
+};
+
+```
+
+---
+
+### 3. Integrated "Vibe-Ignoring" Geometry
+
+A key requirement for the **Studio OS** is that snapping occurs based on the **Base Coordinates** of the props, not their temporary "Vibrating" positions.
+
+* **Static Geometry**: The snapping engine ignores the mathematical offsets from the **Vibe Lab**.
+* **Visual Stability**: This prevents the alignment guides from "jittering" if an object is currently performing a high-intensity **Shake** or **Pulse**.
+
+---
+
+### 4. Verification & Progress Track
+
+With Step #146 complete, your stage layout workflow is significantly faster and more accurate.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#144** | Z-Index reordering in the Layer Tree functional. | **DONE** |
+| **#146** | Smart Snapping and alignment guides active. | **DONE** |
+| **#147** | **Step 147**: Implement Grouping () and Hierarchy nesting. | **ACTIVE** |
+
+**Would you like to proceed to Step #147 to implement "Grouping"? This will allow you to select multiple pins and group them into a single "Folder" component that can be moved and "Vibed" as one unit.**
+
+Would you like me to ...?

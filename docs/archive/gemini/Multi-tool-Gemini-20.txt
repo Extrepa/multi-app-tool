@@ -1,0 +1,81 @@
+To move this project from concept to a professional-grade software suite, we need to focus on **Vertical Precision** (the nitty-gritty of vector editing) and **Horizontal Composition** (how those vectors live in a world).
+
+Below is the technical breakdown of the "Surgical" toolset and the "Global" organization needed for a pro-level app.
+
+---
+
+### 1. The Surgical Vector Suite (The "Forge" Tools)
+
+A professional vector editor requires more than just drawing shapes. It needs node-level surgical tools to create unique "Pins."
+
+* **The Pen Tool ():** Beyond simple lines, it must support **Bezier Curvature**.
+* *Function:* Click for a corner, click-and-drag for a curve.
+* *Capability:* Add/Remove anchor points from an existing path.
+
+
+* **The Path Editor ():** This is your "Surgical Knife."
+* *Function:* Select individual nodes or "handles" to reshape an SVG.
+* *Control:* Toggle between "Sharp" (corner) and "Smooth" (curve) nodes.
+
+
+* **Boolean Operations:** Essential for building complex pins from simple shapes.
+* *Tools:* **Union** (merge shapes), **Subtract** (cut out a shape), **Intersect**, and **Exclude**.
+
+
+* **Stroke & Border Lab:** * *Controls:* Dash arrays (for dotted lines), stroke-cap (round vs. square ends), and stroke-join (how corners look).
+
+---
+
+### 2. The Animation & Vibe Engine (The "Lab" Controls)
+
+The FX Lab isn't just for movement; it's for **Atmospheric Logic**.
+
+* **The "Vibe" Keyframer:** A lightweight timeline.
+* *Use:* Set a "Start" and "End" state for any property (color, size, opacity).
+
+
+* **Filter Stack:**
+* *Effects:* **Gaussian Blur**, **Drop Shadow**, **Inner Glow**, and **Prismatic Shift** (chromatic aberration).
+
+
+* **Audio-Reactive Hooks:**
+* *Control:* Map the "Glow Radius" to a specific frequency range (e.g., Bass or Treble).
+
+
+
+---
+
+### 3. Structural Organization (The "Studio" Hierarchy)
+
+A clear workspace relies on a robust **Layer Tree** and **Interface Separation**.
+
+| Section | Location | Control / Purpose |
+| --- | --- | --- |
+| **Toolbox** | Left (Outer) | The "What": Pen, Node, Shape, Text, Paint Bucket. |
+| **Layer Tree** | Left (Inner) | The "Order": Drag-and-drop z-index, Visibility toggles, Lock state. |
+| **Viewport** | Center | The "Work": Infinite canvas with high-contrast borders and a grid. |
+| **Inspector** | Right | The "How": Alignment tools, Color Pickers, Stroke thickness, Vibe settings. |
+| **Asset Tray** | Bottom | The "Library": Quick-access to all saved Pins and Components. |
+
+---
+
+### 4. Technical Integration: The JSON Bridge
+
+To make the "Scene Maker" work seamlessly with the "SVG Creator," the app uses a **Reference-Based Architecture**.
+
+* **Instance Linking:** When you drop a Pin into a Scene, the Stage doesn't create a new copy of the SVG code. It creates a **pointer** to the Library ID.
+* *Benefit:* If you change the border color in the **Forge**, every single instance on the **Stage** updates instantly.
+
+
+* **Borders & Separation:** * The UI must use a **1px high-contrast border** (e.g., `#333` on `#121212`) between panels to prevent visual bleeding.
+* The **Active Window** (Focus vs. Stage) should have a subtle glow or color-coded border (e.g., Emerald for Focus, Purple for Stage) to indicate where the keyboard shortcuts are currently active.
+
+
+
+---
+
+### Next Step for Development
+
+To get this running, we should define the **Keyboard Shortcut Map**. For example, hitting `V` should always take you back to the "Stage Select" tool, while `A` always takes you to "Node Edit."
+
+**Would you like me to draft a "Pro Hotkey Map" to help Cursor implement the muscle-memory controls for your users?**

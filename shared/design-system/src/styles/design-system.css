@@ -1,0 +1,460 @@
+/**
+ * Unified Errl Design System - CSS Variables
+ * Merged from shared/design-system and all-components/errl-design-system
+ */
+
+:root {
+  /* ============================================
+     CORE COLORS (from shared/design-system)
+     ============================================ */
+  
+  --color-background: rgba(20, 20, 20, 0.9);
+  --color-border: #00ffff;
+  --color-text: #ffffff;
+  --color-accent: #00ffff;
+  --color-title: #00ffff;
+  
+  /* Interactive States */
+  --color-hover: #00ff00;
+  --color-pressed: #222222;
+  --color-disabled: #666666;
+  --color-focus: #00ff00;
+  
+  /* Status Colors */
+  --color-success: #00ff00;
+  --color-error: #ff0000;
+  --color-warning: #ffaa00;
+  --color-info: #00ffff;
+  
+  /* Glow Colors */
+  --color-glow-white: rgba(255, 255, 255, 0.8);
+  --color-glow-cyan: rgba(0, 255, 255, 0.8);
+  --color-glow-green: rgba(0, 255, 0, 0.8);
+  --color-glow-magenta: rgba(255, 0, 255, 0.8);
+  
+  /* Button State Colors */
+  --color-button-normal: #333333;
+  --color-button-hover: #444444;
+  --color-button-pressed: #222222;
+  --color-button-disabled: #1a1a1a;
+  
+  /* ============================================
+     THEME COLORS (from errl-design-system)
+     ============================================ */
+  
+  /* Dark theme (default) */
+  --errl-bg: #02070a;
+  --errl-bg-alt: #041017;
+  --errl-surface: #071b25;
+  --errl-panel: rgba(7, 27, 37, 0.9);
+  --errl-border: #163a4a;
+  --errl-text: #ecf9ff;
+  --errl-muted: #8eb7c7;
+  --errl-accent: #34e1ff;
+  --errl-accent-2: #ff34f5;
+  --errl-accent-3: #f5ffb7;
+  --errl-accent-soft: #0d3344;
+  
+  /* Neon colors */
+  --errl-neon-cyan: #00ffff;
+  --errl-neon-blue: #34e1ff;
+  --errl-neon-purple: #7b5cff;
+  --errl-neon-magenta: #ff34f5;
+  --errl-neon-pink: #ff00ff;
+  --errl-neon-green: #00f5a0;
+  --errl-neon-yellow: #f5ffb7;
+  
+  /* ============================================
+     SPACING
+     ============================================ */
+  
+  --spacing-padding: 16px;
+  --spacing-margin: 12px;
+  --spacing-gap: 8px;
+  --spacing-title-padding-bottom: 8px;
+  --spacing-button-padding: 10px 20px;
+  --spacing-input-padding: 8px 12px;
+  --spacing-panel-padding: 16px;
+  
+  /* From errl-design-system */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+  
+  --font-family: 'Arial', sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 3rem;
+  
+  --font-weight-normal: normal;
+  --font-weight-medium: 500;
+  --font-weight-bold: bold;
+  
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.8;
+  
+  --title-size: 18px;
+  --title-weight: bold;
+  
+  /* ============================================
+     BORDERS
+     ============================================ */
+  
+  --border-width: 2px;
+  --border-radius: 8px;
+  --border-title-bottom: 1px solid var(--color-border);
+  --border-style-solid: solid;
+  --border-style-dashed: dashed;
+  
+  /* From errl-design-system */
+  --border-thin: 1px;
+  --border-medium: 2px;
+  --border-thick: 3px;
+  --border-radius-small: 8px;
+  --border-radius-medium: 12px;
+  --border-radius-large: 16px;
+  
+  /* ============================================
+     SHADOWS
+     ============================================ */
+  
+  --shadow-panel: 0 4px 20px rgba(0, 255, 255, 0.3);
+  --shadow-button: 0 0 20px rgba(0, 255, 255, 0.8);
+  --shadow-text: 0 0 10px rgba(255, 255, 255, 0.5);
+  
+  --shadow-glow-white: 
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.3),
+    0 0 30px rgba(255, 255, 255, 0.2);
+  --shadow-glow-cyan: 0 0 10px rgba(0, 255, 255, 0.8);
+  --shadow-glow-green: 0 0 10px rgba(0, 255, 0, 0.8);
+  --shadow-glow-magenta: 0 0 10px rgba(255, 0, 255, 0.8);
+  
+  /* From errl-design-system */
+  --shadow-neon-cyan: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+  --shadow-neon-purple: 0 0 10px rgba(123, 92, 255, 0.5), 0 0 20px rgba(123, 92, 255, 0.3);
+  --shadow-neon-blue: 0 0 10px rgba(52, 225, 255, 0.5), 0 0 20px rgba(52, 225, 255, 0.3);
+  --shadow-neon-magenta: 0 0 10px rgba(255, 52, 245, 0.5), 0 0 20px rgba(255, 52, 245, 0.3);
+  --shadow-rainbow: 0 0 20px rgba(255, 0, 0, 0.3), 0 0 40px rgba(0, 255, 0, 0.2), 0 0 60px rgba(0, 0, 255, 0.2);
+  
+  /* ============================================
+     ANIMATIONS
+     ============================================ */
+  
+  --animation-duration-fast: 0.2s;
+  --animation-duration-normal: 0.3s;
+  --animation-duration-slow: 1s;
+  
+  --animation-easing-ease: ease;
+  --animation-easing-ease-in: ease-in;
+  --animation-easing-ease-out: ease-out;
+  --animation-easing-ease-in-out: ease-in-out;
+  
+  /* ============================================
+     GRADIENTS
+     ============================================ */
+  
+  --gradient-background: linear-gradient(
+    135deg,
+    #667eea 0%,
+    #764ba2 25%,
+    #f093fb 50%,
+    #4facfe 75%,
+    #00f2fe 100%
+  );
+  
+  --gradient-progress: linear-gradient(90deg, #ff00ff, #ff88ff);
+}
+
+/* Light theme overrides */
+.app.light,
+:root[data-theme="light"] {
+  --errl-bg: #fefaf5;
+  --errl-bg-alt: #f5f0eb;
+  --errl-surface: #ffffff;
+  --errl-panel: rgba(255, 255, 255, 0.9);
+  --errl-border: #e0d5c7;
+  --errl-text: #1a1a1a;
+  --errl-muted: #6b7280;
+  --errl-accent: #34e1ff;
+  --errl-accent-2: #ff34f5;
+  --errl-accent-3: #f5ffb7;
+  --errl-accent-soft: #f0f9ff;
+}
+
+/* ============================================
+   ANIMATIONS (from errl-design-system)
+   ============================================ */
+
+@keyframes rainbowFlow {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 0; 
+    transform: scale(0) rotate(0deg); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1) rotate(180deg); 
+  }
+}
+
+@keyframes fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes glow {
+  0%, 100% { 
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3); 
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.4), 0 0 40px rgba(0, 255, 255, 0.2); 
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ============================================
+   UTILITY CLASSES (from errl-design-system)
+   ============================================ */
+
+.rainbow-border {
+  border: 2px solid;
+  border-image: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3) 1;
+  animation: rainbowFlow 3s linear infinite;
+  background-size: 200% 100%;
+}
+
+.sparkle::before {
+  content: '✨';
+  position: absolute;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.neon-glow {
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+  animation: glow 2s ease-in-out infinite;
+}
+
+.neon-glow-purple {
+  box-shadow: 0 0 10px rgba(123, 92, 255, 0.5), 0 0 20px rgba(123, 92, 255, 0.3);
+  animation: glow 2s ease-in-out infinite;
+}
+
+.neon-glow-blue {
+  box-shadow: 0 0 10px rgba(52, 225, 255, 0.5), 0 0 20px rgba(52, 225, 255, 0.3);
+  animation: glow 2s ease-in-out infinite;
+}
+
+.fade-effect {
+  animation: fade 2s ease-in-out infinite;
+}
+
+.shimmer-effect {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* ============================================
+   COMPONENT STYLES (from shared/design-system)
+   ============================================ */
+
+/* Panel */
+.ui-panel {
+  background: var(--color-background);
+  border: var(--border-width) var(--border-style-solid) var(--color-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-panel-padding);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  box-shadow: var(--shadow-panel);
+  box-sizing: border-box;
+}
+
+.ui-panel-title {
+  font-size: var(--title-size);
+  font-weight: var(--title-weight);
+  color: var(--color-title);
+  border-bottom: var(--border-title-bottom);
+  padding-bottom: var(--spacing-title-padding-bottom);
+  margin-bottom: var(--spacing-margin);
+}
+
+/* Button */
+.ui-button {
+  padding: var(--spacing-button-padding);
+  background: var(--color-button-normal);
+  color: var(--color-text);
+  border: var(--border-width) var(--border-style-solid) var(--color-border);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  transition: all var(--animation-duration-fast) var(--animation-easing-ease);
+}
+
+.ui-button:hover {
+  background: var(--color-button-hover);
+  border-color: var(--color-hover);
+  transform: scale(1.05);
+}
+
+.ui-button:active {
+  background: var(--color-button-pressed);
+  border-color: var(--color-border);
+  transform: scale(0.95);
+}
+
+.ui-button:disabled {
+  background: var(--color-button-disabled);
+  border-color: var(--color-disabled);
+  color: var(--color-disabled);
+  cursor: not-allowed;
+  transform: scale(1);
+}
+
+/* Input Field */
+.ui-input-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-gap);
+  margin: var(--spacing-gap) 0;
+}
+
+.ui-input-field label {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+}
+
+.ui-input-field input {
+  padding: var(--spacing-input-padding);
+  background: var(--color-background);
+  color: var(--color-text);
+  border: var(--border-width) var(--border-style-solid) var(--color-border);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  outline: none;
+}
+
+.ui-input-field input:focus {
+  border-color: var(--color-focus);
+}
+
+.ui-input-field input:invalid {
+  border-color: var(--color-error);
+}
+
+.ui-input-error {
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family);
+}
+
+/* Dropdown */
+.ui-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-gap);
+  margin: var(--spacing-gap) 0;
+}
+
+.ui-dropdown label {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+}
+
+.ui-dropdown select {
+  padding: var(--spacing-input-padding);
+  background: rgba(51, 51, 51, 0.8);
+  color: var(--color-text);
+  border: var(--border-width) var(--border-style-solid) var(--color-border);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  cursor: pointer;
+  outline: none;
+}
+
+.ui-dropdown select:focus {
+  border-color: var(--color-focus);
+}
+
+/* Slider */
+.ui-slider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-gap);
+  margin: var(--spacing-gap) 0;
+}
+
+.ui-slider label {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+}
+
+.ui-slider input[type="range"] {
+  flex: 1;
+  height: 6px;
+  background: rgba(51, 51, 51, 0.8);
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.ui-slider-value {
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  min-width: 50px;
+  text-align: right;
+}
+
+/* Modal */
+.ui-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.ui-modal {
+  background: var(--color-background);
+  border: var(--border-width) var(--border-style-solid) var(--color-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-padding);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  box-shadow: var(--shadow-panel);
+  max-width: 90%;
+  max-height: 90%;
+  overflow: auto;
+}

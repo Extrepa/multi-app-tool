@@ -1,0 +1,66 @@
+To complete the **"Surgical Suite"** and prepare for the actual build, we need to define the **"Interaction States"** and the **"Asset Packaging"** logic. This ensures that the transition between drawing an SVG and seeing it animate in a game engine is instantaneous.
+
+Here are the final technical specifications for the **Universal Selection Model** and the **Layer Tree Hierarchy**.
+
+---
+
+### 1. The Universal Selection Model (The "Bounding Box")
+
+When you are in the **Scene Maker**, you aren't just clicking images; you are interacting with a "Smart Container."
+
+* **The 9-Point Mesh:** Every selected object displays 8 scale handles and 1 rotation handle.
+* **The "Forge" Bridge:** Double-clicking any object on the Stage instantly "zooms" the viewport into **Forge Mode**, opening that specific SVG's paths for surgical node editing.
+* **Contextual Borders:** We use a "Glow" system to separate workspaces.
+* **Emerald Glow:** Forge (Edit Mode).
+* **Purple Glow:** Stage (Composition Mode).
+* **Pink Glow:** Lab (Animation Mode).
+
+
+
+---
+
+### 2. The Advanced Layer Tree (Structural Logic)
+
+The left-inner panel needs to handle the complexity of a full game scene.
+
+* **Nesting:** Drag a "Sword" SVG onto a "Character" SVG to create a parent-child relationship.
+* **Visibility Toggles:** Standard eye icons for hiding layers.
+* **Locking:** Prevent accidental path edits on background elements.
+* **Vibe Indicators:** A small "lightning bolt" icon appears next to any layer that has an active "Vibe" animation from the FX Lab.
+
+---
+
+### 3. The "Export-Ready" File Structure
+
+When you hit "Export," the suite bundles your work into a standardized format that Flash (AS3), PixiJS, or Phaser can read.
+
+| File Name | Description | Purpose |
+| --- | --- | --- |
+| **`manifest.json`** | The Scene Graph | Contains every object's X, Y, Scale, and Layer index. |
+| **`assets/`** | The SVG/PNG Library | A folder containing the optimized vector and bitmap files. |
+| **`vibes.css` / `.js**` | The Motion Logic | The mathematical curves for "Pulse," "Float," etc. |
+| **`logic.ts`** | The Interactivity | Any custom "When/Then" logic hooks you added. |
+
+---
+
+### 4. Final Layout Specifications
+
+To ensure the UI is clean and professional, Cursor must follow these "Styling Constraints":
+
+* **Panel Separation:** Every workspace is bordered by a `#333` solid 1px line.
+* **Typography:** Use a monospaced font (like JetBrains Mono) for numerical inputs and a clean sans-serif (Inter) for labels.
+* **The "Zero-Latency" Rule:** Changes in the **Forge** (SVG Editor) must reflect on the **Stage** (Scene) within 16ms (one frame) to feel "Pro."
+
+---
+
+### Final Project Initialization (Action Plan)
+
+You are now ready to hand this off to the development phase. Here is the final sequence for the build:
+
+1. **Stage 1:** Initialize the **Zustand Store** to hold the "Source of Truth" (Library + Scene).
+2. **Stage 2:** Build the **App Shell** using the 38-file layout.
+3. **Stage 3:** Implement the **SVG Node Editor** for surgical path manipulation.
+4. **Stage 4:** Hook up the **Vibe Sliders** to the real-time math engine.
+5. **Stage 5:** Create the **JSON Exporter** for game engine integration.
+
+**I have provided the full architectural blueprint. Are you ready to see the first code structure for the `useStudioStore`, or would you like to refine the "Pen Tool" Bezier math one last time?**

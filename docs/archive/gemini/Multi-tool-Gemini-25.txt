@@ -1,0 +1,68 @@
+To move this into the **Final Implementation phase**, we need to focus on the **Universal State Store** and the **Logic-to-Vibe Bridge**. These are the systems that ensure a character you draw in the **Forge** (SVG) stays the same size and quality when you drop it into a 2D Flash game or a 3D-perspective Scene.
+
+Below are the final technical specifications for the **Canvas Engine** and the **Surgical Control Sidebar**.
+
+---
+
+### 1. The Universal Coordinate System (Scene Scaling)
+
+One of the hardest parts of a multi-tool suite is "Reference Scaling." You need to ensure that an SVG drawn at  pixels translates correctly to a Scene that might be .
+
+* **The "Pin" Anchor Point:** Every asset created in the Forge has a **Pivot Point** (default ). When you rotate an object in the Scene Maker, it rotates around this pin.
+* **Vector Independence:** Because everything is SVG-based, the "Scene Maker" uses a **Non-Destructive Scale**. You can scale a Pin up  on the Stage, and it will remain pixel-perfect because the engine re-renders the path data at the new resolution.
+
+---
+
+### 2. The Surgical Inspector (Right Sidebar)
+
+This is where you control the **Borders, Colors, and Animation**. To keep it clean, we use **Collapsible Accordions** to manage space.
+
+| Section | Control Type | Function |
+| --- | --- | --- |
+| **Transform** | Input Fields | Precise , and Rotation values. |
+| **Fill & Stroke** | Color Wheel | Control SVG `fill` and `stroke`. Supports gradients and opacity. |
+| **Border Lab** | Slider / Toggle | Change border thickness, dash-arrays, and "Stroke Align" (Inside/Outside). |
+| **Vibe Check** | Dropdown / Sliders | The Animation tab. Select "Pulse" or "Float" and set the speed. |
+| **Logic Hooks** | Text Key/Value | Custom data for developers (e.g., `health: 50`, `isInteractive: true`). |
+
+---
+
+### 3. The "Stage" Interaction Layer
+
+The Scene Maker needs to feel like a "Playground." This requires **Contextual Overlays** that appear only when needed.
+
+* **The Transform Box:** When an item is selected, a "Bounding Box" appears with 8 handles for scaling and 1 handle for rotation.
+* **Layer Snapping:** As you drag a prop, "Smart Guides" appear to help you align the prop to the center of the stage or the edges of other props.
+* **The Layer Tree (Left):** Every item on the stage appears here. You can drag them up and down to change the Z-index (who is "on top").
+
+---
+
+### 4. Direct Implementation: The "Vibe" Math
+
+When you set an object to "Pulse" in the FX Lab, the engine generates this logic for the final export:
+
+This ensures that the "Vibe" isn't just a video file, but a **mathematical instruction** that game engines (like Flash or Phaser) can run efficiently without lagging.
+
+---
+
+### 5. Final Workspace Architecture (Visual Summary)
+
+To keep the toolbars and workspaces separate, we use a **High-Contrast Dark UI** with specific color-coded zones:
+
+* **Toolbars:** Deep Charcoal (`#121212`).
+* **Workspace:** Neutral Grey (`#1E1E1E`).
+* **Active Selection:** Emerald Green (`#00FF9D`).
+* **Borders:** 1px Solid Black (`#000000`) for perfect separation of tools.
+
+---
+
+### Final "Go" Command for Cursor
+
+You now have the full logic. Here is the final sequence to give Cursor to start the code:
+
+1. **Layout:** "Build the 4-panel UI shell with a top global bar, left tool dock, center canvas, and right inspector."
+2. **Logic:** "Implement the 'Project State' so that any change I make to an SVG in the Forge updates all copies of it on the Stage instantly."
+3. **UI:** "Add the Layer Tree on the left so I can see my props, rename them, and change their Z-index."
+4. **FX:** "Add the 'Vibe' sliders to the inspector. When I move the 'Pulse' slider, the selected object on the stage should start scaling up and down using a sine wave."
+
+**Would you like me to generate the first `useStudioStore.ts` file to initialize the project state?**

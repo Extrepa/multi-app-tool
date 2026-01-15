@@ -1,0 +1,27 @@
+{
+  "name": "@errl/design-system",
+  "version": "1.0.0",
+  "description": "Errl Design System - Neon colors, themes, and effects for all Errl projects",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "design-system",
+    "react",
+    "theme",
+    "neon",
+    "ui"
+  ],
+  "author": "",
+  "license": "ISC"
+}
+

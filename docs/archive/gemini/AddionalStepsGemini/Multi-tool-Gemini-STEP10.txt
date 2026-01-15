@@ -1,0 +1,55 @@
+We are now moving to **Step #119: Finalize Phase Offset (Timing) Controls**. This critical step in the **Vibe Engine** allows you to break robotic synchronization by shifting the starting point of the mathematical wave for each instance.
+
+### 1. The "Phase Offset" () Logic
+
+When multiple objects on the **Stage** share the same frequency and intensity, they move in perfect unison, which can look unnatural. By adjusting the **Phase Offset**, you modify the starting position of the sine wave without changing its speed or height.
+
+* **The Formula**: .
+* **Visual Impact**: A group of "Pin" characters can be made to look like a wavy crowd rather than a single moving block by staggering their offset values.
+
+---
+
+### 2. Implementation: The Phase Slider (`src/components/inspector/PhaseControl.tsx`)
+
+In the **Surgical Inspector**, we add a circular slider or a 0–360° input to represent the phase shift in radians or degrees.
+
+```tsx
+// Resource: Phase Offset UI Integration
+export const PhaseControl = ({ instanceId }) => {
+  const { updateVibe, scene } = useStudioStore();
+  const instance = scene.instances.find(i => i.id === instanceId);
+
+  return (
+    <div className="control-item pt-4 border-t border-[#222]">
+      <div className="flex justify-between text-[10px] font-mono mb-2">
+        <span>PHASE_OFFSET (θ)</span>
+        <span className="text-[#b026ff]">{instance.vibe.offset}°</span>
+      </div>
+      <input 
+        type="range" min="0" max="360" step="1"
+        value={instance.vibe.offset}
+        onChange={(e) => updateVibe(instanceId, { offset: parseInt(e.target.value) })}
+        className="w-full accent-[#b026ff] cursor-pointer"
+      />
+      <p className="text-[9px] text-gray-600 mt-1 font-mono italic">
+        Shift the "start time" of the wave to desync from other props.
+      </p>
+    </div>
+  );
+};
+
+```
+
+---
+
+### 3. Verification & Progress Track
+
+Completing this step ensures that your **Stage** compositions feel organic and alive.
+
+| Build Step | Technical Milestone | Status |
+| --- | --- | --- |
+| **#119** | Phase Offset () sliders integrated into Store/UI. | **DONE** |
+| **#120** | "Vibe Preview" toggle implemented in Forge Mode. | **ACTIVE** |
+| **#121** | Vibe Preset Library (Neon Breathe, Ghost Drift) initialized. | **ACTIVE** |
+
+**The Vibe Engine is now mathematically complete. Would you like to proceed to Step #120 to implement the "Vibe Preview" toggle in the Forge, so you can see your surgical edits animate while you are still moving nodes?**

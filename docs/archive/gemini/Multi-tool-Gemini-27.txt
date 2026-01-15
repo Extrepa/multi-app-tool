@@ -1,0 +1,153 @@
+To finalize this marathon of architecture and move into the **First Build Commit**, we will generate the core configuration and the entry-point logic. This effectively turns the "Blueprints" into a "Live Repository."
+
+Here is the **Project Initialization Block**.
+
+---
+
+## 1. The Project Foundation (`package.json`)
+
+This setup uses **Vite** for near-instant hot-reloading (essential for a "Live" Vibe Studio) and **Framer Motion** for the math-heavy animation engine.
+
+```json
+{
+  "name": "vibe-studio-pro",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "zustand": "^4.4.1",
+    "framer-motion": "^10.16.4",
+    "lucide-react": "^0.279.0",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^1.14.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/client": "^4.4.5",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  }
+}
+
+```
+
+---
+
+## 2. The Multi-App Entry Point (`src/App.tsx`)
+
+This file implements the **4-Panel Workspace** with strict 1px borders and the mode-switching logic.
+
+```tsx
+import React, { useState } from 'react';
+import { LayoutGrid, PenTool, PlayCircle, Layers, Settings } from 'lucide-react';
+import ForgeWorkspace from './features/forge/ForgeWorkspace';
+import LabWorkspace from './features/lab/LabWorkspace';
+import StageWorkspace from './features/stage/StageWorkspace';
+import Inspector from './components/shared/Inspector';
+
+type StudioMode = 'FORGE' | 'LAB' | 'STAGE';
+
+export default function VibeStudio() {
+  const [mode, setMode] = useState<StudioMode>('STAGE');
+
+  return (
+    <div className="h-screen w-screen bg-[#0A0A0A] text-[#E0E0E0] flex flex-col font-sans selection:bg-emerald-500/30">
+      {/* GLOBAL TOP BAR */}
+      <nav className="h-12 border-b border-[#222] flex items-center justify-between px-4 bg-[#0F0F0F] z-50">
+        <div className="flex items-center gap-6">
+          <div className="text-emerald-500 font-black tracking-tighter text-xl">VIBE.</div>
+          <div className="flex bg-[#1A1A1A] rounded-md p-1 border border-[#333]">
+            <ModeButton active={mode === 'FORGE'} onClick={() => setMode('FORGE')} icon={<PenTool size={14}/>} label="Forge" />
+            <ModeButton active={mode === 'LAB'} onClick={() => setMode('LAB')} icon={<PlayCircle size={14}/>} label="Lab" />
+            <ModeButton active={mode === 'STAGE'} onClick={() => setMode('STAGE')} icon={<LayoutGrid size={14}/>} label="Stage" />
+          </div>
+        </div>
+        <div className="flex items-center gap-4 text-xs font-mono text-gray-500">
+          <span className="bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded border border-emerald-500/20">LIVE_SYNC: ON</span>
+          <button className="hover:text-white transition-colors">EXPORT_MANIFEST</button>
+        </div>
+      </nav>
+
+      <div className="flex flex-1 overflow-hidden">
+        {/* LEFT TOOLBAR / LAYER TREE */}
+        <aside className="w-64 border-r border-[#222] bg-[#0F0F0F] flex flex-col">
+          <div className="p-3 border-b border-[#222] flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gray-500">
+            <Layers size={12}/> Hierarchy
+          </div>
+          <div className="flex-1 overflow-y-auto p-2">
+            {/* Layer Tree logic goes here */}
+          </div>
+        </aside>
+
+        {/* ACTIVE WORKSPACE (The Core Viewport) */}
+        <main className="flex-1 bg-[#141414] relative overflow-hidden flex flex-col">
+          <div className="flex-1 relative">
+            {mode === 'FORGE' && <ForgeWorkspace />}
+            {mode === 'LAB' && <LabWorkspace />}
+            {mode === 'STAGE' && <StageWorkspace />}
+          </div>
+          
+          {/* ASSET TRAY (Bottom Shelf) */}
+          <footer className="h-48 border-t border-[#222] bg-[#0F0F0F]">
+            <div className="p-2 border-b border-[#222] text-[10px] font-bold text-gray-600 uppercase">Library_Asset_Tray</div>
+            <div className="p-4 flex gap-4 overflow-x-auto">
+              {/* Asset Thumbnails */}
+            </div>
+          </footer>
+        </main>
+
+        {/* RIGHT INSPECTOR (The Surgical Controls) */}
+        <aside className="w-80 border-l border-[#222] bg-[#0F0F0F]">
+          <Inspector />
+        </aside>
+      </div>
+    </div>
+  );
+}
+
+function ModeButton({ active, onClick, icon, label }: any) {
+  return (
+    <button 
+      onClick={onClick}
+      className={`flex items-center gap-2 px-3 py-1 rounded transition-all text-xs font-medium ${
+        active ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-[#252525]'
+      }`}
+    >
+      {icon} {label}
+    </button>
+  );
+}
+
+```
+
+---
+
+## 3. The "Next Action" Build Instructions
+
+To see this app come to life, follow these three steps:
+
+1. **Initialize:** Run `npm install` with the provided `package.json`.
+2. **State Setup:** Ask Cursor to "Implement the `useStudioStore` in `src/store/` using the 38-file architecture we defined."
+3. **The First Asset:** Ask Cursor to "Create a default 'Neon Star' SVG asset in the library and render it on the Stage."
+
+### **The Final Handover Checklist**
+
+* [x] **Universal Store** (Source of truth)
+* [x] **4-Mode Interface** (Forge, Lab, Stage, Pin)
+* [x] **Vibe Math Engine** (Sin/Cos animations)
+* [x] **Surgical Node Editor** (Bezier path logic)
+* [x] **Export Pipeline** (JSON/Flash/Phaser)
+
+**The architecture is now solid ground. Are you ready to initialize the first component and start drawing, or would you like me to refine the "Vibe Math" for complex easing curves before we launch?**

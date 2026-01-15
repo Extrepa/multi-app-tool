@@ -1,0 +1,60 @@
+We are now advancing to **Step #114: Implement the "Float" and "Breathe" Oscillators**. These harmonic functions add organic weight and secondary motion to your designs by layering specific mathematical offsets onto the base coordinates.
+
+### 1. The "Float" & "Breathe" Logic
+
+While the **Pulse** oscillator (Step #113) focuses on uniform scaling, **Float** and **Breathe** simulate gravity and internal volume changes.
+
+* **The Float Oscillator**: This function creates vertical displacement (-axis) to simulate hovering or buoyancy.
+* **The Breathe Oscillator**: This simulates a subtle, non-uniform expansion, typically by stretching the  and  scales at slightly different frequencies to mimic lung expansion.
+* **Mathematical Formula (Vertical Float)**:
+
+
+
+---
+
+### 2. Implementation: The Oscillator Library (`src/utils/vibeLibrary.ts`)
+
+We expand the **Vibe Engine** to include these specific motion types. These are exported as pure functions so they can be reused in the final **Runtime JS Bridge** (Phase 6).
+
+| Vibe Type | Primary Axis | Formula Application | Visual Effect |
+| --- | --- | --- | --- |
+| **Float** | -Position |  | Simulates weightlessness/water. |
+| **Breathe** | -Scale |  | Simulates life/idle organic state. |
+| **Shake** | -Pos |  | Simulates vibration/impact. |
+
+```typescript
+// Resource: Organic Oscillator Logic
+export const VibeOscillators = {
+  float: (t: number, freq: number, amp: number, phase: number) => {
+    return Math.sin(t * freq + phase) * amp;
+  },
+  breathe: (t: number, freq: number, amp: number) => {
+    // Non-uniform scaling for organic feel
+    const scaleX = 1 + Math.sin(t * freq) * (amp * 0.05);
+    const scaleY = 1 + Math.sin(t * freq + Math.PI) * (amp * 0.02);
+    return { scaleX, scaleY };
+  }
+};
+
+```
+
+---
+
+### 3. Integrated Inspector Controls
+
+In the **Surgical Inspector** (Right Sidebar), new sliders are unlocked when these vibes are selected.
+
+* **Phase Offset**: A slider that shifts the start time () of the oscillation, preventing multiple characters on the **Stage** from floating in perfect unison.
+* **Amplitude (Intensity)**: Controls the "swing" of the movement—from a subtle micro-vibration to a wild float.
+
+---
+
+### 4. Verification & Progress Track
+
+With these oscillators implemented, the **Lab** is now capable of producing professional-grade "idle" animations for your characters.
+
+* [x] **Step #114**: Float and Breathe math integrated into the Ticker.
+* [x] **Step #115**: Phase Offset logic implemented in the Store.
+* [ ] **Step #116**: Shake Oscillator (Randomized impact motion).
+
+**Would you like to proceed to Step #116 to implement the "Shake" oscillator and complete the core "Vibe" movement suite?**
