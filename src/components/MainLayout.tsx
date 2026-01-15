@@ -58,9 +58,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ left, right, bottom, chi
                   ? 'bg-yellow-400/20 text-yellow-400'
                   : 'bg-red-400/20 text-red-400'
               } hover:opacity-80`}
-              title="Project Health"
+              title="Project Health (overall consistency and optimization score)"
             >
               <Activity size={12} />
+              <span className="hidden sm:inline">Health</span>
               {healthScore}
             </button>
             <button

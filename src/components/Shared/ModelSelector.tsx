@@ -35,6 +35,9 @@ export const ModelSelector: React.FC<{ onModelChange?: (model: AIModel) => void 
           <div className="absolute top-full mt-1 right-0 w-48 bg-[#1A1A1A] border border-[#333333] rounded shadow-lg z-20">
             <div className="p-2 space-y-1">
               <div className="px-2 py-1 text-[10px] text-[#888888] uppercase">AI Models</div>
+              <div className="px-2 pb-2 text-[10px] text-[#666666]">
+                AI tools are optional. Add a key to enable AI Trace Tool.
+              </div>
               {Object.entries(AI_MODELS).map(([modelId, modelInfo]) => (
                 <button
                   key={modelId}
@@ -56,4 +59,3 @@ export const ModelSelector: React.FC<{ onModelChange?: (model: AIModel) => void 
     </div>
   );
 };
-

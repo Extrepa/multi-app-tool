@@ -12,6 +12,14 @@ A dual-viewport creative suite that combines SVG editing, FX/vibe logic, and sce
 - A vibe/FX system for animation-style effects
 - Export tooling for bundles, components, and static assets
 
+## Where To Start
+
+1. Pick a mode from the left icon bar.
+2. Select an asset in the shelf to load it into the editor.
+3. Drag assets into the stage to compose the scene.
+4. Use the inspector for precise controls.
+5. Export when ready.
+
 ## Quick Start
 
 ```bash
@@ -57,6 +65,13 @@ Key pages:
 - `docs/project-structure.md` - where things live
 - `docs/deployment.md` - Cloudflare Pages setup
 - `docs/archive/` - legacy notes and drafts
+
+## AI Features
+
+AI tools are optional and only used if you enable them:
+- AI Trace Tool turns raster input into vector paths.
+- Model selector in the top bar chooses the provider/model.
+- API keys are only required if you use AI tools.
 
 ## Local Dependencies
 
