@@ -2,24 +2,24 @@
 
 ## Cloudflare Pages
 
-This repo is intended to build directly on Cloudflare Pages at the root subdomain `design.errl.wtf`.
+Target: `design.errl.wtf` (root subdomain)
 
-**Build settings:**
-- **Framework preset:** Vite
-- **Build command:** `npm run build`
-- **Build output directory:** `dist`
-- **Root directory:** `/`
+**Build settings**
+- Framework preset: Vite
+- Build command: `npm run build`
+- Output directory: `dist`
+- Root directory: `/`
 
-**Environment variables (optional):**
+**Optional env vars**
 - `VITE_GEMINI_API_KEY`
 - `VITE_OPENAI_API_KEY`
 - `VITE_ANTHROPIC_API_KEY`
 
-## Local build
+## Local Build
 
 ```bash
 npm install
 npm run build
 ```
 
-The build output is generated in `dist/`.
+Output lives in `dist/`.

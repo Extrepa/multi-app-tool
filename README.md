@@ -1,17 +1,18 @@
 # Multi-Tool Design Suite
 
-A unified creative suite that combines SVG editing, FX/vibe logic, and scene composition in a dual-viewport interface.
+Personal-only note: This repo is published publicly so Cloudflare Pages can build it, but it is intended for my own use only. Please do not reuse, fork, or redistribute without permission.
 
-## Features
+A dual-viewport creative suite that combines SVG editing, FX/vibe logic, and scene composition in one workspace.
 
-- **Dual-Viewport Interface**: Focus Window (left) for detailed editing and Stage Canvas (right) for scene composition
-- **SVG Editor**: High-detail editing with grid overlay and zoom controls
-- **FX Lab**: Apply vibes (pulse, glow, float, shake, rotation) with live preview
-- **Scene Maker**: Drag and drop assets, manage layers, transform objects
-- **Asset Library**: Visual asset shelf with thumbnails
-- **Export Pipeline**: Export to Flash bundle, React components, static SVG, or JSON
+## What This Is
 
-## Getting Started
+- A focused editor (left) for precise SVG work
+- A stage canvas (right) for scene layout and composition
+- A library shelf for assets and templates
+- A vibe/FX system for animation-style effects
+- Export tooling for bundles, components, and static assets
+
+## Quick Start
 
 ```bash
 npm install
@@ -30,79 +31,33 @@ Build output is generated in `dist/`.
 
 This repo is designed to build directly on Cloudflare Pages for the root subdomain `design.errl.wtf`.
 
-**Cloudflare Pages settings:**
-- **Framework preset:** Vite
-- **Build command:** `npm run build`
-- **Build output directory:** `dist`
-- **Root directory:** `/`
+- Build command: `npm run build`
+- Output directory: `dist`
+- Root directory: `/`
 
-**Environment variables (optional):**
+Optional environment variables for AI tooling:
 - `VITE_GEMINI_API_KEY`
 - `VITE_OPENAI_API_KEY`
 - `VITE_ANTHROPIC_API_KEY`
 
-These are only needed if you plan to use the AI tooling. Keys can also be stored locally in the browser via the UI.
+## Personal Notes (For Me)
 
-## Notes on Local Dependencies
-
-This repo vendors `shared/` and `errl-design-system/` inside the project so Cloudflare Pages can build without external workspace paths.
-
-## Project Structure
-
-- `src/components/Editors/` - Focus Window and Stage Canvas
-- `src/components/Inspector/` - Contextual sidebars (SVG, FX, Scene, Export)
-- `src/components/Library/` - Asset shelf and library management
-- `src/state/` - Zustand store for project state
-- `src/engine/` - Vibe logic and export pipelines
-- `specs/` - All 11 specification files
-
-## Keyboard Shortcuts
-
-- `Cmd/Ctrl + 1` - Switch to SVG Edit mode
-- `Cmd/Ctrl + 2` - Switch to FX Lab mode
-- `Cmd/Ctrl + 3` - Switch to Scene Maker mode
-- `Cmd/Ctrl + 4` - Switch to Export mode
-- `Escape` - Clear selection
-
-## Specifications
-
-All specification files are located in the `specs/` directory:
-- PRD_SYSTEM_OVERVIEW.md
-- ARCH_DATA_SCHEMA.md
-- UI_LAYOUT_SPEC.md
-- FX_LAB_VIBE_LOGIC.md
-- EXPORT_PIPELINE_FLASH.md
-- VIBE_ENGINE_CORE.ts
-- SCENE_INTERACTION_RULES.md
-- SYNC_ENGINE_SPECS.md
-- UI_THEME_TOKENS.json
-- COMPONENT_FX_INTERFACE.md
-
-## Sample Project
-
-A sample project is included at `public/sample-project.json` that demonstrates the system with example assets and scene instances.
+- Sample data loads from `public/sample-project.json`.
+- Core UI lives in `src/components/` and is wired in `src/App.tsx`.
+- State is centralized in `src/state/` (Zustand).
+- Vector operations rely on Paper.js utilities under `shared/utils/paper/`.
 
 ## Documentation
 
-- [INDEX.md](INDEX.md) - Workspace index
-- [PROJECT_STATUS.md](PROJECT_STATUS.md) - Current status
-- [Documentation Index](docs/index.md) - Complete documentation index with links to all docs
+Start here: `docs/index.md`.
 
-### Implementation Documentation
+Key pages:
+- `docs/overview.md` - product overview and workflows
+- `docs/architecture.md` - tech stack and system layout
+- `docs/project-structure.md` - where things live
+- `docs/deployment.md` - Cloudflare Pages setup
+- `docs/archive/` - legacy notes and drafts
 
-**Feature Plans:**
-- [Feature Implementation Plan](docs/FEATURE_IMPLEMENTATION_PLAN.md) - Comprehensive plan for missing features
-- [Implementation Gap Analysis](docs/legacy/IMPLEMENTATION_GAP_ANALYSIS.md) - Current state vs. documentation requirements
+## Local Dependencies
 
-**System Documentation:**
-- [System Overview and UX](docs/01_SYSTEM_OVERVIEW_AND_UX.md) - System overview
-- [Data Model and Sync](docs/02_DATA_MODEL_AND_SYNC.md) - Data model and synchronization
-- [Editing and Interaction](docs/03_EDITING_AND_INTERACTION.md) - Editing tools and interactions
-- [Vibe FX and Logic](docs/04_VIBE_FX_AND_LOGIC.md) - Visual effects and logic systems
-- [Export and Roadmap](docs/05_EXPORT_AND_ROADMAP.md) - Export functionality and roadmap
-
-**Technical Documentation:**
-- [Architecture](docs/architecture.md) - Technical architecture and design
-- [Project Structure](docs/project-structure.md) - File organization and structure
-
-See [Documentation Index](docs/index.md) for complete list of all documentation files.
+This repo vendors `shared/` and `errl-design-system/` inside the project so Cloudflare Pages can build without external workspace paths.
